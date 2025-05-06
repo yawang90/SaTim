@@ -1,0 +1,2 @@
+# satim
+Kompetenzgraph
