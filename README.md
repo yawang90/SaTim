@@ -1,4 +1,4 @@
-# satim
+# SaTim Projekt
 ## 0. Quick Start
 
 ## 1. Architektur
