@@ -1,15 +1,17 @@
 # satim
-Architektur: 
+## 0. Quick Start
 
-Frontend: React
+## 1. Architektur
+### Frontend: React
 
-Backend: Node.js/Express (hosted on Render)
+### Backend: Node.js/Express (hosted on Render)
 
-Relational DB: PostgreSQL (for users, admin, auth)
+### Relational DB: PostgreSQL (for users, admin, auth)
 
-Graph DB: Neo4j 
+### Graph DB: Neo4j 
 
-Graph DB Host: Aura 
+### Graph DB Host: Aura 
 
-Genereller Host: Render
+### Genereller Host: Render
 
+## 2. Dokumentation
