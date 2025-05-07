@@ -1,5 +1,7 @@
 import React from 'react';
-import {Button, Typography} from "@mui/material";
+import {Typography} from "@mui/material";
+import RegistrationButton from "../components/registrationButton";
+import LoginButton from "../components/loginButton";
 
 const WelcomePage = () => {
     return (
@@ -12,13 +14,10 @@ const WelcomePage = () => {
                 <Typography variant="h2" style={{color: 'var(--color-primary)'}} gutterBottom>
                     Willkommen bei SaTim
                 </Typography>
-                <Button variant="contained" size="large" color="primary">
-                    Registrieren
-                </Button>
                 <p></p>
-                <Button variant="contained" size="large" color="primary">
-                    Einloggen
-                </Button>
+                <RegistrationButton></RegistrationButton>
+                <p></p>
+                <LoginButton></LoginButton>
             </div>
         </div>
     );
