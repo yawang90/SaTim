@@ -1,0 +1,56 @@
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: white;
+  font-family: 'Arial', sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--color-primary-light);
+  z-index: 10;
+}
+
+.logo {
+  height: 50px;
+  margin-left: 20px;
+}
+
+.banner-space {
+  flex-grow: 1;
+  height: 60px;
+}
+
+.content {
+  text-align: center;
+  padding-top: 100px;
+}
+
+h1 {
+  font-size: 3rem;
+  color: var(--color-primary);
+}
+
+p {
+  margin-top: 1rem;
+  font-size: 1.25rem;
+  color: var(--color-primary-dark)
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;  /* Remove horizontal scrollbar */
+}
