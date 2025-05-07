@@ -1,0 +1,1 @@
+CREATE TYPE changed_by AS ENUM ('SATIM_APP');
