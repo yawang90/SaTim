@@ -4,7 +4,6 @@ require('dotenv').config();
 
 const app = express();
 
-// ✅ Enable CORS
 app.use(cors({
     origin: process.env.CLIENT_ORIGIN || '*', // Replace * with your frontend URL in production
 }));
