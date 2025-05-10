@@ -33,6 +33,9 @@ const RegistrationButton = () => {
             alert(`Fehler: ${err.message}`);
         }
     };
+    const handleInputChange = (e) => {
+        setRegistrationFormData({...registrationFormData, [e.target.name]: e.target.value,});
+    };
 
     return (
         <>
@@ -49,12 +52,12 @@ const RegistrationButton = () => {
                 <Box sx={modalStyle} component="form">
                     <Typography variant="h6" mb={2}>Registrieren</Typography>
                     <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <TextField label="Vorname" variant="outlined" value={registrationFormData.vorname} fullWidth />
-                        <TextField label="Nachname" variant="outlined" value={registrationFormData.nachname} fullWidth />
-                        <TextField label="Email" variant="outlined" value={registrationFormData.email} fullWidth />
-                        <TextField label="Passwort" type="password" variant="outlined" value={registrationFormData.passwort} fullWidth />
+                        <TextField name="vorname" label="Vorname" variant="outlined" value={registrationFormData.vorname} onChange={handleInputChange} fullWidth />
+                        <TextField name="nachname" label="Nachname" variant="outlined" value={registrationFormData.nachname} onChange={handleInputChange} fullWidth />
+                        <TextField name ="email" label="Email" variant="outlined" value={registrationFormData.email} onChange={handleInputChange} fullWidth />
+                        <TextField name="passwort" label="Passwort" type="password" variant="outlined" value={registrationFormData.passwort} onChange={handleInputChange} fullWidth />
                         <TextField label="Passwort wiederholen" type="password" variant="outlined" fullWidth />
-                        <Button variant="contained" color="primary">Konto erstellen</Button>
+                        <Button variant="contained" color="primary" onClick={handleSubmit}>Konto erstellen</Button>
                     </Box>
                 </Box>
             </Modal>

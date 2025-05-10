@@ -6,9 +6,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
+const allowedOrigin = process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3000'
+    : 'https://satim-client.onrender.com';
 
 app.use(cors({
-    origin: process.env.CLIENT_ORIGIN || 'http://localhost:3000',
+    origin: allowedOrigin
 }));
 
 app.use(express.json());
