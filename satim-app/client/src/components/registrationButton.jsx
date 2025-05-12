@@ -19,7 +19,8 @@ const RegistrationButton = () => {
         nachname: '',
         vorname: '',
         email: '',
-        passwort: '',
+        password: '',
+        confirmPassword: ''
     });
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -55,8 +56,8 @@ const RegistrationButton = () => {
                         <TextField name="vorname" label="Vorname" variant="outlined" value={registrationFormData.vorname} onChange={handleInputChange} fullWidth />
                         <TextField name="nachname" label="Nachname" variant="outlined" value={registrationFormData.nachname} onChange={handleInputChange} fullWidth />
                         <TextField name ="email" label="Email" variant="outlined" value={registrationFormData.email} onChange={handleInputChange} fullWidth />
-                        <TextField name="passwort" label="Passwort" type="password" variant="outlined" value={registrationFormData.passwort} onChange={handleInputChange} fullWidth />
-                        <TextField label="Passwort wiederholen" type="password" variant="outlined" fullWidth />
+                        <TextField name="password" label="Passwort" type="password" variant="outlined" value={registrationFormData.password} onChange={handleInputChange} fullWidth />
+                        <TextField name="confirmPassword" label="Passwort wiederholen" type="password" variant="outlined" value={registrationFormData.confirmPassword} onChange={handleInputChange} fullWidth />
                         <Button variant="contained" color="primary" onClick={handleSubmit}>Konto erstellen</Button>
                     </Box>
                 </Box>

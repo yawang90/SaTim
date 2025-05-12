@@ -1,36 +1,17 @@
-import { getUsers } from '../services/userService.js';
-import db from '../db/index.js';
-
-export const fetchUsers = async (req, res) => {
-    try {
-        const users = await getUsers();
-        res.json(users);
-    } catch (err) {
-        res.status(500).json({ error: 'Failed to fetch users' });
-    }
-};
+import {saveNewUser} from '../services/userService.js';
+import {registerValidationSchema} from "../validation/userValidation.js";
 
 export const registerUser = async (req, res) => {
-    const { vorname, nachname, email, passwort } = req.body;
+    const {error} = registerValidationSchema.validate(req.body);
+    if (error) {
+        return res.status(400).json({message: error.details[0].message});
+    }
 
     try {
-        const query = `
-      INSERT INTO users (nachname, email, password, roles, vorname)
-      VALUES ($1, $2, $3, $4, $5)
-      RETURNING id;
-    `;
-        const values = [
-            nachname,
-            email,
-            passwort,
-            '{GENERAL}',
-            vorname
-        ];
-        const result = await db.query(query, values);
-
-        res.status(201).json({ message: 'User registered successfully', userId: result.rows[0].id });
+        const result = await saveNewUser(req.body);
+        res.status(201).json({message: 'User registered successfully', userId: result.rows[0].id});
     } catch (err) {
         console.error('Error registering user:', err);
-        res.status(500).json({ message: 'Database error' });
+        res.status(500).json({message: 'Database error'});
     }
 };
