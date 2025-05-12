@@ -15,12 +15,17 @@ export const registerUser = async (req, res) => {
 
     try {
         const query = `
-      INSERT INTO users (nachname, email, password, ARRAY['GENERAL'], vorname)
-      VALUES ($1, $2, $3, $4)
+      INSERT INTO users (nachname, email, password, roles, vorname)
+      VALUES ($1, $2, $3, $4, $5)
       RETURNING id;
     `;
-        const values = [vorname, nachname, email, passwort];
-
+        const values = [
+            nachname,
+            email,
+            passwort,
+            '{GENERAL}',
+            vorname
+        ];
         const result = await db.query(query, values);
 
         res.status(201).json({ message: 'User registered successfully', userId: result.rows[0].id });
