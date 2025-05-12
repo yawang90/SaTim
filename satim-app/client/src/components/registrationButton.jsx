@@ -34,6 +34,7 @@ const RegistrationButton = () => {
             alert(`Fehler: ${err.message}`);
         }
     };
+
     const handleInputChange = (e) => {
         setRegistrationFormData({...registrationFormData, [e.target.name]: e.target.value,});
     };
@@ -44,8 +45,7 @@ const RegistrationButton = () => {
                 color="primary"
                 variant="contained"
                 sx={{ width: '200px', height: '50px' }}
-                onClick={handleOpen}
-                onSubmit={handleSubmit}>
+                onClick={handleOpen}>
                 Registrieren
             </Button>
 
@@ -54,10 +54,10 @@ const RegistrationButton = () => {
                     <Typography variant="h6" mb={2}>Registrieren</Typography>
                     <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                         <TextField name="vorname" label="Vorname" variant="outlined" value={registrationFormData.vorname} onChange={handleInputChange} fullWidth />
-                        <TextField name="nachname" label="Nachname" variant="outlined" value={registrationFormData.nachname} onChange={handleInputChange} fullWidth />
-                        <TextField name ="email" label="Email" variant="outlined" value={registrationFormData.email} onChange={handleInputChange} fullWidth />
-                        <TextField name="password" label="Passwort" type="password" variant="outlined" value={registrationFormData.password} onChange={handleInputChange} fullWidth />
-                        <TextField name="confirmPassword" label="Passwort wiederholen" type="password" variant="outlined" value={registrationFormData.confirmPassword} onChange={handleInputChange} fullWidth />
+                        <TextField name="nachname" label="Nachname" variant="outlined" value={registrationFormData.nachname} onChange={handleInputChange} fullWidth required/>
+                        <TextField name ="email" label="Email" variant="outlined" value={registrationFormData.email} onChange={handleInputChange} fullWidth required />
+                        <TextField name="password" label="Passwort" type="password" variant="outlined" value={registrationFormData.password} onChange={handleInputChange} fullWidth required/>
+                        <TextField name="confirmPassword" label="Passwort wiederholen" type="password" variant="outlined" value={registrationFormData.confirmPassword} onChange={handleInputChange} required fullWidth />
                         <Button variant="contained" color="primary" onClick={handleSubmit}>Konto erstellen</Button>
                     </Box>
                 </Box>

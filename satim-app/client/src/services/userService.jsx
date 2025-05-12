@@ -16,3 +16,16 @@ export const registerUser = async (formData) => {
 
     return await res.json();
 };
+
+export const login = async (email, password) => {
+    const res = await fetch(`${API_URL}/api/users/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message);
+    localStorage.setItem('token', data.token);
+    return data;
+};

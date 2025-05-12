@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Box, Button, Modal, TextField, Typography,} from '@mui/material';
+import {login} from "../services/userService";
 
 const modalStyle = {
     position: 'absolute',
@@ -15,9 +16,27 @@ const modalStyle = {
 
 const LoginButton = () => {
     const [open, setOpen] = useState(false);
+    const [loginFormData, setLoginFormData] = useState({
+        email: '',
+        password: ''
+    });
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const handleInputChange = (e) => {
+        setLoginFormData({...loginFormData, [e.target.name]: e.target.value,});
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await login(loginFormData.email, loginFormData.password);
+            alert('Logged in!');
+        } catch (err) {
+            alert(err.message);
+        }
+    };
 
     return (
         <>
@@ -25,8 +44,7 @@ const LoginButton = () => {
                 color="primary"
                 variant="contained"
                 sx={{ width: '200px', height: '50px' }}
-                onClick={handleOpen}
-            >
+                onClick={handleOpen}>
                 Anmelden
             </Button>
 
@@ -34,9 +52,9 @@ const LoginButton = () => {
                 <Box sx={modalStyle}>
                     <Typography variant="h6" mb={2}>Anmelden</Typography>
                     <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <TextField label="Email" variant="outlined" fullWidth />
-                        <TextField label="Passwort" type="password" variant="outlined" fullWidth />
-                        <Button variant="contained" color="primary">Anmelden</Button>
+                        <TextField name="email" label="Email" variant="outlined" value={loginFormData.email} onChange={handleInputChange} fullWidth />
+                        <TextField name="password" label="Passwort" type="password" variant="outlined" value={loginFormData.password} onChange={handleInputChange} fullWidth />
+                        <Button variant="contained" color="primary" onClick={handleSubmit}>Anmelden</Button>
                     </Box>
                 </Box>
             </Modal>
