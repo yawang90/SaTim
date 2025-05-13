@@ -5,6 +5,8 @@ import ProfilePage from '../pages/ProfilePage';
 import NotFoundPage from '../pages/NotFoundPage';
 import MainLayout from '../layouts/MainLayout';
 import WelcomePage from '../pages/WelcomePage';
+import LoggedInRoute from "./LoggedInRoute";
+import DashboardPage from "../pages/Dashboard";
 
 function AppRoutes() {
     return (
@@ -16,6 +18,7 @@ function AppRoutes() {
                     <Route path="/projects" element={<ProjectPage />} />
                     <Route path="/profile" element={<ProfilePage />} />
                 </Route>
+                <Route path="/dashboard" element={<LoggedInRoute><DashboardPage /></LoggedInRoute>}/>
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>
         </BrowserRouter>

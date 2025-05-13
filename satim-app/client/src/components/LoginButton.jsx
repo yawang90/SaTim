@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Box, Button, Modal, TextField, Typography,} from '@mui/material';
 import {LoadingButton} from "@mui/lab";
 import {useAuth} from "../contexts/AuthContext";
+import {useNavigate} from "react-router-dom";
 
 const modalStyle = {
     position: 'absolute',
@@ -23,6 +24,7 @@ const LoginButton = (width) => {
         email: '',
         password: ''
     });
+    const navigate = useNavigate();
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -36,7 +38,8 @@ const LoginButton = (width) => {
         setLoading(true);
         try {
             await login(loginFormData.email, loginFormData.password);
-            login()
+            login();
+            navigate('/dashboard');
         } catch (err) {
             alert(err.message);
         } finally {

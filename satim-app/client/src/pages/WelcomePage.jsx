@@ -12,7 +12,7 @@ const WelcomePage = () => {
                 display: 'flex'
             }}>
                 <Container>
-                    <Typography variant="h3" gutterBottom>
+                    <Typography variant="h2" gutterBottom>
                         Willkommen bei SaTiM
                     </Typography>
                     <Typography variant="h4" color="secondary" gutterBottom>
