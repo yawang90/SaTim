@@ -37,7 +37,6 @@ const LoginButton = (width) => {
         try {
             await login(loginFormData.email, loginFormData.password);
             login()
-            window.location.reload();
         } catch (err) {
             alert(err.message);
         } finally {

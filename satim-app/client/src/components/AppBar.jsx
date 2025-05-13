@@ -10,8 +10,6 @@ import {Button} from "@mui/material";
 import {useAuth} from "../contexts/AuthContext";
 
 const AppBarWithUserIcon = () => {
-    const {isLoggedIn} = useAuth();
-
     return (
         <AppBar position="static" color="primary" elevation={2}>
             <Toolbar sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
@@ -29,7 +27,7 @@ const AppBarWithUserIcon = () => {
                     </Button>
                 </Box>
                 <Box>
-                    {isLoggedIn ? (
+                    {useAuth() ? (
                         <IconButton color="inherit" onClick={() => {
                         }}><AccountCircle fontSize="large"/></IconButton>) : (<LoginButton/>)}
                 </Box>
