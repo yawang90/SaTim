@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Box, Button, Modal, TextField, Typography,} from '@mui/material';
-import {login} from "../services/userService";
+import {login} from "../services/UserService";
 
 const modalStyle = {
     position: 'absolute',
@@ -14,7 +14,7 @@ const modalStyle = {
     p: 4,
 };
 
-const LoginButton = () => {
+const LoginButton = (width) => {
     const [open, setOpen] = useState(false);
     const [loginFormData, setLoginFormData] = useState({
         email: '',
@@ -41,9 +41,14 @@ const LoginButton = () => {
     return (
         <>
             <Button
+                sx={{
+                    borderRadius: '50px',
+                    paddingX: 4,
+                    paddingY: 1.5,
+                    width: width
+                }}
                 color="primary"
                 variant="contained"
-                sx={{ width: '200px', height: '50px' }}
                 onClick={handleOpen}>
                 Anmelden
             </Button>

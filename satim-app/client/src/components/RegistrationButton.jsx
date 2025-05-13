@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Box, Button, Modal, TextField, Typography,} from '@mui/material';
-import { registerUser } from '../services/userService';
+import { registerUser } from '../services/UserService';
 const modalStyle = {
     position: 'absolute',
     top: '50%',
@@ -44,7 +44,12 @@ const RegistrationButton = () => {
             <Button
                 color="primary"
                 variant="contained"
-                sx={{ width: '200px', height: '50px' }}
+                sx={{
+                    borderRadius: '50px',
+                    paddingX: 4,
+                    paddingY: 1.5,
+                    width: '15rem'
+                }}
                 onClick={handleOpen}>
                 Registrieren
             </Button>
