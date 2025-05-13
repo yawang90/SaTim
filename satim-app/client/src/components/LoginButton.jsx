@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Box, Button, Modal, TextField, Typography,} from '@mui/material';
-import {login} from "../services/UserService";
 import {LoadingButton} from "@mui/lab";
+import {useAuth} from "../contexts/AuthContext";
 
 const modalStyle = {
     position: 'absolute',
@@ -18,6 +18,7 @@ const modalStyle = {
 const LoginButton = (width) => {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const {login } = useAuth();
     const [loginFormData, setLoginFormData] = useState({
         email: '',
         password: ''
@@ -35,7 +36,8 @@ const LoginButton = (width) => {
         setLoading(true);
         try {
             await login(loginFormData.email, loginFormData.password);
-            alert('Logged in!');
+            login()
+            window.location.reload();
         } catch (err) {
             alert(err.message);
         } finally {
@@ -47,7 +49,6 @@ const LoginButton = (width) => {
         <>
             <Button
                 sx={{
-                    borderRadius: '50px',
                     paddingX: 4,
                     paddingY: 1.5,
                     width: width

@@ -13,10 +13,10 @@ const WelcomePage = () => {
             }}>
                 <Container>
                     <Typography variant="h3" gutterBottom>
-                        Willkommen bei SaTim
-                    </Typography>
-                    <Typography variant="h3" color="primary" gutterBottom>
                         Willkommen bei SaTiM
+                    </Typography>
+                    <Typography variant="h4" color="secondary" gutterBottom>
+                        Verwalten Sie Ihre Projekte.
                     </Typography>
                     <RegistrationButton></RegistrationButton>
                 </Container>
@@ -32,7 +32,7 @@ const WelcomePage = () => {
                     </Typography>
                 </Container>
             </Box>
-            <Box sx={{bgcolor: 'grey.200', py: 8}}>
+            <Box sx={{py: 8}}>
                 <Container>
                     <Typography variant="h4" gutterBottom>
                         Funktionen

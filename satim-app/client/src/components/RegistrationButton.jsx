@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import {Box, Button, Modal, TextField, Typography,} from '@mui/material';
-import { registerUser } from '../services/UserService';
+import {registerUser} from '../services/UserService';
 import {LoadingButton} from "@mui/lab";
+import {useAuth} from "../contexts/AuthContext";
 
 const modalStyle = {
     position: 'absolute',
@@ -18,6 +19,7 @@ const modalStyle = {
 const RegistrationButton = () => {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const {login} = useAuth();
     const [registrationFormData, setRegistrationFormData] = useState({
         nachname: '',
         vorname: '',
@@ -32,12 +34,12 @@ const RegistrationButton = () => {
         setLoading(true);
         try {
             await registerUser(registrationFormData);
-            alert('Erfolgreich registriert!');
+            login();
             handleClose();
         } catch (err) {
             alert(`Fehler: ${err.message}`);
         } finally {
-            setLoading(true);
+            setLoading(false);
         }
     };
 

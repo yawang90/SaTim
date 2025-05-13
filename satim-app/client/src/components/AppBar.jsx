@@ -7,9 +7,10 @@ import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import LoginButton from "./LoginButton";
 import {Button} from "@mui/material";
+import {useAuth} from "../contexts/AuthContext";
 
 const AppBarWithUserIcon = () => {
-    const isLoggedIn = Boolean(localStorage.getItem('token'));
+    const {isLoggedIn} = useAuth();
 
     return (
         <AppBar position="static" color="primary" elevation={2}>
