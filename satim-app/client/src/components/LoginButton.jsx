@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Box, Button, Modal, TextField, Typography,} from '@mui/material';
 import {login} from "../services/UserService";
+import {LoadingButton} from "@mui/lab";
 
 const modalStyle = {
     position: 'absolute',
@@ -16,6 +17,7 @@ const modalStyle = {
 
 const LoginButton = (width) => {
     const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [loginFormData, setLoginFormData] = useState({
         email: '',
         password: ''
@@ -30,11 +32,14 @@ const LoginButton = (width) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             await login(loginFormData.email, loginFormData.password);
             alert('Logged in!');
         } catch (err) {
             alert(err.message);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -59,7 +64,7 @@ const LoginButton = (width) => {
                     <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                         <TextField name="email" label="Email" variant="outlined" value={loginFormData.email} onChange={handleInputChange} fullWidth />
                         <TextField name="password" label="Passwort" type="password" variant="outlined" value={loginFormData.password} onChange={handleInputChange} fullWidth />
-                        <Button variant="contained" color="primary" onClick={handleSubmit}>Anmelden</Button>
+                        <LoadingButton loading={loading} variant="contained" color="primary" onClick={handleSubmit}>Anmelden</LoadingButton>
                     </Box>
                 </Box>
             </Modal>

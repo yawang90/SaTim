@@ -4,7 +4,7 @@ import AppBar from '../components/AppBar';
 const MainLayout = ({ children }) => {
     return (
         <>
-            <AppBar />
+            <AppBar/>
             <main style={{ padding: '2rem' }}>
                 {children}
             </main>
