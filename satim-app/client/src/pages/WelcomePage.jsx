@@ -2,8 +2,16 @@ import React from 'react';
 import {Box, Container, Typography} from "@mui/material";
 import MainLayout from "../layouts/MainLayout";
 import RegistrationButton from "../components/RegistrationButton";
+import {Navigate} from "react-router-dom";
+import {useAuth} from "../contexts/AuthContext";
 
 const WelcomePage = () => {
+    const { isLoggedIn } = useAuth();
+
+    if (isLoggedIn) {
+        return <Navigate to="/dashboard" />;
+    }
+
     return (
         <MainLayout>
             <Box sx={{

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 
 const AuthContext = createContext();
 
@@ -10,10 +10,17 @@ export const AuthProvider = ({ children }) => {
             setIsLoggedIn(true);
         } else {
             setIsLoggedIn(false);
-            // TODO what to do when login triggered, edge case (only hackable?)
         }
-    }
-    const logout = () => setIsLoggedIn(false);
+    };
+
+    const logout = () => {
+        localStorage.removeItem('token');
+        setIsLoggedIn(false);
+    };
+
+    useEffect(() => {
+        login();
+    }, []);
 
     return (
         <AuthContext.Provider value={{ isLoggedIn, login, logout }}>

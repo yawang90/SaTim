@@ -1,6 +1,13 @@
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
+    components: {
+        MuiModal: {
+            defaultProps: {
+                disableScrollLock: true,
+            },
+        },
+    },
     palette: {
         primary: {
             main: '#5fac22',

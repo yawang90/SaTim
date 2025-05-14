@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -6,10 +6,33 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import LoginButton from "./LoginButton";
-import {Button} from "@mui/material";
+import {Button, MenuItem} from "@mui/material";
 import {useAuth} from "../contexts/AuthContext";
+import Menu from '@mui/material/Menu';
 
 const AppBarWithUserIcon = () => {
+    const [anchorElement, setAnchorElement] = useState(null);
+    const { isLoggedIn, logout } = useAuth();
+    const open = Boolean(anchorElement);
+
+    const handleMenu = (event) => {
+        setAnchorElement(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorElement(null);
+    };
+
+    const handleProfile = () => {
+        handleClose();
+    };
+
+    const handleLogout = () => {
+        logout();
+
+        handleClose();
+    };
+
     return (
         <AppBar position="static" color="primary" elevation={2}>
             <Toolbar sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
@@ -27,9 +50,30 @@ const AppBarWithUserIcon = () => {
                     </Button>
                 </Box>
                 <Box>
-                    {useAuth() ? (
-                        <IconButton color="inherit" onClick={() => {
-                        }}><AccountCircle fontSize="large"/></IconButton>) : (<LoginButton/>)}
+                    {isLoggedIn ? (
+                        <>
+                            <IconButton color="inherit" onClick={handleMenu}>
+                                <AccountCircle fontSize="large" />
+                            </IconButton>
+                            <Menu
+                                anchorEl={anchorElement}
+                                open={open}
+                                onClose={handleClose}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'right',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}>
+                                <MenuItem onClick={handleProfile}>Profil</MenuItem>
+                                <MenuItem onClick={handleLogout}>Ausloggen</MenuItem>
+                            </Menu>
+                        </>
+                    ) : (
+                        <LoginButton />
+                    )}
                 </Box>
             </Toolbar>
         </AppBar>

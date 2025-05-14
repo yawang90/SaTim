@@ -17,7 +17,7 @@ export const registerUser = async (formData) => {
     return await res.json();
 };
 
-export const login = async (email, password) => {
+export const loginUser = async (email, password) => {
     const res = await fetch(`${API_URL}/api/users/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

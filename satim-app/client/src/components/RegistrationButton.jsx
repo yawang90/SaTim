@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import {Box, Button, Modal, TextField, Typography,} from '@mui/material';
-import {registerUser} from '../services/UserService';
+import {loginUser, registerUser} from '../services/UserService';
 import {LoadingButton} from "@mui/lab";
 import {useAuth} from "../contexts/AuthContext";
+import {useNavigate} from "react-router-dom";
 
 const modalStyle = {
     position: 'absolute',
@@ -20,6 +21,7 @@ const RegistrationButton = () => {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const {login} = useAuth();
+    const navigate = useNavigate();
     const [registrationFormData, setRegistrationFormData] = useState({
         nachname: '',
         vorname: '',
@@ -34,10 +36,12 @@ const RegistrationButton = () => {
         setLoading(true);
         try {
             await registerUser(registrationFormData);
+            await loginUser(registrationFormData.email, registrationFormData.password)
             login();
+            navigate('/dashboard');
             handleClose();
         } catch (err) {
-            alert(`Fehler: ${err.message}`);
+            alert(`Bitte überprüfen Sie ihre Email und ihr Passwort: ${err.message}`);
         } finally {
             setLoading(false);
         }
