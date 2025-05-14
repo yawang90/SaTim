@@ -34,7 +34,7 @@ const AppBarWithUserIcon = () => {
     };
 
     return (
-        <AppBar position="static" color="primary" elevation={2}>
+        <AppBar position="fixed" color="primary" elevation={2} sx={{ minHeight: 78}}>
             <Toolbar sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
                 <img src="/resources/phsg-logo.png" alt="phsg logo" className="logo"
                      style={{height: 40, marginRight: 16}}/>
