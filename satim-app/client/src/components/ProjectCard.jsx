@@ -2,19 +2,20 @@ import React from 'react';
 import { Card, CardContent, Typography, Box } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
-const ProjectCard = ({ project, isAddCard, onAdd }) => {
+
+const ProjectCard = ({ project, isAddCard, onAdd, onClick}) => {
     return (
         <Card
-            onClick={isAddCard ? onAdd : undefined}
+            onClick={isAddCard ? onAdd : onClick}
             sx={{
                 height: 150,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                cursor: isAddCard ? 'pointer' : 'default',
+                cursor: 'pointer',
                 backgroundColor: isAddCard ? 'grey.100' : 'white',
                 border: isAddCard ? '2px dashed #ccc' : '1px solid #eee',
-                '&:hover': isAddCard ? { backgroundColor: 'grey.200' } : {},
+                '&:hover': { backgroundColor: 'grey.200' },
             }}
         >
             <CardContent>

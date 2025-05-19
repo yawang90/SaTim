@@ -14,6 +14,7 @@ import {
 import Sidebar from '../components/Sidebar';
 import MainLayout from "../layouts/MainLayout";
 import ProjectCard from "../components/ProjectCard";
+import {useNavigate} from "react-router-dom";
 
 const DashboardPage = () => {
     const [projects, setProjects] = useState([
@@ -25,6 +26,7 @@ const DashboardPage = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [newProjectName, setNewProjectName] = useState('');
     const [newProjectDescription, setNewProjectDescription] = useState('');
+    const navigate = useNavigate();
 
     const handleOpenDialog = () => {
         setOpenDialog(true);
@@ -48,9 +50,13 @@ const DashboardPage = () => {
         }
     };
 
+    const handleOpenProjectPage = (projectId) => {
+        navigate(`/project/${projectId}`)
+    }
+
     const gridItems = projects.map((project) => (
         <Grid item xs={12} sm={6} md={4} key={project.id}>
-            <ProjectCard project={project} />
+            <ProjectCard project={project} onClick={() => handleOpenProjectPage(project.id)}/>
         </Grid>
     ));
 
@@ -60,8 +66,7 @@ const DashboardPage = () => {
         </Grid>
     );
 
-    return (
-        <MainLayout>
+    return ( <MainLayout>
             <Box sx={{ display: 'flex' }}>
                 <Sidebar />
                 <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
