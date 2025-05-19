@@ -62,7 +62,7 @@ const DashboardPage = () => {
 
     gridItems.push(
         <Grid item xs={12} sm={6} md={4} key="add">
-            <ProjectCard isAddCard onAdd={handleOpenDialog} />
+            <ProjectCard addCardText="Projekt erstellen" isAddCard onAdd={handleOpenDialog} />
         </Grid>
     );
 

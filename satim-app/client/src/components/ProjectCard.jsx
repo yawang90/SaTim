@@ -3,7 +3,7 @@ import { Card, CardContent, Typography, Box } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 
-const ProjectCard = ({ project, isAddCard, onAdd, onClick}) => {
+const ProjectCard = ({ project, isAddCard, onAdd, onClick, addCardText}) => {
     return (
         <Card
             onClick={isAddCard ? onAdd : onClick}
@@ -22,7 +22,7 @@ const ProjectCard = ({ project, isAddCard, onAdd, onClick}) => {
                 {isAddCard ? (
                     <Box display="flex" flexDirection="column" alignItems="center">
                         <AddIcon fontSize="large" />
-                        <Typography variant="body1">Projekt hinzufügen</Typography>
+                        <Typography variant="body1">{addCardText}</Typography>
                     </Box>
                 ) : (
                     <Typography variant="h6" textAlign="center">
