@@ -9,11 +9,13 @@ import LoginButton from "./LoginButton";
 import {Button, MenuItem} from "@mui/material";
 import {useAuth} from "../contexts/AuthContext";
 import Menu from '@mui/material/Menu';
+import {useNavigate} from "react-router-dom";
 
 const AppBarWithUserIcon = () => {
     const [anchorElement, setAnchorElement] = useState(null);
     const { isLoggedIn, logout } = useAuth();
     const open = Boolean(anchorElement);
+    const navigate = useNavigate();
 
     const handleMenu = (event) => {
         setAnchorElement(event.currentTarget);
@@ -33,6 +35,10 @@ const AppBarWithUserIcon = () => {
         handleClose();
     };
 
+    const handleNavigate = () => {
+        navigate('/dashboard')
+    }
+
     return (
         <AppBar position="fixed" color="primary" elevation={2} sx={{ minHeight: 78}}>
             <Toolbar sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
@@ -42,7 +48,7 @@ const AppBarWithUserIcon = () => {
                 <Box sx={{flexGrow: 1}}>
                     <Button
                         key="Meine Projekte"
-                        onClick={() => {}}
+                        onClick={() => {handleNavigate()}}
                         sx={{ my: 2, color: 'white', display: 'block' }}>
                         <Typography variant="h6" sx={{ color: 'inherit', textTransform: 'none' }}>
                             Meine Projekte
