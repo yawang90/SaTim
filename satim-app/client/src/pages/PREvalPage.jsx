@@ -26,7 +26,7 @@ const PREvalPage = () => {
                     <Toolbar/>
                     <Typography variant="h4" gutterBottom>Meine PR Evaluierung</Typography>
                     <Paper elevation={3} onClick={handleBoxClick} sx={{width: 280, mt: 4, p: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', border: '2px dashed #ccc', borderRadius: 2, cursor: 'pointer', textAlign: 'center',}}>
-                        <UploadFileIcon sx={{ fontSize: 50, color: '#1976d2' }} />
+                        <UploadFileIcon sx={{ fontSize: 50, color: 'primary.main' }} />
                         <Typography variant="body1" mt={2}>
                             Klicken Sie hier, um eine Excel-Datei hochzuladen
                         </Typography>

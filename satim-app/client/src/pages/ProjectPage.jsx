@@ -77,7 +77,7 @@ const ProjectPage = () => {
                 <Box component="main" sx={{flexGrow: 1, p: 3}}>
                     <Toolbar/>
                     <Typography variant="h4" gutterBottom>Mein Projekt</Typography>
-                    <Box component="main" sx={{pt: 2, pb: 4, pl: 2, bgcolor: 'primary.light', color: 'white'}}>
+                    <Box component="main" sx={{pt: 2, pb: 4, pl: 2, bgcolor: 'primary.light1', color: 'white'}}>
                         <Typography variant="h5" gutterBottom>Mitarbeitende</Typography>
                         <Box sx={{display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'flex-start',}}>
                             {members.map(member => (

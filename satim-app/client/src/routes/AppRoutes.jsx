@@ -13,11 +13,13 @@ function AppRoutes() {
         <BrowserRouter>
             <Routes>
                 <Route element={<LoggedInRoute><Outlet /></LoggedInRoute>}>
-                    <Route path="/dashboard" element={<DashboardPage/>}/>
-                    <Route path="/project/:id" element={<ProjectPage/>}/>
-                    <Route path="/profile" element={<ProfilePage/>}/>
-                    <Route path="/preval/:id" element={<PREvalPage/>}/>
                 </Route>
+                <Route path="/dashboard" element={<DashboardPage/>}/>
+                <Route path="/project/:id" element={<ProjectPage/>}/>
+                <Route path="/profile" element={<ProfilePage/>}/>
+                <Route path="/preval/:id" element={<PREvalPage/>}/>
+                
+
                 <Route path="/" element={<WelcomePage/>}/>
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="*" element={<NotFoundPage/>}/>

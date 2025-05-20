@@ -24,13 +24,14 @@ const WelcomePage = () => {
                     <Typography variant="h3" gutterBottom>
                         Willkommen bei SaTiM
                     </Typography>
-                    <Typography variant="h4" color="secondary" gutterBottom>
+                    <Typography variant="h4" color="accent.greyNeutral" gutterBottom>
                         Verwalten Sie Ihre Projekte.
                     </Typography>
+                    <Box sx={{pb: 4}}/>
                     <RegistrationButton></RegistrationButton>
                 </Box>
             </Box>
-            <Box sx={{bgcolor: 'primary.light', color: 'white', py: 8, pl: 16}}>
+            <Box sx={{bgcolor: 'primary.light1', color: 'white', py: 8, pl: 16}}>
                 <Box>
                     <Typography variant="h4" gutterBottom>
                         Jetzt starten
