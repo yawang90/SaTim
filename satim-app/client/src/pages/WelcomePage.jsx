@@ -1,15 +1,15 @@
 import React from 'react';
-import {Box, Container, Typography} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 import MainLayout from "../layouts/MainLayout";
 import RegistrationButton from "../components/RegistrationButton";
 import {Navigate} from "react-router-dom";
 import {useAuth} from "../contexts/AuthContext";
 
 const WelcomePage = () => {
-    const { isLoggedIn } = useAuth();
+    const {isLoggedIn} = useAuth();
 
     if (isLoggedIn) {
-        return <Navigate to="/dashboard" />;
+        return <Navigate to="/dashboard"/>;
     }
 
     return (
@@ -17,9 +17,10 @@ const WelcomePage = () => {
             <Box sx={{
                 minHeight: '60vh',
                 alignItems: 'center',
-                display: 'flex'
+                display: 'flex',
+                pl: 16
             }}>
-                <Container>
+                <Box>
                     <Typography variant="h3" gutterBottom>
                         Willkommen bei SaTiM
                     </Typography>
@@ -27,28 +28,27 @@ const WelcomePage = () => {
                         Verwalten Sie Ihre Projekte.
                     </Typography>
                     <RegistrationButton></RegistrationButton>
-                </Container>
+                </Box>
             </Box>
-
-            <Box sx={{bgcolor: 'primary.light', color: 'white', py: 8}}>
-                <Container>
+            <Box sx={{bgcolor: 'primary.light', color: 'white', py: 8, pl: 16}}>
+                <Box>
                     <Typography variant="h4" gutterBottom>
                         Jetzt starten
                     </Typography>
                     <Typography variant="body1">
                         Verwalten Sie Ihre Projekte und Evaluierungen.
                     </Typography>
-                </Container>
+                </Box>
             </Box>
-            <Box sx={{py: 8}}>
-                <Container>
+            <Box sx={{py: 8, pl: 16}}>
+                <Box>
                     <Typography variant="h4" gutterBottom>
                         Funktionen
                     </Typography>
                     <Typography variant="body1">
                         Verwalten Sie Ihre Projekte und Evaluierungen.
                     </Typography>
-                </Container>
+                </Box>
             </Box>
         </MainLayout>
     );
