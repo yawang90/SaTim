@@ -72,6 +72,7 @@ const DashboardPage = () => {
                 <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                     <Toolbar />
                     <Typography variant="h4" gutterBottom>Projekt Übersicht</Typography>
+                    <Box sx={{pb: 5}}></Box>
                     <Grid container spacing={3}>
                         {gridItems}
                     </Grid>

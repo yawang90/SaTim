@@ -77,6 +77,7 @@ const ProjectPage = () => {
                 <Box component="main" sx={{flexGrow: 1, p: 3}}>
                     <Toolbar/>
                     <Typography variant="h4" gutterBottom>Mein Projekt</Typography>
+                    <Box sx={{pb: 5}}></Box>
                     <Box component="main" sx={{pt: 2, pb: 4, pl: 2, bgcolor: 'primary.light1', color: 'white'}}>
                         <Typography variant="h5" gutterBottom>Mitarbeitende</Typography>
                         <Box sx={{display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'flex-start',}}>
@@ -116,6 +117,7 @@ const ProjectPage = () => {
                             </Box>
                         </Box>
                     </Box>
+                    <Box sx={{pb: 5}}></Box>
                     <Box component="main" sx={{pt: 2, pb: 4, pl: 2}}>
                         <Typography variant="h5" gutterBottom>Prerequisites Evaluierungen</Typography>
                             <Grid container spacing={3}>
