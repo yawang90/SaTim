@@ -16,9 +16,11 @@ import MainLayout from "../layouts/MainLayout";
 import ProjectCard from "../components/ProjectCard";
 import {useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
+import {createProject} from "../services/ProjectService";
 
 const DashboardPage = () => {
     const { t } = useTranslation();
+    const userId = localStorage.getItem('userId');
 
     const [projects, setProjects] = useState([
         // Example initial state
@@ -40,18 +42,24 @@ const DashboardPage = () => {
         setNewProjectName('');
         setNewProjectDescription('');
     };
-
-    const handleSaveProject = () => {
-        if (newProjectName.trim()) {
-            const newProject = {
-                id: Date.now(),
-                name: newProjectName,
-                description: newProjectDescription,
-            };
-            setProjects(prev => [...prev, newProject]);
+    const [message, setMessage] = useState('');
+    const handleSaveProject = async () => {
+        try {
+            if (newProjectName.trim()) {
+                const projectData = {
+                    name: newProjectName,
+                    description: newProjectDescription,
+                    userId,
+                };
+                const savedProject = await createProject(projectData);
+                setProjects(prev => [...prev, savedProject]);
+            }
             handleCloseDialog();
+        } catch (err) {
+            setMessage(err.message || "Something went wrong");
         }
     };
+
 
     const handleOpenProjectPage = (projectId) => {
         navigate(`/project/${projectId}`)

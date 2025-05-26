@@ -13,6 +13,7 @@
 
 ## 1. Architektur
 ### Frontend: React
+#### File structure
 1. components
 2. contexts
 3. layouts
@@ -20,6 +21,8 @@
 5. routes
 5. services
 6. styles
+#### General
+Frontend uses Vite for building.
 
 ### Backend: Node.js/Express (hosted on Render)
 #### File structure
@@ -29,6 +32,8 @@
 4. routes
 5. services - Contains core business logic, reusable functions, DB calls
 6. validation
+#### General
+Backend uses Prisma for db schema access.
 
 ### Relational DB: PostgreSQL (for users, admin, auth)
 

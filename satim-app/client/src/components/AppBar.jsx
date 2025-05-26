@@ -31,8 +31,8 @@ const AppBarWithUserIcon = () => {
 
     const handleLogout = () => {
         logout();
-
         handleClose();
+        navigate('/')
     };
 
     const handleNavigate = () => {

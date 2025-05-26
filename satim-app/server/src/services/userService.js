@@ -1,30 +1,21 @@
-import db from '../config/db.js';
+import prisma from "../config/prismaClient.js";
 import bcrypt from "bcrypt";
 
 const saltRounds = 10;
 
-export const saveNewUser = async (request) => {
-    const {vorname, nachname, email, password} = request
+export const saveNewUser = async ({ vorname, nachname, email, password }) => {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    const query = `
-        INSERT INTO users (nachname, email, password, roles, vorname)
-        VALUES ($1, $2, $3, $4, $5)
-        RETURNING id;
-    `;
-    const values = [
-        nachname,
-        email,
-        hashedPassword,
-        '{GENERAL}',
-        vorname
-    ];
-    return await db.query(query, values);
+    return prisma.users.create({
+        data: {
+            vorname,
+            nachname,
+            email,
+            password: hashedPassword,
+            roles: ['GENERAL'],
+        },
+    });
 };
 
 export const loginUserService = async (email) => {
-    const query = 'SELECT * FROM users WHERE email = $1';
-    const result = await db.query(query, [email]);
-    return result.rows[0];
+    return prisma.users.findUnique({where: {email}});
 };
-
-
