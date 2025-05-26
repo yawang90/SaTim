@@ -4,9 +4,11 @@ import MainLayout from "../layouts/MainLayout";
 import RegistrationButton from "../components/RegistrationButton";
 import {Navigate} from "react-router-dom";
 import {useAuth} from "../contexts/AuthContext";
+import { useTranslation } from 'react-i18next';
 
 const WelcomePage = () => {
     const {isLoggedIn} = useAuth();
+    const { t } = useTranslation();
 
     if (isLoggedIn) {
         return <Navigate to="/dashboard"/>;
@@ -22,7 +24,7 @@ const WelcomePage = () => {
             }}>
                 <Box>
                     <Typography variant="h3" gutterBottom>
-                        Willkommen bei SaTiM
+                        {t("welcome")}
                     </Typography>
                     <Typography variant="h4" color="accent.greyNeutral" gutterBottom>
                         Verwalten Sie Ihre Projekte.

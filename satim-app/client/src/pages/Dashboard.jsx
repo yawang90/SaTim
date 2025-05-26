@@ -15,8 +15,11 @@ import Sidebar from '../components/Sidebar';
 import MainLayout from "../layouts/MainLayout";
 import ProjectCard from "../components/ProjectCard";
 import {useNavigate} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 const DashboardPage = () => {
+    const { t } = useTranslation();
+
     const [projects, setProjects] = useState([
         // Example initial state
         // { id: 1, name: 'Projekt A' },
@@ -71,7 +74,7 @@ const DashboardPage = () => {
                 <Sidebar />
                 <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                     <Toolbar />
-                    <Typography variant="h4" gutterBottom>Projekt Übersicht</Typography>
+                    <Typography variant="h4" gutterBottom>{t("project.overview")}</Typography>
                     <Box sx={{pb: 5}}></Box>
                     <Grid container spacing={3}>
                         {gridItems}

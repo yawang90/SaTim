@@ -5,9 +5,12 @@ import MainLayout from "../layouts/MainLayout";
 import ProjectCard from "../components/ProjectCard";
 import AddIcon from "@mui/icons-material/Add";
 import {useNavigate} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 const ProjectPage = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
+
     const [members, setMembers] = useState([
         {id: 1, name: 'Peter Steiner'},
         {id: 2, name: 'Peter Haus'},

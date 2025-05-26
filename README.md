@@ -13,6 +13,13 @@
 
 ## 1. Architektur
 ### Frontend: React
+1. components
+2. contexts
+3. layouts
+4. pages
+5. routes
+5. services
+6. styles
 
 ### Backend: Node.js/Express (hosted on Render)
 #### File structure
@@ -25,10 +32,4 @@
 
 ### Relational DB: PostgreSQL (for users, admin, auth)
 
-### Graph DB: Neo4j 
-
-### Graph DB Host: Aura 
-
-### Genereller Host: Render
-
-## 2. Dokumentation
+### Host: Render
