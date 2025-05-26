@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Box,
     Button,
@@ -16,20 +16,15 @@ import MainLayout from "../layouts/MainLayout";
 import ProjectCard from "../components/ProjectCard";
 import {useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
-import {createProject} from "../services/ProjectService";
+import {createProject, fetchUserProjects} from "../services/ProjectService";
 import {LoadingButton} from "@mui/lab";
 
 const DashboardPage = () => {
     const {t} = useTranslation();
     const userId = localStorage.getItem('userId');
     const [loading, setLoading] = useState(false);
-
-    const [projects, setProjects] = useState([
-        // Example initial state
-        // { id: 1, name: 'Projekt A' },
-        // { id: 2, name: 'Projekt B' },
-    ]);
-
+    const [projects, setProjects] = useState([]);
+    const [fetchingProjects, setFetchingProjects] = useState(true);
     const [openDialog, setOpenDialog] = useState(false);
     const [newProjectName, setNewProjectName] = useState('');
     const [newProjectDescription, setNewProjectDescription] = useState('');
@@ -38,13 +33,26 @@ const DashboardPage = () => {
     const handleOpenDialog = () => {
         setOpenDialog(true);
     };
+    const loadProjects = async () => {
+        try {
+            const data = await fetchUserProjects({ userId });
+            setProjects(data);
+        } catch (err) {
+            console.log("Failed to load projects", err);
+        } finally {
+            setFetchingProjects(false);
+        }
+    };
+    useEffect(() => {
+        loadProjects();
+    }, [userId]);
 
     const handleCloseDialog = () => {
         setOpenDialog(false);
         setNewProjectName('');
         setNewProjectDescription('');
     };
-    const [message, setMessage] = useState('');
+
     const handleSaveProject = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -58,7 +66,7 @@ const DashboardPage = () => {
             setProjects(prev => [...prev, savedProject]);
             handleCloseDialog();
         } catch (err) {
-            setMessage(err.message || "Something went wrong");
+            console.error("Failed to save projects", err);
         } finally {
             setLoading(false);
         }
@@ -70,14 +78,14 @@ const DashboardPage = () => {
     }
 
     const gridItems = projects.map((project) => (
-        <Grid item xs={12} sm={6} md={4} key={project.id}>
+        <Grid xs={12} sm={6} md={4} key={project.id}>
             <ProjectCard project={project} onClick={() => handleOpenProjectPage(project.id)}/>
         </Grid>
     ));
 
     gridItems.push(
-        <Grid item xs={12} sm={6} md={4} key="add">
-            <ProjectCard addCardText="Projekt erstellen" isAddCard onAdd={handleOpenDialog}/>
+        <Grid xs={12} sm={6} md={4} key="add">
+            <ProjectCard addCardText={t("project.create")} isAddCard onAdd={handleOpenDialog}/>
         </Grid>
     );
 
@@ -88,13 +96,12 @@ const DashboardPage = () => {
                     <Toolbar/>
                     <Typography variant="h4" gutterBottom>{t("project.overview")}</Typography>
                     <Box sx={{pb: 5}}></Box>
-                    <Grid container spacing={3}>
-                        {gridItems}
-                    </Grid>
+                    {fetchingProjects ? (<Typography>{t("loading")}...</Typography>) : (
+                        <Grid container spacing={3}>{gridItems}</Grid>)}
                 </Box>
             </Box>
             <Dialog open={openDialog} onClose={handleCloseDialog}>
-                <DialogTitle>Neues Projekt erstellen</DialogTitle>
+                <DialogTitle>{t("project.create")}</DialogTitle>
                 <DialogContent>
                     <TextField
                         required
@@ -121,7 +128,8 @@ const DashboardPage = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseDialog} disabled={loading}>{t("cancel")}</Button>
-                    <LoadingButton onClick={handleSaveProject} variant="contained" loading={loading}>{t("save")}</LoadingButton>
+                    <LoadingButton onClick={handleSaveProject} variant="contained"
+                                   loading={loading}>{t("save")}</LoadingButton>
                 </DialogActions>
             </Dialog>
         </MainLayout>

@@ -4,6 +4,7 @@
   "save": "Speichern",
   "cancel": "Abbrechen",
   "project": {
-    "overview": "Projekt Übersicht"
+    "overview": "Projekt Übersicht",
+    "create": "Projekt erstellen"
   }
 }

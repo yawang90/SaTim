@@ -14,7 +14,7 @@ const allowedOrigin = process.env.NODE_ENV === 'development'
 app.use(cors({
     origin: allowedOrigin
 }));
-
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use('/api/users', userRoutes);

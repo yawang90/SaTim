@@ -7,22 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model project_access {
-  project_id BigInt
-  user_id    BigInt
-  role       project_access_role @default(viewer)
-  granted_at DateTime            @default(now()) @db.Timestamptz(6)
-  projects   projects            @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  users      users               @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-  @@id([project_id, user_id])
-}
-
 model projects {
-  id             BigInt           @id @default(autoincrement())
+  id             Int              @id @default(autoincrement())
   name           String           @db.VarChar(40)
   description    String?          @db.VarChar(255)
-  owner_id       BigInt
+  owner_id       Int
   created_at     DateTime         @default(now()) @db.Timestamptz(6)
   updated_at     DateTime         @default(now()) @db.Timestamptz(6)
   project_access project_access[]
@@ -30,17 +19,26 @@ model projects {
 }
 
 model users {
-  id             BigInt              @id @default(autoincrement())
+  id             Int              @id @default(autoincrement())
   nachname       String           @db.VarChar(100)
+  vorname        String           @db.VarChar(100)
   email          String           @unique @db.VarChar(100)
   password       String           @db.VarChar(255)
+  roles          user_role[]
   created_at     DateTime?        @default(now()) @db.Timestamp(6)
-  roles          user_role[]      @default([])
-  changed_at     DateTime?        @db.Date
-  changed_by     changed_by[]
-  vorname        String?          @db.VarChar(100)
   project_access project_access[]
   projects       projects[]
+}
+
+model project_access {
+  project_id Int
+  user_id    Int
+  role       project_access_role @default(viewer)
+  granted_at DateTime            @default(now()) @db.Timestamptz(6)
+  projects   projects            @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users      users               @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([project_id, user_id])
 }
 
 enum changed_by {
