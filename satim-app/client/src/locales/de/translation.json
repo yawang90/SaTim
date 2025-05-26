@@ -1,6 +1,8 @@
 {
   "welcome": "Willkommen bei SaTiM",
   "language": "Sprache",
+  "save": "Speichern",
+  "cancel": "Abbrechen",
   "project": {
     "overview": "Projekt Übersicht"
   }

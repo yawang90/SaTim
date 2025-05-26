@@ -17,10 +17,12 @@ import ProjectCard from "../components/ProjectCard";
 import {useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {createProject} from "../services/ProjectService";
+import {LoadingButton} from "@mui/lab";
 
 const DashboardPage = () => {
-    const { t } = useTranslation();
+    const {t} = useTranslation();
     const userId = localStorage.getItem('userId');
+    const [loading, setLoading] = useState(false);
 
     const [projects, setProjects] = useState([
         // Example initial state
@@ -45,19 +47,20 @@ const DashboardPage = () => {
     const [message, setMessage] = useState('');
     const handleSaveProject = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
-            if (newProjectName.trim()) {
-                const projectData = {
-                    name: newProjectName,
-                    description: newProjectDescription,
-                    userId,
-                };
-                const savedProject = await createProject(projectData);
-                setProjects(prev => [...prev, savedProject]);
-            }
+            const projectData = {
+                name: newProjectName.trim(),
+                description: newProjectDescription.trim() || '',
+                userId,
+            };
+            const savedProject = await createProject(projectData);
+            setProjects(prev => [...prev, savedProject]);
             handleCloseDialog();
         } catch (err) {
             setMessage(err.message || "Something went wrong");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -74,15 +77,15 @@ const DashboardPage = () => {
 
     gridItems.push(
         <Grid item xs={12} sm={6} md={4} key="add">
-            <ProjectCard addCardText="Projekt erstellen" isAddCard onAdd={handleOpenDialog} />
+            <ProjectCard addCardText="Projekt erstellen" isAddCard onAdd={handleOpenDialog}/>
         </Grid>
     );
 
-    return ( <MainLayout>
-            <Box sx={{ display: 'flex' }}>
-                <Sidebar />
-                <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                    <Toolbar />
+    return (<MainLayout>
+            <Box sx={{display: 'flex'}}>
+                <Sidebar/>
+                <Box component="main" sx={{flexGrow: 1, p: 3}}>
+                    <Toolbar/>
                     <Typography variant="h4" gutterBottom>{t("project.overview")}</Typography>
                     <Box sx={{pb: 5}}></Box>
                     <Grid container spacing={3}>
@@ -94,13 +97,14 @@ const DashboardPage = () => {
                 <DialogTitle>Neues Projekt erstellen</DialogTitle>
                 <DialogContent>
                     <TextField
+                        required
                         autoFocus
                         margin="dense"
                         label="Projektname"
                         fullWidth
                         value={newProjectName}
                         onChange={e => setNewProjectName(e.target.value)}
-                        inputProps={{ maxLength: 40 }}
+                        inputProps={{maxLength: 40}}
                         helperText={`${newProjectName.length}/40 Zeichen`}
                     />
                     <TextField
@@ -111,13 +115,13 @@ const DashboardPage = () => {
                         rows={4}
                         value={newProjectDescription}
                         onChange={e => setNewProjectDescription(e.target.value)}
-                        inputProps={{ maxLength: 255 }}
+                        inputProps={{maxLength: 255}}
                         helperText={`${newProjectDescription.length}/255 Zeichen`}
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDialog}>Abbrechen</Button>
-                    <Button onClick={handleSaveProject} variant="contained">Speichern</Button>
+                    <Button onClick={handleCloseDialog} disabled={loading}>{t("cancel")}</Button>
+                    <LoadingButton onClick={handleSaveProject} variant="contained" loading={loading}>{t("save")}</LoadingButton>
                 </DialogActions>
             </Dialog>
         </MainLayout>

@@ -1,7 +1,7 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
 export const createProject = async ({ name, description, userId }) => {
-    if (!name || !description || !userId) {
+    if (!name || !userId) {
         throw new Error("Missing required fields.");
     }
 
