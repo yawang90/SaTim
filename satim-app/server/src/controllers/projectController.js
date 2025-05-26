@@ -10,9 +10,8 @@ export const createProject = async (req, res) => {
     try {
         const project = await saveNewProject(req.body);
         res.status(201).json({
-            message: 'Project created successfully',
-            projectId: project.id,
-            project,
+            id: project.id.toString(),
+            name: project.name
         });
     } catch (err) {
         console.error('Error creating project:', err);

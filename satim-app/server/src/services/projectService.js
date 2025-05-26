@@ -1,11 +1,11 @@
 import prisma from '../config/prismaClient.js';
 
 export const saveNewProject = async ({ name, description, userId }) => {
-    return await prisma.project.create({
+    return prisma.projects.create({
         data: {
             name,
             description,
-            user: { connect: { id: userId } },
+            users: { connect: { id: BigInt(userId) } },
         },
     });
 };

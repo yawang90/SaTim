@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import userRoutes from './routes/userRoutes.js';
 import dotenv from 'dotenv';
+import projectsRoutes from "./routes/projectsRoutes.js";
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(cors({
 app.use(express.json());
 
 app.use('/api/users', userRoutes);
+app.use('/api/projects', projectsRoutes);
 
 export default app;
 

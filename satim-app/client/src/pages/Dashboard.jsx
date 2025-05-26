@@ -43,7 +43,8 @@ const DashboardPage = () => {
         setNewProjectDescription('');
     };
     const [message, setMessage] = useState('');
-    const handleSaveProject = async () => {
+    const handleSaveProject = async (e) => {
+        e.preventDefault();
         try {
             if (newProjectName.trim()) {
                 const projectData = {
