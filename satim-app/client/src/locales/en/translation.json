@@ -1,4 +1,12 @@
 {
   "welcome": "Willkommen bei SaTiM",
-  "language": "Language"
+  "language": "Sprache",
+  "save": "Speichern",
+  "cancel": "Abbrechen",
+  "project": {
+    "overview": "Projekt Übersicht",
+    "create": "Projekt erstellen",
+    "evaluation" : "Erhebung erstellen",
+    "prevaluation": "Pre-requisites Erhebung"
+  }
 }

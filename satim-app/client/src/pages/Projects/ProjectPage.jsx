@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField, Toolbar, Typography} from '@mui/material';
 import Sidebar from '../../components/Sidebar';
 import MainLayout from "../../layouts/MainLayout";
@@ -7,12 +7,14 @@ import AddIcon from "@mui/icons-material/Add";
 import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {dashboardSidebar, settingsSidebar} from "../../components/SidebarConfig";
+import {getProjectById} from "../../services/ProjectService";
 
 const ProjectPage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { id } = useParams();
-
+    const { projectId } = useParams();
+    const [project, setProject] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [members, setMembers] = useState([
         {id: 1, name: 'Peter Steiner'},
         {id: 2, name: 'Peter Haus'},
@@ -22,6 +24,8 @@ const ProjectPage = () => {
     const [prevals, setprevals] = useState([]);
     const [newPREvalsName, setNewPREvalsName] = useState('');
     const [newPREvalsDescription, setNewPREvalsDescription] = useState('');
+    const [openMemberDialog, setOpenMemberDialog] = useState(false);
+    const [newMemberName, setNewMemberName] = useState('');
     const handleOpenPREvalsDialog = () => {
         setOpenPREvalsDialog(true);
     };
@@ -48,14 +52,12 @@ const ProjectPage = () => {
     ));
     gridItems.push(
         <Grid item xs={12} sm={6} md={4} key="add">
-            <ProjectCard isAddCard addCardText="Evaluierung erstellen"  displayName={""} onAdd={handleOpenPREvalsDialog}/>
+            <ProjectCard isAddCard addCardText={t("project.evaluation")}  displayName={""} onAdd={handleOpenPREvalsDialog}/>
         </Grid>
     );
     const handleOpenPREvalPage = (prevalId) => {
         navigate(`/preval/${prevalId}`)
     }
-    const [openMemberDialog, setOpenMemberDialog] = useState(false);
-    const [newMemberName, setNewMemberName] = useState('');
     const handleOpenMemberDialog = () => setOpenMemberDialog(true);
     const handleCloseMemberDialog = () => {
         setOpenMemberDialog(false);
@@ -71,13 +73,30 @@ const ProjectPage = () => {
         }
     };
 
+    useEffect(() => {
+        const fetchProject = async () => {
+            try {
+                const data = await getProjectById({projectId});
+                setProject(data);
+            } catch (error) {
+                console.error("Failed to fetch project:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProject();
+    }, [projectId]);
+
+    if (loading) return <p>Loading...</p>; // TODO
+    if (!project) return <p>Project not found.</p>; // TODO
+
     return (
         <MainLayout>
             <Box sx={{display: 'flex'}}>
-                <Sidebar items={[...dashboardSidebar(navigate), ...settingsSidebar(navigate, id)]} />
+                <Sidebar items={[...dashboardSidebar(navigate), ...settingsSidebar(navigate, projectId)]} />
                 <Box component="main" sx={{flexGrow: 1, p: 3}}>
                     <Toolbar/>
-                    <Typography variant="h4" gutterBottom>Mein Projekt</Typography>
+                    <Typography variant="h4" gutterBottom>{project.projects.name}</Typography>
                     <Box sx={{pb: 5}}></Box>
                     <Box component="main" sx={{pt: 2, pb: 4, pl: 2, bgcolor: 'primary.light1', color: 'white'}}>
                         <Typography variant="h5" gutterBottom>Mitarbeitende</Typography>
@@ -120,7 +139,7 @@ const ProjectPage = () => {
                     </Box>
                     <Box sx={{pb: 5}}></Box>
                     <Box component="main" sx={{pt: 2, pb: 4, pl: 2}}>
-                        <Typography variant="h5" gutterBottom>Prerequisites Evaluierungen</Typography>
+                        <Typography variant="h5" gutterBottom>{t(project.prevaluation)}</Typography>
                             <Grid container spacing={3}>
                                 {gridItems}
                             </Grid>

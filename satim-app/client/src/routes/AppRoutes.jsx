@@ -16,10 +16,10 @@ function AppRoutes() {
                 <Route element={<LoggedInRoute><Outlet /></LoggedInRoute>}>
                 </Route>
                 <Route path="/dashboard" element={<DashboardPage/>}/>
-                <Route path="/project/:id" element={<ProjectPage/>}/>
-                <Route path="/projectSettings/:id" element={<ProjectSettingsPage/>}/>
+                <Route path="/project/:projectId" element={<ProjectPage/>}/>
+                <Route path="/projectSettings/:projectId" element={<ProjectSettingsPage/>}/>
                 <Route path="/profile" element={<ProfilePage/>}/>
-                <Route path="/preval/:id" element={<PREvalPage/>}/>
+                <Route path="/preval/:evalId" element={<PREvalPage/>}/>
                 
 
                 <Route path="/" element={<WelcomePage/>}/>

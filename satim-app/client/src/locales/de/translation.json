@@ -5,6 +5,8 @@
   "cancel": "Abbrechen",
   "project": {
     "overview": "Projekt Übersicht",
-    "create": "Projekt erstellen"
+    "create": "Projekt erstellen",
+    "evaluation" : "Erhebung erstellen",
+    "prevaluation": "Pre-requisites Erhebung"
   }
 }

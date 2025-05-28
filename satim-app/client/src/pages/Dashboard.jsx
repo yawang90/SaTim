@@ -17,7 +17,7 @@ import MainLayout from "../layouts/MainLayout";
 import ProjectCard from "../components/ProjectCard";
 import {useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
-import {createProject, fetchUserProjects} from "../services/ProjectService";
+import {createProject, getAllProjectsByUser} from "../services/ProjectService";
 import {LoadingButton} from "@mui/lab";
 import {dashboardSidebar} from "../components/SidebarConfig";
 
@@ -37,7 +37,7 @@ const DashboardPage = () => {
     };
     const loadProjects = async () => {
         try {
-            const data = await fetchUserProjects({ userId });
+            const data = await getAllProjectsByUser({ userId });
             setProjects(data);
         } catch (err) {
             console.log("Failed to load projects", err);

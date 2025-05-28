@@ -1,4 +1,4 @@
-import {saveNewProject, findAllProjects} from '../services/projectService.js';
+import {saveNewProject, findAllProjects, findProject} from '../services/projectService.js';
 import {projectValidationSchema} from '../validation/projectValidation.js';
 
 export const createProject = async (req, res) => {
@@ -25,5 +25,14 @@ export const getAllProjects = async (req, res) => {
         return res.status(400).json({message: 'Missing userId'});
     }
     const projects = await findAllProjects({ userId });
+    res.json(projects)
+}
+
+export const getProject = async (req, res) => {
+    const {projectId} = req.query;
+    if (!projectId) {
+        return res.status(400).json({message: 'Missing projectId'});
+    }
+    const projects = await findProject({ projectId });
     res.json(projects)
 }
