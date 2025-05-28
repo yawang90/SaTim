@@ -11,6 +11,9 @@
     "addmember": "Neues Mitglied hinzufügen",
     "member": "Mitarbeitende",
     "all": "Alle Projekte",
-    "settings": "Einstellungen"
+    "settings": "Einstellungen",
+    "name": "Projekt Name",
+    "description": "Projekt Beschreibung",
+    "delete": "Projekt löschen"
   }
 }

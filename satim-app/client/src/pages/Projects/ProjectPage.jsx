@@ -20,6 +20,11 @@ const ProjectPage = () => {
         {id: 2, name: 'Peter Haus'},
         {id: 3, name: 'Petra Banane'},
     ]);
+    const sidebarItems = [
+        ...dashboardSidebar(t, navigate),
+        ...settingsSidebar(t, navigate, projectId),
+        ...membersSidebar(t, navigate, projectId),
+    ];
     const [openPREvalDialog, setOpenPREvalsDialog] = useState(false);
     const [prevals, setprevals] = useState([]);
     const [newPREvalsName, setNewPREvalsName] = useState('');
@@ -93,7 +98,7 @@ const ProjectPage = () => {
     return (
         <MainLayout>
             <Box sx={{display: 'flex'}}>
-                <Sidebar items={[...dashboardSidebar(t, navigate), ...settingsSidebar(t, navigate, projectId), ...membersSidebar(t, navigate, projectId)]} />
+                <Sidebar items={sidebarItems} />
                 <Box component="main" sx={{flexGrow: 1, p: 3}}>
                     <Toolbar/>
                     <Typography variant="h4" gutterBottom>{project.projects.name}</Typography>
