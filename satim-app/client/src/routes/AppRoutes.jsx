@@ -7,7 +7,8 @@ import WelcomePage from '../pages/WelcomePage';
 import LoggedInRoute from "./LoggedInRoute";
 import DashboardPage from "../pages/Dashboard";
 import PREvalPage from "../pages/Projects/PREvalPage";
-import ProjectSettingsPage from "../pages/Projects/ProjectSettingsPage";
+import SettingsPage from "../pages/Projects/SettingsPage";
+import MemberPage from "../pages/Projects/MemberPage";
 
 function AppRoutes() {
     return (
@@ -17,10 +18,11 @@ function AppRoutes() {
                 </Route>
                 <Route path="/dashboard" element={<DashboardPage/>}/>
                 <Route path="/project/:projectId" element={<ProjectPage/>}/>
-                <Route path="/projectSettings/:projectId" element={<ProjectSettingsPage/>}/>
+                <Route path="/projectSettings/:projectId" element={<SettingsPage/>}/>
+                <Route path="/projectMembers/:projectId" element={<MemberPage/>}/>
                 <Route path="/profile" element={<ProfilePage/>}/>
                 <Route path="/preval/:evalId" element={<PREvalPage/>}/>
-                
+
 
                 <Route path="/" element={<WelcomePage/>}/>
                 <Route path="/login" element={<LoginPage/>}/>

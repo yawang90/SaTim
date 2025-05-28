@@ -4,9 +4,11 @@ import Sidebar from '../../components/Sidebar';
 import MainLayout from "../../layouts/MainLayout";
 import {useNavigate} from "react-router-dom";
 import {dashboardSidebar, settingsSidebar} from "../../components/SidebarConfig";
+import {useTranslation} from "react-i18next";
 
-const ProjectSettingsPage = () => {
+const SettingsPage = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     return (
         <MainLayout>
@@ -17,4 +19,4 @@ const ProjectSettingsPage = () => {
     );
 };
 
-export default ProjectSettingsPage;
+export default SettingsPage;

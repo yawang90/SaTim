@@ -1,5 +1,6 @@
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsIcon from '@mui/icons-material/Settings';
+import GroupIcon from '@mui/icons-material/Group';
 
 export const dashboardSidebar = (t, navigate) => [
     {
@@ -14,5 +15,13 @@ export const settingsSidebar = (t, navigate, projectId) => [
         label: t("project.settings"),
         icon: <SettingsIcon />,
         onClick: () => navigate(`/projectSettings/${projectId}`),
+    },
+];
+
+export const membersSidebar = (t, navigate, projectId) => [
+    {
+        label: t("project.member"),
+        icon: <GroupIcon />,
+        onClick: () => navigate(`/projectMembers/${projectId}`),
     },
 ];

@@ -6,7 +6,7 @@ import ProjectCard from "../../components/ProjectCard";
 import AddIcon from "@mui/icons-material/Add";
 import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
-import {dashboardSidebar, settingsSidebar} from "../../components/SidebarConfig";
+import {dashboardSidebar, membersSidebar, settingsSidebar} from "../../components/SidebarConfig";
 import {getProjectById} from "../../services/ProjectService";
 
 const ProjectPage = () => {
@@ -93,10 +93,11 @@ const ProjectPage = () => {
     return (
         <MainLayout>
             <Box sx={{display: 'flex'}}>
-                <Sidebar items={[...dashboardSidebar(t, navigate), ...settingsSidebar(t, navigate, projectId)]} />
+                <Sidebar items={[...dashboardSidebar(t, navigate), ...settingsSidebar(t, navigate, projectId), ...membersSidebar(t, navigate, projectId)]} />
                 <Box component="main" sx={{flexGrow: 1, p: 3}}>
                     <Toolbar/>
                     <Typography variant="h4" gutterBottom>{project.projects.name}</Typography>
+                    <Typography variant="h6" gutterBottom>{project.projects.description}</Typography>
                     <Box sx={{pb: 5}}></Box>
                     <Box component="main" sx={{pt: 2, pb: 4, pl: 2, bgcolor: 'primary.light1', color: 'white'}}>
                         <Typography variant="h5" gutterBottom>{t("project.member")}</Typography>
