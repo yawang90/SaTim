@@ -93,13 +93,13 @@ const ProjectPage = () => {
     return (
         <MainLayout>
             <Box sx={{display: 'flex'}}>
-                <Sidebar items={[...dashboardSidebar(navigate), ...settingsSidebar(navigate, projectId)]} />
+                <Sidebar items={[...dashboardSidebar(t, navigate), ...settingsSidebar(t, navigate, projectId)]} />
                 <Box component="main" sx={{flexGrow: 1, p: 3}}>
                     <Toolbar/>
                     <Typography variant="h4" gutterBottom>{project.projects.name}</Typography>
                     <Box sx={{pb: 5}}></Box>
                     <Box component="main" sx={{pt: 2, pb: 4, pl: 2, bgcolor: 'primary.light1', color: 'white'}}>
-                        <Typography variant="h5" gutterBottom>Mitarbeitende</Typography>
+                        <Typography variant="h5" gutterBottom>{t("project.member")}</Typography>
                         <Box sx={{display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'flex-start',}}>
                             {members.map(member => (
                                 <Box key={member.id}
@@ -147,7 +147,7 @@ const ProjectPage = () => {
                 </Box>
             </Box>
             <Dialog open={openMemberDialog} onClose={handleCloseMemberDialog}>
-                <DialogTitle>Neues Mitglied hinzufügen</DialogTitle>
+                <DialogTitle>{t(project.addmember)}</DialogTitle>
                 <DialogContent>
                     <TextField
                         autoFocus

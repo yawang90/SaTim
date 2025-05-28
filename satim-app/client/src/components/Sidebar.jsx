@@ -1,9 +1,11 @@
 import React from 'react';
-import {Divider, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Toolbar} from '@mui/material';
+import { Divider, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
 
 const drawerWidth = 240;
 
 const Sidebar = ({ items }) => {
+    const [firstItem, ...restItems] = items;
+
     return (
         <Drawer
             variant="permanent"
@@ -13,14 +15,21 @@ const Sidebar = ({ items }) => {
                 [`& .MuiDrawer-paper`]: {
                     width: drawerWidth,
                     boxSizing: 'border-box',
-                    top: '79px'
+                    top: '79px',
                 },
             }}
         >
-            <Toolbar />
+            {firstItem && (
+                <List>
+                    <ListItemButton onClick={firstItem.onClick}>
+                        <ListItemIcon>{firstItem.icon}</ListItemIcon>
+                        <ListItemText primary={firstItem.label} />
+                    </ListItemButton>
+                </List>
+            )}
             <Divider />
             <List>
-                {items.map(({ label, icon, onClick }, index) => (
+                {restItems.map(({ label, icon, onClick }, index) => (
                     <ListItemButton key={index} onClick={onClick}>
                         <ListItemIcon>{icon}</ListItemIcon>
                         <ListItemText primary={label} />

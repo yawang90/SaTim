@@ -92,7 +92,7 @@ const DashboardPage = () => {
 
     return (<MainLayout>
             <Box sx={{display: 'flex'}}>
-                <Sidebar items={dashboardSidebar(navigate)} />
+                <Sidebar items={dashboardSidebar(t, navigate)} />
                 <Box component="main" sx={{flexGrow: 1, p: 3}}>
                     <Toolbar/>
                     <Typography variant="h4" gutterBottom>{t("project.overview")}</Typography>

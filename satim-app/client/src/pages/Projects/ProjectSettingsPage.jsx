@@ -11,7 +11,7 @@ const ProjectSettingsPage = () => {
     return (
         <MainLayout>
             <Box sx={{display: 'flex'}}>
-                <Sidebar items={[...dashboardSidebar(navigate), ...settingsSidebar(navigate)]} />
+                <Sidebar items={[...dashboardSidebar(t, navigate), ...settingsSidebar(t, navigate)]} />
             </Box>
         </MainLayout>
     );

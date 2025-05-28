@@ -1,17 +1,17 @@
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsIcon from '@mui/icons-material/Settings';
 
-export const dashboardSidebar = (navigate) => [
+export const dashboardSidebar = (t, navigate) => [
     {
-        label: 'Projekt Übersicht',
+        label: t("project.all"),
         icon: <DashboardIcon />,
         onClick: () => navigate('/dashboard'),
     },
 ];
 
-export const settingsSidebar = (navigate, projectId) => [
+export const settingsSidebar = (t, navigate, projectId) => [
     {
-        label: 'Einstellungen',
+        label: t("project.settings"),
         icon: <SettingsIcon />,
         onClick: () => navigate(`/projectSettings/${projectId}`),
     },

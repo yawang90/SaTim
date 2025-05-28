@@ -7,6 +7,10 @@
     "overview": "Projekt Übersicht",
     "create": "Projekt erstellen",
     "evaluation" : "Erhebung erstellen",
-    "prevaluation": "Pre-requisites Erhebung"
+    "prevaluation": "Pre-requisites Erhebung",
+    "addmember": "Neues Mitglied hinzufügen",
+    "member": "Mitarbeitende",
+    "all": "Alle Projekte",
+    "settings": "Einstellungen"
   }
 }
