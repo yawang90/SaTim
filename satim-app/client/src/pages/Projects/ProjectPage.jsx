@@ -1,5 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import {Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField, Toolbar, Typography} from '@mui/material';
+import {
+    Avatar,
+    Box,
+    Button,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Grid,
+    TextField,
+    Toolbar,
+    Typography
+} from '@mui/material';
 import Sidebar from '../../components/Sidebar';
 import MainLayout from "../../layouts/MainLayout";
 import ProjectCard from "../../components/ProjectCard";
@@ -93,8 +106,23 @@ const ProjectPage = () => {
         fetchProject();
     }, [projectId]);
 
-    if (loading) return <p>Loading...</p>; // TODO
-    if (!project) return <p>Project not found.</p>; // TODO
+    if (loading) {
+        return (
+            <Box
+                sx={{
+                    height: '100vh',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <CircularProgress />
+            </Box>
+        );
+    }
+    if (!project) {
+        navigate('/dashboard'); // TODO
+    }
 
     return (
         <MainLayout>

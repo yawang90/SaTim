@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, Paper, TextField, Typography} from '@mui/material';
+import {Box, Button, CircularProgress, Paper, TextField, Typography} from '@mui/material';
 import Sidebar from '../../components/Sidebar';
 import MainLayout from "../../layouts/MainLayout";
 import {useNavigate, useParams} from "react-router-dom";
@@ -38,9 +38,23 @@ const SettingsPage = () => {
         fetchProject();
     }, [projectId]);
 
-    if (loading) return <p>Loading...</p>; // TODO
-    if (!project) return <p>Project not found.</p>; // TODO
-
+    if (loading) {
+        return (
+            <Box
+                sx={{
+                    height: '100vh',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <CircularProgress />
+            </Box>
+        );
+    }
+    if (!project) {
+        navigate('/dashboard'); // TODO
+    }
     return (
         <MainLayout>
             <Box sx={{display: 'flex'}}>
