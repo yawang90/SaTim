@@ -15,8 +15,11 @@ import Sidebar from '../components/Sidebar';
 import MainLayout from "../layouts/MainLayout";
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import {parseExcelFile} from "../services/ExcelParser";
+import {dashboardSidebar} from "../components/SidebarConfig";
+import {useNavigate} from "react-router-dom";
 
 const PREvalPage = () => {
+    const navigate = useNavigate();
     const fileInputRef = useRef(null);
     const handleBoxClick = () => {
         fileInputRef.current.click();
@@ -49,7 +52,7 @@ const PREvalPage = () => {
     return (
         <MainLayout>
             <Box sx={{display: 'flex'}}>
-                <Sidebar/>
+                <Sidebar items={dashboardSidebar(navigate)} />
                 <Box component="main" sx={{flexGrow: 1, p: 3}}>
                     <Toolbar/>
                     <Typography variant="h4" gutterBottom>Meine PR Erhebung</Typography>

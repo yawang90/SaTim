@@ -6,6 +6,7 @@ import ProjectCard from "../components/ProjectCard";
 import AddIcon from "@mui/icons-material/Add";
 import {useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
+import {dashboardSidebar} from "../components/SidebarConfig";
 
 const ProjectPage = () => {
     const navigate = useNavigate();
@@ -45,12 +46,12 @@ const ProjectPage = () => {
     };
     const gridItems = prevals.map((preval) => (
         <Grid item xs={12} sm={6} md={4} key={preval.id}>
-            <ProjectCard project={preval} onClick={() => handleOpenPREvalPage(preval.id)}/>
+            <ProjectCard project={preval} displayName={preval.name} onClick={() => handleOpenPREvalPage(preval.id)}/>
         </Grid>
     ));
     gridItems.push(
         <Grid item xs={12} sm={6} md={4} key="add">
-            <ProjectCard isAddCard addCardText="Evaluierung erstellen" onAdd={handleOpenPREvalsDialog}/>
+            <ProjectCard isAddCard addCardText="Evaluierung erstellen"  displayName={""} onAdd={handleOpenPREvalsDialog}/>
         </Grid>
     );
     const handleOpenPREvalPage = (prevalId) => {
@@ -76,7 +77,7 @@ const ProjectPage = () => {
     return (
         <MainLayout>
             <Box sx={{display: 'flex'}}>
-                <Sidebar/>
+                <Sidebar items={dashboardSidebar(navigate)} />
                 <Box component="main" sx={{flexGrow: 1, p: 3}}>
                     <Toolbar/>
                     <Typography variant="h4" gutterBottom>Mein Projekt</Typography>

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {
     Box,
     Button,
+    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -18,6 +19,7 @@ import {useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {createProject, fetchUserProjects} from "../services/ProjectService";
 import {LoadingButton} from "@mui/lab";
+import {dashboardSidebar} from "../components/SidebarConfig";
 
 const DashboardPage = () => {
     const {t} = useTranslation();
@@ -72,31 +74,30 @@ const DashboardPage = () => {
         }
     };
 
-
     const handleOpenProjectPage = (projectId) => {
         navigate(`/project/${projectId}`)
     }
 
     const gridItems = projects.map((project) => (
         <Grid xs={12} sm={6} md={4} key={project.project_id}>
-            <ProjectCard project={project} onClick={() => handleOpenProjectPage(project.project_id)}/>
+            <ProjectCard project={project} displayName={project.projects.name} onClick={() => handleOpenProjectPage(project.project_id)}/>
         </Grid>
     ));
 
     gridItems.push(
         <Grid xs={12} sm={6} md={4} key="add">
-            <ProjectCard addCardText={t("project.create")} isAddCard onAdd={handleOpenDialog}/>
+            <ProjectCard addCardText={t("project.create")} displayName={""} isAddCard onAdd={handleOpenDialog}/>
         </Grid>
     );
 
     return (<MainLayout>
             <Box sx={{display: 'flex'}}>
-                <Sidebar/>
+                <Sidebar items={dashboardSidebar(navigate)} />
                 <Box component="main" sx={{flexGrow: 1, p: 3}}>
                     <Toolbar/>
                     <Typography variant="h4" gutterBottom>{t("project.overview")}</Typography>
                     <Box sx={{pb: 5}}></Box>
-                    {fetchingProjects ? (<Typography>{t("loading")}...</Typography>) : (
+                    {fetchingProjects ? (<Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}><CircularProgress /></Box>) : (
                         <Grid container spacing={3}>{gridItems}</Grid>)}
                 </Box>
             </Box>
