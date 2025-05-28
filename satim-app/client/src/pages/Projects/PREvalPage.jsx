@@ -11,11 +11,11 @@ import {
     Toolbar,
     Typography
 } from '@mui/material';
-import Sidebar from '../components/Sidebar';
-import MainLayout from "../layouts/MainLayout";
+import Sidebar from '../../components/Sidebar';
+import MainLayout from "../../layouts/MainLayout";
 import UploadFileIcon from '@mui/icons-material/UploadFile';
-import {parseExcelFile} from "../services/ExcelParser";
-import {dashboardSidebar} from "../components/SidebarConfig";
+import {parseExcelFile} from "../../services/ExcelParser";
+import {dashboardSidebar} from "../../components/SidebarConfig";
 import {useNavigate} from "react-router-dom";
 
 const PREvalPage = () => {

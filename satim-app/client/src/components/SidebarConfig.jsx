@@ -9,10 +9,10 @@ export const dashboardSidebar = (navigate) => [
     },
 ];
 
-export const settingsSidebar = (navigate) => [
+export const settingsSidebar = (navigate, projectId) => [
     {
         label: 'Einstellungen',
         icon: <SettingsIcon />,
-        onClick: () => navigate('/settings'),
+        onClick: () => navigate(`/projectSettings/${projectId}`),
     },
 ];

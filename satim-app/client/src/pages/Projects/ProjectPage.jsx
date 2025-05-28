@@ -1,16 +1,17 @@
 import React, {useState} from 'react';
 import {Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField, Toolbar, Typography} from '@mui/material';
-import Sidebar from '../components/Sidebar';
-import MainLayout from "../layouts/MainLayout";
-import ProjectCard from "../components/ProjectCard";
+import Sidebar from '../../components/Sidebar';
+import MainLayout from "../../layouts/MainLayout";
+import ProjectCard from "../../components/ProjectCard";
 import AddIcon from "@mui/icons-material/Add";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
-import {dashboardSidebar} from "../components/SidebarConfig";
+import {dashboardSidebar, settingsSidebar} from "../../components/SidebarConfig";
 
 const ProjectPage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const { id } = useParams();
 
     const [members, setMembers] = useState([
         {id: 1, name: 'Peter Steiner'},
@@ -18,11 +19,7 @@ const ProjectPage = () => {
         {id: 3, name: 'Petra Banane'},
     ]);
     const [openPREvalDialog, setOpenPREvalsDialog] = useState(false);
-    const [prevals, setprevals] = useState([
-        // Example initial state
-        // { id: 1, name: 'Projekt A' },
-        // { id: 2, name: 'Projekt B' },
-    ]);
+    const [prevals, setprevals] = useState([]);
     const [newPREvalsName, setNewPREvalsName] = useState('');
     const [newPREvalsDescription, setNewPREvalsDescription] = useState('');
     const handleOpenPREvalsDialog = () => {
@@ -77,7 +74,7 @@ const ProjectPage = () => {
     return (
         <MainLayout>
             <Box sx={{display: 'flex'}}>
-                <Sidebar items={dashboardSidebar(navigate)} />
+                <Sidebar items={[...dashboardSidebar(navigate), ...settingsSidebar(navigate, id)]} />
                 <Box component="main" sx={{flexGrow: 1, p: 3}}>
                     <Toolbar/>
                     <Typography variant="h4" gutterBottom>Mein Projekt</Typography>

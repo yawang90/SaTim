@@ -1,12 +1,13 @@
 import {BrowserRouter, Route, Routes, Outlet} from 'react-router-dom';
 import LoginPage from '../pages/LoginPage';
-import ProjectPage from '../pages/ProjectPage';
+import ProjectPage from '../pages/Projects/ProjectPage';
 import ProfilePage from '../pages/ProfilePage';
 import NotFoundPage from '../pages/NotFoundPage';
 import WelcomePage from '../pages/WelcomePage';
 import LoggedInRoute from "./LoggedInRoute";
 import DashboardPage from "../pages/Dashboard";
-import PREvalPage from "../pages/PREvalPage";
+import PREvalPage from "../pages/Projects/PREvalPage";
+import ProjectSettingsPage from "../pages/Projects/ProjectSettingsPage";
 
 function AppRoutes() {
     return (
@@ -16,6 +17,7 @@ function AppRoutes() {
                 </Route>
                 <Route path="/dashboard" element={<DashboardPage/>}/>
                 <Route path="/project/:id" element={<ProjectPage/>}/>
+                <Route path="/projectSettings/:id" element={<ProjectSettingsPage/>}/>
                 <Route path="/profile" element={<ProfilePage/>}/>
                 <Route path="/preval/:id" element={<PREvalPage/>}/>
                 
