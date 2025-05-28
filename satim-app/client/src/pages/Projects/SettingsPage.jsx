@@ -77,6 +77,7 @@ const SettingsPage = () => {
                             variant="outlined"
                             margin="normal"
                             value={name}
+                            required
                             onChange={(e) => setName(e.target.value)}
                         />
                         <TextField
