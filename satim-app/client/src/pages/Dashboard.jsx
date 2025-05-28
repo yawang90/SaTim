@@ -63,7 +63,7 @@ const DashboardPage = () => {
                 userId,
             };
             const savedProject = await createProject(projectData);
-            setProjects(prev => [...prev, savedProject]);
+            setProjects(prev => [...prev, {project_id: savedProject.id, projects : {id: savedProject.id, name: savedProject.name}}]);
             handleCloseDialog();
         } catch (err) {
             console.error("Failed to save projects", err);
@@ -78,8 +78,8 @@ const DashboardPage = () => {
     }
 
     const gridItems = projects.map((project) => (
-        <Grid xs={12} sm={6} md={4} key={project.id}>
-            <ProjectCard project={project} onClick={() => handleOpenProjectPage(project.id)}/>
+        <Grid xs={12} sm={6} md={4} key={project.project_id}>
+            <ProjectCard project={project} onClick={() => handleOpenProjectPage(project.project_id)}/>
         </Grid>
     ));
 
@@ -102,6 +102,7 @@ const DashboardPage = () => {
             </Box>
             <Dialog open={openDialog} onClose={handleCloseDialog}>
                 <DialogTitle>{t("project.create")}</DialogTitle>
+                <Box component="form" onSubmit={handleSaveProject}>
                 <DialogContent>
                     <TextField
                         required
@@ -128,9 +129,9 @@ const DashboardPage = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseDialog} disabled={loading}>{t("cancel")}</Button>
-                    <LoadingButton onClick={handleSaveProject} variant="contained"
-                                   loading={loading}>{t("save")}</LoadingButton>
+                    <LoadingButton variant="contained" type="submit" loading={loading}>{t("save")}</LoadingButton>
                 </DialogActions>
+                </Box>
             </Dialog>
         </MainLayout>
     );

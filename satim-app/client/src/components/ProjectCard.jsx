@@ -26,7 +26,7 @@ const ProjectCard = ({ project, isAddCard, onAdd, onClick, addCardText}) => {
                     </Box>
                 ) : (
                     <Typography variant="h6" textAlign="center">
-                        {project.name}
+                        {project.projects.name}
                     </Typography>
                 )}
             </CardContent>
