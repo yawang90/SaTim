@@ -3,7 +3,7 @@ import {Box, Button, Paper, TextField, Typography} from '@mui/material';
 import Sidebar from '../../components/Sidebar';
 import MainLayout from "../../layouts/MainLayout";
 import {useNavigate, useParams} from "react-router-dom";
-import {dashboardSidebar, settingsSidebar} from "../../components/SidebarConfig";
+import {dashboardSidebar, membersSidebar, projectHomeSidebar, settingsSidebar} from "../../components/SidebarConfig";
 import {useTranslation} from "react-i18next";
 import {getProjectById} from "../../services/ProjectService";
 
@@ -15,7 +15,12 @@ const SettingsPage = () => {
     const [loading, setLoading] = useState(true);
     const [name, setName] = useState(null);
     const [description, setDescription] = useState(null);
-
+    const sidebarItems = [
+        ...dashboardSidebar(t, navigate),
+        ...projectHomeSidebar(t, navigate, projectId),
+        ...settingsSidebar(t, navigate, projectId),
+        ...membersSidebar(t, navigate, projectId),
+    ];
 
     useEffect(() => {
         const fetchProject = async () => {
@@ -39,7 +44,7 @@ const SettingsPage = () => {
     return (
         <MainLayout>
             <Box sx={{display: 'flex'}}>
-                <Sidebar items={[...dashboardSidebar(t, navigate), ...settingsSidebar(t, navigate)]}/>
+                <Sidebar items={sidebarItems}/>
                 <Box component="main" sx={{
                     flexGrow: 1,
                     height: 'calc(100vh - 79px)',

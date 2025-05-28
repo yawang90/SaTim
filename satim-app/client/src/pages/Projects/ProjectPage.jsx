@@ -6,7 +6,7 @@ import ProjectCard from "../../components/ProjectCard";
 import AddIcon from "@mui/icons-material/Add";
 import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
-import {dashboardSidebar, membersSidebar, settingsSidebar} from "../../components/SidebarConfig";
+import {dashboardSidebar, membersSidebar, projectHomeSidebar, settingsSidebar} from "../../components/SidebarConfig";
 import {getProjectById} from "../../services/ProjectService";
 
 const ProjectPage = () => {
@@ -22,6 +22,7 @@ const ProjectPage = () => {
     ]);
     const sidebarItems = [
         ...dashboardSidebar(t, navigate),
+        ...projectHomeSidebar(t, navigate, projectId),
         ...settingsSidebar(t, navigate, projectId),
         ...membersSidebar(t, navigate, projectId),
     ];
