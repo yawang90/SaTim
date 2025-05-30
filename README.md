@@ -17,10 +17,12 @@
 1. components
 2. contexts
 3. layouts
-4. pages
-5. routes
-5. services
-6. styles
+4. locales 
+5. pages 
+6. routes 
+7. services 
+8. styles
+
 #### General
 Frontend uses Vite for building.
 
@@ -33,8 +35,9 @@ Frontend uses Vite for building.
 5. services - Contains core business logic, reusable functions, DB calls
 6. validation
 #### General
-Backend uses Prisma for db schema access.
+Backend uses Prisma for db schema access and migration.
 
 ### Relational DB: PostgreSQL (for users, admin, auth)
 
 ### Host: Render
+Secrets are stored on Render directly (JWT pw, DB URL, etc.)
