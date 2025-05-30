@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, Box, Button, CircularProgress, Paper, Snackbar, TextField, Typography} from '@mui/material';
+import {Box, Button, CircularProgress, Paper, TextField, Typography} from '@mui/material';
 import Sidebar from '../../components/Sidebar';
 import MainLayout from "../../layouts/MainLayout";
 import {useNavigate, useParams} from "react-router-dom";
@@ -7,6 +7,7 @@ import {dashboardSidebar, membersSidebar, projectHomeSidebar, settingsSidebar} f
 import {useTranslation} from "react-i18next";
 import {getProjectById, updateProject} from "../../services/ProjectService";
 import {LoadingButton} from "@mui/lab";
+import SnackbarMessages from "../../components/SnackbarMessages";
 
 const SettingsPage = () => {
     const navigate = useNavigate();
@@ -17,7 +18,6 @@ const SettingsPage = () => {
     const [updateLoading, setUpdateLoading] = useState(false);
     const [name, setName] = useState(null);
     const [description, setDescription] = useState(null);
-    const [showSuccess, setShowSuccess] = useState(false);
     const sidebarItems = [
         ...dashboardSidebar(t, navigate),
         ...projectHomeSidebar(t, navigate, projectId),
@@ -50,14 +50,21 @@ const SettingsPage = () => {
                 description,
                 userId: project.projects.owner_id,
             });
-            setShowSuccess(true);
+            showSnackbar(t('updateSuccess'), 'success');
         } catch (error) {
             console.error("Failed to update project:", error);
         } finally {
             setUpdateLoading(false);
         }
     };
-
+    const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+    const [snackbarMsg, setSnackbarMsg] = React.useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = React.useState('success');
+    const showSnackbar = (message, severity = 'success') => {
+        setSnackbarMsg(message);
+        setSnackbarSeverity(severity);
+        setSnackbarOpen(true);
+    };
 
     if (loading) {
         return (
@@ -114,13 +121,9 @@ const SettingsPage = () => {
                     </Paper>
                 </Box>
             </Box>
-            <Snackbar open={showSuccess} autoHideDuration={3000} onClose={() => setShowSuccess(false)} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
-                <Alert onClose={() => setShowSuccess(false)} severity="success" sx={{ width: '100%' }}>
-                    {t("updateSuccess")}
-                </Alert>
-            </Snackbar>
-
+            <SnackbarMessages open={snackbarOpen} onClose={() => setSnackbarOpen(false)} severity={snackbarSeverity} message={snackbarMsg}/>
         </MainLayout>
+
     );
 };
 
