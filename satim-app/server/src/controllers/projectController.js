@@ -1,4 +1,4 @@
-import {saveNewProject, findAllProjects, findProject, editProject} from '../services/projectService.js';
+import {saveNewProject, findAllProjects, findProject, editProject, deleteProject} from '../services/projectService.js';
 import {projectValidationSchema} from '../validation/projectValidation.js';
 import {stringifyBigInts} from "./helper.js";
 
@@ -51,5 +51,21 @@ export const updateProject = async (req, res) => {
     } catch (err) {
         console.error('Error updating project:', err);
         res.status(500).json({ message: 'Could not update project' });
+    }
+};
+
+export const removeProject = async (req, res) => {
+    const { projectId } = req.params;
+
+    if (!projectId) {
+        return res.status(400).json({ message: 'Missing projectId' });
+    }
+
+    try {
+        await deleteProject({ projectId });
+        res.status(200).json({ message: 'Project deleted successfully' });
+    } catch (err) {
+        console.error('Error deleting project:', err);
+        res.status(500).json({ message: 'Could not delete project' });
     }
 };

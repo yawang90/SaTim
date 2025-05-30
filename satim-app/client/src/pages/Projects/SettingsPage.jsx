@@ -15,7 +15,7 @@ import MainLayout from "../../layouts/MainLayout";
 import {useNavigate, useParams} from "react-router-dom";
 import {dashboardSidebar, membersSidebar, projectHomeSidebar, settingsSidebar} from "../../components/SidebarConfig";
 import {useTranslation} from "react-i18next";
-import {getProjectById, updateProject} from "../../services/ProjectService";
+import {deleteProject, getProjectById, updateProject} from "../../services/ProjectService";
 import {LoadingButton} from "@mui/lab";
 import SnackbarMessages from "../../components/SnackbarMessages";
 
@@ -74,6 +74,15 @@ const SettingsPage = () => {
 
     const handleDelete = async () => {
         setDeleteLoading(true);
+        try {
+            await deleteProject({projectId});
+            showSnackbar(t('deleteSuccess'), 'success');
+        } catch (error) {
+            showSnackbar(t('deleteFailure'), 'warning');
+            console.error("Failed to update project:", error);
+        } finally {
+            setDeleteLoading(false);
+        }
     }
 
     const [snackbarOpen, setSnackbarOpen] = React.useState(false);

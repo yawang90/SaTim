@@ -57,3 +57,11 @@ export const editProject = async ({projectId, name, description, userId}) => {
         }
     });
 }
+
+export const deleteProject = async ({ projectId }) => {
+    return prisma.projects.delete({
+        where: {
+            id: Number(projectId),
+        },
+    });
+};

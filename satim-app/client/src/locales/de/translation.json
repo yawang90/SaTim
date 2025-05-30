@@ -6,6 +6,8 @@
   "confirm": "Bestätigen",
   "updateSuccess": "Änderungen übernommen",
   "updateFailure": "Etwas ist schief gegangen, bitte versuchen Sie es erneut.",
+  "deleteSuccess": "Erfolgreich gelöscht",
+  "deleteFailure": "Etwas ist schief gegangen, bitte versuchen Sie das Löschen erneut.",
   "project": {
     "overview": "Projekt Übersicht",
     "create": "Projekt erstellen",
