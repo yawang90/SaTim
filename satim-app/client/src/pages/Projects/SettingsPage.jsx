@@ -1,5 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, CircularProgress, Paper, TextField, Typography} from '@mui/material';
+import {
+    Box,
+    Button,
+    CircularProgress,
+    Dialog, DialogActions,
+    DialogContent,
+    DialogTitle,
+    Paper,
+    TextField,
+    Typography
+} from '@mui/material';
 import Sidebar from '../../components/Sidebar';
 import MainLayout from "../../layouts/MainLayout";
 import {useNavigate, useParams} from "react-router-dom";
@@ -24,6 +34,9 @@ const SettingsPage = () => {
         ...settingsSidebar(t, navigate, projectId),
         ...membersSidebar(t, navigate, projectId),
     ];
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [deleteInput, setDeleteInput] = useState('');
+    const [deleteLoading, setDeleteLoading] = useState(false);
 
     useEffect(() => {
         const fetchProject = async () => {
@@ -58,6 +71,11 @@ const SettingsPage = () => {
             setUpdateLoading(false);
         }
     };
+
+    const handleDelete = async () => {
+        setDeleteLoading(true);
+    }
+
     const [snackbarOpen, setSnackbarOpen] = React.useState(false);
     const [snackbarMsg, setSnackbarMsg] = React.useState('');
     const [snackbarSeverity, setSnackbarSeverity] = React.useState('success');
@@ -122,6 +140,37 @@ const SettingsPage = () => {
                     </Paper>
                 </Box>
             </Box>
+            <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
+                <DialogTitle>{t("project.delete")}</DialogTitle>
+                <DialogContent>
+                    <Typography sx={{ mb: 2 }}>
+                        {t("project.deleteConfirmation", {
+                            name: project?.projects?.name || 'the project'
+                        })}
+                    </Typography>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        label={project.projects.name}
+                        fullWidth
+                        variant="outlined"
+                        value={deleteInput}
+                        onChange={(e) => setDeleteInput(e.target.value)}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setDeleteDialogOpen(false)}>{t("cancel")}</Button>
+                    <LoadingButton
+                        color="error"
+                        onClick={handleDelete}
+                        disabled={deleteInput !== project?.projects?.name}
+                        loading={deleteLoading}
+                    >
+                        {t("confirm")}
+                    </LoadingButton>
+                </DialogActions>
+            </Dialog>
+
             <SnackbarMessages open={snackbarOpen} onClose={() => setSnackbarOpen(false)} severity={snackbarSeverity} message={snackbarMsg}/>
         </MainLayout>
 
