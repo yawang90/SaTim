@@ -10,7 +10,7 @@ export const registerUser = async (req, res) => {
     }
     try {
         const result = await saveNewUser(req.body);
-        res.status(201).json({ message: 'User registered successfully', userId: result.id});
+        res.status(201).json({ message: 'User registered successfully', userId: result.id.toString()});
     } catch (err) {
         console.error('Error registering user:', err);
         res.status(500).json({message: 'Database error'});
