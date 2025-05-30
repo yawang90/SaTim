@@ -39,8 +39,7 @@ export const getProject = async (req, res) => {
 }
 
 export const updateProject = async (req, res) => {
-    const { projectId } = req.params;
-    const { name, description, userId } = req.body;
+    const { projectId, name, description, userId } = req.body;
 
     if (!projectId) {
         return res.status(400).json({ message: 'Missing projectId' });

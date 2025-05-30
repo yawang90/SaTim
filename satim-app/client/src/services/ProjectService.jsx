@@ -33,11 +33,11 @@ export const getProjectById = async ({projectId}) => {
 }
 
 export const updateProject = async ({projectId, name, description, userId}) => {
-    const response = await fetch(`${API_URL}/api/projects/update?projectId=${projectId}`,
+    const response = await fetch(`${API_URL}/api/projects/update`,
         {
-            method: 'POST',
+            method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, description, userId })
+            body: JSON.stringify({ projectId, name, description, userId })
         });
     const data = await response.json();
     if (!response.ok) {
