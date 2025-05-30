@@ -146,7 +146,7 @@ const SettingsPage = () => {
                     <Typography sx={{ mb: 2 }}>
                         {t("project.deleteConfirmation", {
                             name: project?.projects?.name || 'the project'
-                        })}
+                        }) + project.projects.name}
                     </Typography>
                     <TextField
                         autoFocus
