@@ -18,7 +18,7 @@
     "name": "Projekt Name",
     "description": "Projekt Beschreibung",
     "delete": "Projekt löschen",
-    "deleteConfirmation": "Wollen Sie das Projekt wirklich löschen? Dieser Vorgang kann nicht rückgängig gemacht werden und beinhaltet auch das löschen aller getätigten Erhebungen, etc."
+    "deleteConfirmation": "Wollen Sie das Projekt wirklich löschen? Dieser Vorgang kann nicht rückgängig gemacht werden und beinhaltet auch das löschen aller getätigten Erhebungen. Falls Sie mit der Löschung einverstanden sind, geben Sie bitte den Projektnamen als Bestätigung ein:"
   },
   "pageNotFound": "Etwas ist schief gegangen, bitte laden sie die Seite neu.",
   "pageReload": "Seite neu laden."
