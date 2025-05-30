@@ -15,14 +15,13 @@ function AppRoutes() {
         <BrowserRouter>
             <Routes>
                 <Route element={<LoggedInRoute><Outlet /></LoggedInRoute>}>
+                    <Route path="/dashboard" element={<DashboardPage/>}/>
+                    <Route path="/project/:projectId" element={<ProjectPage/>}/>
+                    <Route path="/projectSettings/:projectId" element={<SettingsPage/>}/>
+                    <Route path="/projectMembers/:projectId" element={<MemberPage/>}/>
+                    <Route path="/profile" element={<ProfilePage/>}/>
+                    <Route path="/preval/:evalId" element={<PREvalPage/>}/>
                 </Route>
-                <Route path="/dashboard" element={<DashboardPage/>}/>
-                <Route path="/project/:projectId" element={<ProjectPage/>}/>
-                <Route path="/projectSettings/:projectId" element={<SettingsPage/>}/>
-                <Route path="/projectMembers/:projectId" element={<MemberPage/>}/>
-                <Route path="/profile" element={<ProfilePage/>}/>
-                <Route path="/preval/:evalId" element={<PREvalPage/>}/>
-
 
                 <Route path="/" element={<WelcomePage/>}/>
                 <Route path="/login" element={<LoginPage/>}/>

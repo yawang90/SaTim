@@ -43,5 +43,5 @@ export const updateProject = async ({projectId, name, description, userId}) => {
     if (!response.ok) {
         throw new Error(data.message || 'Failed to update project');
     }
-    return response.json();
+    return data;
 }
