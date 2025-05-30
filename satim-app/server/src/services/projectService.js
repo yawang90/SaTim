@@ -19,9 +19,11 @@ export const saveNewProject = async ({ name, description, userId }) => {
 };
 
 export const findAllProjects = async ({userId}) => {
+    const ownerId = Number(userId);
+
     return prisma.project_access.findMany({
         where: {
-            user_id: ownerId.toString()
+            user_id: ownerId
         },
         include: {
             projects: true
@@ -30,9 +32,11 @@ export const findAllProjects = async ({userId}) => {
 }
 
 export const findProject = async ({projectId}) => {
+    const project = Number(projectId);
+
     return prisma.project_access.findFirst({
         where: {
-            project_id: projectId.toString()
+            project_id: project
         },
         include: {
             projects: true
