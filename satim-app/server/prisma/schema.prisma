@@ -28,6 +28,8 @@ model users {
   created_at     DateTime?        @default(now()) @db.Timestamp(6)
   project_access project_access[]
   projects       projects[]
+  changed_at     DateTime?
+  changed_by     String?          @db.VarChar(255)
 }
 
 model project_access {
