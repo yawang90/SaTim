@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, CircularProgress, Paper, TextField, Typography} from '@mui/material';
+import {Alert, Box, Button, CircularProgress, Paper, Snackbar, TextField, Typography} from '@mui/material';
 import Sidebar from '../../components/Sidebar';
 import MainLayout from "../../layouts/MainLayout";
 import {useNavigate, useParams} from "react-router-dom";
@@ -14,9 +14,10 @@ const SettingsPage = () => {
     const {projectId} = useParams();
     const [project, setProject] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [updateloading, setUpdateLoading] = useState(true);
+    const [updateLoading, setUpdateLoading] = useState(false);
     const [name, setName] = useState(null);
     const [description, setDescription] = useState(null);
+    const [showSuccess, setShowSuccess] = useState(false);
     const sidebarItems = [
         ...dashboardSidebar(t, navigate),
         ...projectHomeSidebar(t, navigate, projectId),
@@ -49,6 +50,7 @@ const SettingsPage = () => {
                 description,
                 userId: project.projects.owner_id,
             });
+            setShowSuccess(true);
         } catch (error) {
             console.error("Failed to update project:", error);
         } finally {
@@ -59,21 +61,16 @@ const SettingsPage = () => {
 
     if (loading) {
         return (
-            <Box
-                sx={{
-                    height: '100vh',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-            >
+            <Box sx={{height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center',}}>
                 <CircularProgress/>
             </Box>
         );
     }
+
     if (!project) {
         navigate('/dashboard'); // TODO
     }
+
     return (
         <MainLayout>
             <Box sx={{display: 'flex'}}>
@@ -111,12 +108,18 @@ const SettingsPage = () => {
                             onChange={(e) => setDescription(e.target.value)}
                         />
                         <Box sx={{display: 'flex', justifyContent: 'space-between', mt: 3}}>
-                            <LoadingButton variant="contained" color="primary" onClick={handleSave} loading={updateloading}>{t("save")}</LoadingButton>
+                            <LoadingButton variant="contained" color="primary" onClick={handleSave} loading={updateLoading}>{t("save")}</LoadingButton>
                             <Button variant="outlined" color="error" onClick={() => {}}>{t("project.delete")}</Button>
                         </Box>
                     </Paper>
                 </Box>
             </Box>
+            <Snackbar open={showSuccess} autoHideDuration={3000} onClose={() => setShowSuccess(false)} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+                <Alert onClose={() => setShowSuccess(false)} severity="success" sx={{ width: '100%' }}>
+                    {t("updateSuccess")}
+                </Alert>
+            </Snackbar>
+
         </MainLayout>
     );
 };

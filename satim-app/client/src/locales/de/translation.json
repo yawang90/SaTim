@@ -3,6 +3,7 @@
   "language": "Sprache",
   "save": "Speichern",
   "cancel": "Abbrechen",
+  "updateSuccess": "Änderungen übernommen",
   "project": {
     "overview": "Projekt Übersicht",
     "create": "Projekt erstellen",
