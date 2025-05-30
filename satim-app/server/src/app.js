@@ -9,10 +9,11 @@ dotenv.config();
 const app = express();
 const allowedOrigin = process.env.NODE_ENV === 'development'
     ? 'http://localhost:3000'
-    : 'https://satim-client.onrender.com';
+    : 'https://satim.onrender.com/';
 
 app.use(cors({
-    origin: allowedOrigin
+    origin: allowedOrigin,
+    credentials: true
 }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
