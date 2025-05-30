@@ -12,7 +12,9 @@ export const saveNewUser = async ({ vorname, nachname, email, password }) => {
             email,
             password: hashedPassword,
             roles: ['GENERAL'],
-        },
+        }, select: {
+            id: true
+        }
     });
 };
 
