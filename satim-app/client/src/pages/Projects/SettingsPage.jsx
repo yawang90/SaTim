@@ -5,7 +5,7 @@ import MainLayout from "../../layouts/MainLayout";
 import {useNavigate, useParams} from "react-router-dom";
 import {dashboardSidebar, membersSidebar, projectHomeSidebar, settingsSidebar} from "../../components/SidebarConfig";
 import {useTranslation} from "react-i18next";
-import {getProjectById} from "../../services/ProjectService";
+import {getProjectById, updateProject} from "../../services/ProjectService";
 
 const SettingsPage = () => {
     const navigate = useNavigate();
@@ -38,6 +38,20 @@ const SettingsPage = () => {
         fetchProject();
     }, [projectId]);
 
+    const handleSave = async () => {
+        try {
+            await updateProject({
+                projectId,
+                name,
+                description,
+                userId: project.projects.owner_id,
+            });
+        } catch (error) {
+            console.error("Failed to update project:", error);
+        }
+    };
+
+
     if (loading) {
         return (
             <Box
@@ -48,7 +62,7 @@ const SettingsPage = () => {
                     alignItems: 'center',
                 }}
             >
-                <CircularProgress />
+                <CircularProgress/>
             </Box>
         );
     }
@@ -66,7 +80,8 @@ const SettingsPage = () => {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    backgroundColor: '#f5f5f5',}}>
+                    backgroundColor: '#f5f5f5',
+                }}>
                     <Paper elevation={3} sx={{p: 4, width: 400}}>
                         <Typography variant="h5" gutterBottom>
                             {t("project.settings")}
@@ -91,7 +106,7 @@ const SettingsPage = () => {
                             onChange={(e) => setDescription(e.target.value)}
                         />
                         <Box sx={{display: 'flex', justifyContent: 'space-between', mt: 3}}>
-                            <Button variant="contained" color="primary" onClick={() => {}}>{t("save")}</Button>
+                            <Button variant="contained" color="primary" onClick={handleSave}>{t("save")}</Button>
                             <Button variant="outlined" color="error" onClick={() => {}}>{t("project.delete")}</Button>
                         </Box>
                     </Paper>

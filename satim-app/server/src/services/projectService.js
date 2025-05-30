@@ -1,6 +1,6 @@
 import prisma from '../config/prismaClient.js';
 
-export const saveNewProject = async ({ name, description, userId }) => {
+export const saveNewProject = async (name, description, userId) => {
     const ownerId = Number(userId);
 
     return prisma.projects.create({
@@ -18,7 +18,7 @@ export const saveNewProject = async ({ name, description, userId }) => {
     });
 };
 
-export const findAllProjects = async ({userId}) => {
+export const findAllProjects = async (userId) => {
     const ownerId = Number(userId);
 
     return prisma.project_access.findMany({
@@ -31,7 +31,7 @@ export const findAllProjects = async ({userId}) => {
     });
 }
 
-export const findProject = async ({projectId}) => {
+export const findProject = async (projectId) => {
     const project = Number(projectId);
 
     return prisma.project_access.findFirst({
@@ -40,6 +40,20 @@ export const findProject = async ({projectId}) => {
         },
         include: {
             projects: true
+        }
+    });
+}
+
+export const editProject = async (projectId, name, description, owner_id) => {
+    return prisma.projects.update({
+        where: {
+            id: Number(projectId),
+        },
+        data: {
+            ...(name && {name: name}),
+            ...(description && {description: description}),
+            ...(owner_id && {owner_id: Number(owner_id)}),
+            updated_at: new Date(),
         }
     });
 }
