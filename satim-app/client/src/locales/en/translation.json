@@ -3,14 +3,19 @@
   "language": "Sprache",
   "save": "Speichern",
   "cancel": "Abbrechen",
-  "settings": "Einstellungen",
   "project": {
     "overview": "Projekt Übersicht",
     "create": "Projekt erstellen",
     "evaluation" : "Erhebung erstellen",
     "prevaluation": "Pre-requisites Erhebung",
-    "addmember": "Neues Mitglied hinzufügen",
+    "addMember": "Neues Mitglied hinzufügen",
     "member": "Mitarbeitende",
-    "all": "Alle Projekte"
-  }
+    "all": "Alle Projekte",
+    "settings": "Einstellungen",
+    "name": "Projekt Name",
+    "description": "Projekt Beschreibung",
+    "delete": "Projekt löschen"
+  },
+  "pageNotFound": "Etwas ist schief gegangen, bitte laden sie die Seite neu.",
+  "pageReload": "Seite neu laden."
 }

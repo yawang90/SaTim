@@ -25,7 +25,7 @@ export const getAllProjects = async (req, res) => {
         return res.status(400).json({message: 'Missing userId'});
     }
     const projects = await findAllProjects({ userId });
-    res.json(projects)
+    res.json(stringifyBigInts(projects))
 }
 
 export const getProject = async (req, res) => {
@@ -34,5 +34,5 @@ export const getProject = async (req, res) => {
         return res.status(400).json({message: 'Missing projectId'});
     }
     const projects = await findProject({ projectId });
-    res.json(projects)
+    res.json(stringifyBigInts(projects))
 }

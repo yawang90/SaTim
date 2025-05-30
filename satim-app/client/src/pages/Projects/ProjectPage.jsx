@@ -182,7 +182,7 @@ const ProjectPage = () => {
                 </Box>
             </Box>
             <Dialog open={openMemberDialog} onClose={handleCloseMemberDialog}>
-                <DialogTitle>{t(project.addmember)}</DialogTitle>
+                <DialogTitle>{t(project.addMember)}</DialogTitle>
                 <DialogContent>
                     <TextField
                         autoFocus
