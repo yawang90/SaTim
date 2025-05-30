@@ -7,7 +7,7 @@ const SnackbarMessages = ({ open, onClose, severity = 'info', message, autoHideD
             open={open}
             autoHideDuration={autoHideDuration}
             onClose={onClose}
-            anchorOrigin={anchorOrigin || { vertical: 'bottom', horizontal: 'center' }}
+            anchorOrigin={anchorOrigin || { vertical: 'top', horizontal: 'center' }}
         >
             <Alert onClose={onClose} severity={severity} sx={{ width: '100%' }}>
                 {message}

@@ -4,6 +4,7 @@
   "save": "Speichern",
   "cancel": "Abbrechen",
   "updateSuccess": "Änderungen übernommen",
+  "updateFailure": "Etwas ist schief gegangen, bitte versuchen Sie es erneut.",
   "project": {
     "overview": "Projekt Übersicht",
     "create": "Projekt erstellen",

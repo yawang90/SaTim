@@ -52,6 +52,7 @@ const SettingsPage = () => {
             });
             showSnackbar(t('updateSuccess'), 'success');
         } catch (error) {
+            showSnackbar(t('updateFailure'), 'warning');
             console.error("Failed to update project:", error);
         } finally {
             setUpdateLoading(false);
