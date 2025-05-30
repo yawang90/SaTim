@@ -3,6 +3,7 @@
   "language": "Sprache",
   "save": "Speichern",
   "cancel": "Abbrechen",
+  "confirm": "Bestätigen",
   "updateSuccess": "Änderungen übernommen",
   "updateFailure": "Etwas ist schief gegangen, bitte versuchen Sie es erneut.",
   "project": {

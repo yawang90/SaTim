@@ -135,7 +135,7 @@ const SettingsPage = () => {
                         />
                         <Box sx={{display: 'flex', justifyContent: 'space-between', mt: 3}}>
                             <LoadingButton variant="contained" color="primary" onClick={handleSave} loading={updateLoading}>{t("save")}</LoadingButton>
-                            <Button variant="outlined" color="error" onClick={() => {}}>{t("project.delete")}</Button>
+                            <Button variant="outlined" color="error" onClick={() => {setDeleteDialogOpen(true);setDeleteInput('');}}>{t("project.delete")}</Button>
                         </Box>
                     </Paper>
                 </Box>
@@ -160,13 +160,7 @@ const SettingsPage = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setDeleteDialogOpen(false)}>{t("cancel")}</Button>
-                    <LoadingButton
-                        color="error"
-                        onClick={handleDelete}
-                        disabled={deleteInput !== project?.projects?.name}
-                        loading={deleteLoading}
-                    >
-                        {t("confirm")}
+                    <LoadingButton color="error" onClick={handleDelete} disabled={deleteInput !== project?.projects?.name} loading={deleteLoading}>{t("confirm")}
                     </LoadingButton>
                 </DialogActions>
             </Dialog>
