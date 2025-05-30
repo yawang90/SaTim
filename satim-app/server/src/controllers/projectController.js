@@ -1,5 +1,6 @@
 import {saveNewProject, findAllProjects, findProject} from '../services/projectService.js';
 import {projectValidationSchema} from '../validation/projectValidation.js';
+import {stringifyBigInts} from "./helper.js";
 
 export const createProject = async (req, res) => {
     const {error} = projectValidationSchema.validate(req.body);
@@ -25,6 +26,7 @@ export const getAllProjects = async (req, res) => {
         return res.status(400).json({message: 'Missing userId'});
     }
     const projects = await findAllProjects({ userId });
+    console.log(typeof projects[0].projects.id); // Should log "number" not "bigint"
     res.json(stringifyBigInts(projects))
 }
 
