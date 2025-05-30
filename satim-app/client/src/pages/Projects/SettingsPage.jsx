@@ -6,6 +6,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {dashboardSidebar, membersSidebar, projectHomeSidebar, settingsSidebar} from "../../components/SidebarConfig";
 import {useTranslation} from "react-i18next";
 import {getProjectById, updateProject} from "../../services/ProjectService";
+import {LoadingButton} from "@mui/lab";
 
 const SettingsPage = () => {
     const navigate = useNavigate();
@@ -13,6 +14,7 @@ const SettingsPage = () => {
     const {projectId} = useParams();
     const [project, setProject] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [updateloading, setUpdateLoading] = useState(true);
     const [name, setName] = useState(null);
     const [description, setDescription] = useState(null);
     const sidebarItems = [
@@ -39,6 +41,7 @@ const SettingsPage = () => {
     }, [projectId]);
 
     const handleSave = async () => {
+        setUpdateLoading(true);
         try {
             await updateProject({
                 projectId,
@@ -48,6 +51,8 @@ const SettingsPage = () => {
             });
         } catch (error) {
             console.error("Failed to update project:", error);
+        } finally {
+            setUpdateLoading(false);
         }
     };
 
@@ -106,7 +111,7 @@ const SettingsPage = () => {
                             onChange={(e) => setDescription(e.target.value)}
                         />
                         <Box sx={{display: 'flex', justifyContent: 'space-between', mt: 3}}>
-                            <Button variant="contained" color="primary" onClick={handleSave}>{t("save")}</Button>
+                            <LoadingButton variant="contained" color="primary" onClick={handleSave} loading={updateloading}>{t("save")}</LoadingButton>
                             <Button variant="outlined" color="error" onClick={() => {}}>{t("project.delete")}</Button>
                         </Box>
                     </Paper>
