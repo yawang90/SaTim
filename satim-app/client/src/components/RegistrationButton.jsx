@@ -23,8 +23,8 @@ const RegistrationButton = () => {
     const {login} = useAuth();
     const navigate = useNavigate();
     const [registrationFormData, setRegistrationFormData] = useState({
-        nachname: '',
-        vorname: '',
+        last_name: '',
+        first_name: '',
         email: '',
         password: '',
         confirmPassword: ''
@@ -69,8 +69,8 @@ const RegistrationButton = () => {
                 <Box sx={modalStyle} component="form">
                     <Typography variant="h6" mb={2}>Registrieren</Typography>
                     <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <TextField name="vorname" label="Vorname" variant="outlined" value={registrationFormData.vorname} onChange={handleInputChange} fullWidth />
-                        <TextField name="nachname" label="Nachname" variant="outlined" value={registrationFormData.nachname} onChange={handleInputChange} fullWidth required/>
+                        <TextField name="first_name" label="Vorname" variant="outlined" value={registrationFormData.first_name} onChange={handleInputChange} fullWidth />
+                        <TextField name="last_name" label="Nachname" variant="outlined" value={registrationFormData.last_name} onChange={handleInputChange} fullWidth required/>
                         <TextField name ="email" label="Email" variant="outlined" value={registrationFormData.email} onChange={handleInputChange} fullWidth required />
                         <TextField name="password" label="Passwort" type="password" variant="outlined" value={registrationFormData.password} onChange={handleInputChange} fullWidth required/>
                         <TextField name="confirmPassword" label="Passwort wiederholen" type="password" variant="outlined" value={registrationFormData.confirmPassword} onChange={handleInputChange} required fullWidth />
