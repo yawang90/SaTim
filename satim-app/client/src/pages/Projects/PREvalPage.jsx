@@ -17,8 +17,10 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import {parseExcelFile} from "../../services/ExcelParser";
 import {dashboardSidebar} from "../../components/SidebarConfig";
 import {useNavigate} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 const PREvalPage = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const fileInputRef = useRef(null);
     const handleBoxClick = () => {
