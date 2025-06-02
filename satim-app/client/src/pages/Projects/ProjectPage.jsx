@@ -177,16 +177,7 @@ const ProjectPage = () => {
             <Dialog open={openMemberDialog} onClose={handleCloseMemberDialog}>
                 <DialogTitle>{t(project.addMember)}</DialogTitle>
                 <DialogContent>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        label="Name des Mitglieds"
-                        type="text"
-                        fullWidth
-                        value={newMemberName}
-                        onChange={e => setNewMemberName(e.target.value)}
-                        helperText="Email des Benutzers suchen..."
-                    />
+                    <TextField autoFocus margin="dense" label="Name des Mitglieds" type="text" fullWidth value={newMemberName} onChange={e => setNewMemberName(e.target.value)} helperText="Email des Benutzers suchen..."/>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseMemberDialog}>Abbrechen</Button>
@@ -198,27 +189,8 @@ const ProjectPage = () => {
             <Dialog open={openPREvalDialog} onClose={handleClosePREvalsDialog}>
                 <DialogTitle>Neue PR Evaluierung erstellen</DialogTitle>
                 <DialogContent>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        label="Name der PR Evaluierung"
-                        fullWidth
-                        value={newPREvalsName}
-                        onChange={e => setNewPREvalsName(e.target.value)}
-                        inputProps={{ maxLength: 40 }}
-                        helperText={`${newPREvalsName.length}/40 Zeichen`}
-                    />
-                    <TextField
-                        margin="dense"
-                        label="Beschreibung"
-                        fullWidth
-                        multiline
-                        rows={4}
-                        value={newPREvalsDescription}
-                        onChange={e => setNewPREvalsDescription(e.target.value)}
-                        inputProps={{ maxLength: 255 }}
-                        helperText={`${newPREvalsDescription.length}/255 Zeichen`}
-                    />
+                    <TextField autoFocus margin="dense" label="Name der PR Evaluierung" fullWidth value={newPREvalsName} onChange={e => setNewPREvalsName(e.target.value)} inputProps={{ maxLength: 40 }} helperText={`${newPREvalsName.length}/40 Zeichen`}/>
+                    <TextField margin="dense" label="Beschreibung" fullWidth multiline rows={4} value={newPREvalsDescription} onChange={e => setNewPREvalsDescription(e.target.value)} inputProps={{ maxLength: 255 }} helperText={`${newPREvalsDescription.length}/255 Zeichen`}/>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClosePREvalsDialog}>Abbrechen</Button>
