@@ -23,6 +23,7 @@
     "action": "Aktion",
     "description": "Projekt Beschreibung",
     "delete": "Projekt löschen",
+    "noMembers:": "Keine Mitglieder gefunden",
     "deleteConfirmation": "Wollen Sie das Projekt wirklich löschen? Dieser Vorgang kann nicht rückgängig gemacht werden und führt zum Löschen aller bereits durchgeführten Erhebungen. Falls Sie mit der Löschung einverstanden sind, geben Sie bitte den Projektnamen als Bestätigung ein:\n"
   },
   "user": {

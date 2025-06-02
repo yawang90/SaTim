@@ -20,7 +20,7 @@ import AddIcon from "@mui/icons-material/Add";
 import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {dashboardSidebar, membersSidebar, projectHomeSidebar, settingsSidebar} from "../../components/SidebarConfig";
-import {getProjectById} from "../../services/ProjectService";
+import {getProjectById, getProjectMembers} from "../../services/ProjectService";
 
 const ProjectPage = () => {
     const navigate = useNavigate();
@@ -28,11 +28,7 @@ const ProjectPage = () => {
     const { projectId } = useParams();
     const [project, setProject] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [members, setMembers] = useState([
-        {id: 1, name: 'Peter Steiner'},
-        {id: 2, name: 'Peter Haus'},
-        {id: 3, name: 'Petra Banane'},
-    ]);
+    const [members, setMembers] = useState([]);
     const sidebarItems = [
         ...dashboardSidebar(t, navigate),
         ...projectHomeSidebar(t, navigate, projectId),
@@ -93,6 +89,20 @@ const ProjectPage = () => {
     };
 
     useEffect(() => {
+        const fetchMembers = async () => {
+            try {
+                const data = await getProjectMembers({projectId});
+                setMembers(data);
+            } catch (err) {
+                console.error("Failed to fetch project members:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchMembers();
+    }, [projectId]);
+
+    useEffect(() => {
         const fetchProject = async () => {
             try {
                 const data = await getProjectById({projectId});
@@ -113,8 +123,8 @@ const ProjectPage = () => {
             </Box>
         );
     }
-    if (!project) {
-        navigate('/dashboard'); // TODO
+    if (!project?.projects) {
+        return null;
     }
 
     return (
@@ -129,34 +139,24 @@ const ProjectPage = () => {
                     <Box component="main" sx={{pt: 2, pb: 4, pl: 2, bgcolor: 'primary.light1', color: 'white'}}>
                         <Typography variant="h5" gutterBottom>{t("project.member")}</Typography>
                         <Box sx={{display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'flex-start',}}>
-                            {members.map(member => (
-                                <Box key={member.id}
-                                     sx={{display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
-                                    <Avatar src={member.avatarUrl} alt={member.name}
-                                            sx={{width: 64, height: 64, mb: 1}}>
-                                        {member.name.split(' ').map(n => n[0]).join('')}
-                                    </Avatar>
-                                    <Typography variant="body2" align="center">
-                                        {member.name}
-                                    </Typography>
-                                </Box>
-                            ))}
-                            <Box onClick={handleOpenMemberDialog} sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                width: 64,
-                                cursor: 'pointer',
-                                color: 'white',
-                            }}>
-                                <Avatar sx={{
-                                    width: 64,
-                                    height: 64,
-                                    mb: 1,
-                                    backgroundColor: 'white',
-                                    '&:hover': {backgroundColor: 'grey.200'}
-                                }}>
+                            {members?.length > 0 ? (
+                                members.map(member => (
+                                    <Box key={member.id} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                        <Avatar src={member.avatarUrl} sx={{ width: 64, height: 64, mb: 1 }}>
+                                            {member.firstName?.[0] ?? '?'}
+                                        </Avatar>
+                                        <Typography variant="body2" align="center">
+                                            {member.firstName} {member.lastName}
+                                        </Typography>
+                                    </Box>
+                                ))
+                            ) : (
+                                <Typography variant="body2" sx={{ mt: 2 }}>
+                                    {t('project.noMembers')}
+                                </Typography>
+                            )}
+                            <Box onClick={handleOpenMemberDialog} sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: 64, cursor: 'pointer', color: 'white',}}>
+                                <Avatar sx={{width: 64, height: 64, mb: 1, backgroundColor: 'white', '&:hover': {backgroundColor: 'grey.200'}}}>
                                     <AddIcon sx={{fontSize: 32, color: 'grey'}}/>
                                 </Avatar>
                                 <Typography variant="body2" align="center">

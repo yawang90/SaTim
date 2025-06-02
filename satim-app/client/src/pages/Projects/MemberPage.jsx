@@ -42,7 +42,6 @@ const MemberPage = () => {
         const fetchMembers = async () => {
             try {
                 const data = await getProjectMembers({projectId});
-                console.log(data)
                 setMembers(data);
             } catch (err) {
                 console.error("Failed to fetch project members:", err);
