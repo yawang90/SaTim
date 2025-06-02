@@ -39,7 +39,7 @@ const WelcomePage = () => {
                         Jetzt starten
                     </Typography>
                     <Typography variant="body1">
-                        Verwalten Sie Ihre Projekte und Evaluierungen.
+                        Verwalten Sie Ihre Projekte und Erhebungen.
                     </Typography>
                 </Box>
             </Box>
@@ -49,7 +49,7 @@ const WelcomePage = () => {
                         Funktionen
                     </Typography>
                     <Typography variant="body1">
-                        Verwalten Sie Ihre Projekte und Evaluierungen.
+                        Verwalten Sie Ihre Projekte und Erhebungen.
                     </Typography>
                 </Box>
             </Box>

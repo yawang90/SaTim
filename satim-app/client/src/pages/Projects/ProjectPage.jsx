@@ -187,9 +187,9 @@ const ProjectPage = () => {
                 </DialogActions>
             </Dialog>
             <Dialog open={openPREvalDialog} onClose={handleClosePREvalsDialog}>
-                <DialogTitle>Neue PR Evaluierung erstellen</DialogTitle>
+                <DialogTitle>Neue PR Erhebung erstellen</DialogTitle>
                 <DialogContent>
-                    <TextField autoFocus margin="dense" label="Name der PR Evaluierung" fullWidth value={newPREvalsName} onChange={e => setNewPREvalsName(e.target.value)} inputProps={{ maxLength: 40 }} helperText={`${newPREvalsName.length}/40 Zeichen`}/>
+                    <TextField autoFocus margin="dense" label="Name der PR Erhebung" fullWidth value={newPREvalsName} onChange={e => setNewPREvalsName(e.target.value)} inputProps={{ maxLength: 40 }} helperText={`${newPREvalsName.length}/40 Zeichen`}/>
                     <TextField margin="dense" label="Beschreibung" fullWidth multiline rows={4} value={newPREvalsDescription} onChange={e => setNewPREvalsDescription(e.target.value)} inputProps={{ maxLength: 255 }} helperText={`${newPREvalsDescription.length}/255 Zeichen`}/>
                 </DialogContent>
                 <DialogActions>
