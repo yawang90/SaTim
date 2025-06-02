@@ -110,38 +110,13 @@ const SettingsPage = () => {
         <MainLayout>
             <Box sx={{display: 'flex'}}>
                 <Sidebar items={sidebarItems}/>
-                <Box component="main" sx={{
-                    flexGrow: 1,
-                    height: 'calc(100vh - 79px)',
-                    mt: '79px',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: '#f5f5f5',
-                }}>
+                <Box component="main" sx={{flexGrow: 1, height: 'calc(100vh - 79px)', mt: '79px', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#f5f5f5',}}>
                     <Paper elevation={3} sx={{p: 4, width: 400}}>
                         <Typography variant="h5" gutterBottom>
                             {t("project.settings")}
                         </Typography>
-                        <TextField
-                            fullWidth
-                            label={t("project.name")}
-                            variant="outlined"
-                            margin="normal"
-                            value={name}
-                            required
-                            onChange={(e) => setName(e.target.value)}
-                        />
-                        <TextField
-                            fullWidth
-                            label={t("project.description")}
-                            variant="outlined"
-                            margin="normal"
-                            multiline
-                            rows={4}
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                        />
+                        <TextField fullWidth label={t("project.name")} variant="outlined" margin="normal" value={name} required onChange={(e) => setName(e.target.value)}/>
+                        <TextField fullWidth label={t("project.description")} variant="outlined" margin="normal" multiline rows={4} value={description} onChange={(e) => setDescription(e.target.value)}/>
                         <Box sx={{display: 'flex', justifyContent: 'space-between', mt: 3}}>
                             <LoadingButton variant="contained" color="primary" onClick={handleSave} loading={updateLoading}>{t("save")}</LoadingButton>
                             <Button variant="outlined" color="error" onClick={() => {setDeleteDialogOpen(true);setDeleteInput('');}}>{t("project.delete")}</Button>
@@ -157,20 +132,11 @@ const SettingsPage = () => {
                             name: project?.projects?.name || 'the project'
                         }) + project.projects.name}
                     </Typography>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        label={project.projects.name}
-                        fullWidth
-                        variant="outlined"
-                        value={deleteInput}
-                        onChange={(e) => setDeleteInput(e.target.value)}
-                    />
+                    <TextField autoFocus margin="dense" label={project.projects.name} fullWidth variant="outlined" value={deleteInput} onChange={(e) => setDeleteInput(e.target.value)}/>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setDeleteDialogOpen(false)}>{t("cancel")}</Button>
-                    <LoadingButton color="error" onClick={handleDelete} disabled={deleteInput !== project?.projects?.name} loading={deleteLoading}>{t("confirm")}
-                    </LoadingButton>
+                    <LoadingButton color="error" onClick={handleDelete} disabled={deleteInput !== project?.projects?.name} loading={deleteLoading}>{t("confirm")}</LoadingButton>
                 </DialogActions>
             </Dialog>
 

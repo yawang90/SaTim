@@ -1,4 +1,11 @@
-import {saveNewProject, findAllProjects, findProject, editProject, deleteProject} from '../services/projectService.js';
+import {
+    saveNewProject,
+    findAllProjects,
+    findProject,
+    editProject,
+    deleteProject,
+    findAllMembersForProject
+} from '../services/projectService.js';
 import {projectValidationSchema} from '../validation/projectValidation.js';
 import {stringifyBigInts} from "./helper.js";
 
@@ -67,5 +74,29 @@ export const removeProject = async (req, res) => {
     } catch (err) {
         console.error('Error deleting project:', err);
         res.status(500).json({ message: 'Could not delete project' });
+    }
+};
+
+export const getProjectMembers = async (req, res) => {
+    const { projectId } = req.query;
+
+    if (!projectId) {
+        return res.status(400).json({ message: 'Missing projectId' });
+    }
+
+    try {
+        const members = await findAllMembersForProject({ projectId });
+        const formatted = members.map(member => ({
+            id: member.users.id,
+            firstName: member.users.first_name,
+            lastName: member.users.last_name,
+            email: member.users.email,
+            role: member.role,
+        }));
+
+        res.status(200).json(formatted);
+    } catch (error) {
+        console.error('Error fetching project members:', error);
+        res.status(500).json({ message: 'Could not fetch project members' });
     }
 };

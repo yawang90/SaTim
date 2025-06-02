@@ -65,3 +65,21 @@ export const deleteProject = async ({ projectId }) => {
         },
     });
 };
+
+export const findAllMembersForProject = async ({ projectId }) => {
+    return prisma.project_access.findMany({
+        where: {
+            project_id: Number(projectId),
+        },
+        include: {
+            users: {
+                select: {
+                    id: true,
+                    first_name: true,
+                    last_name: true,
+                    email: true,
+                },
+            },
+        },
+    });
+};

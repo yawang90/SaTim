@@ -8,6 +8,7 @@
   "updateFailure": "Etwas ist schief gegangen, bitte versuchen Sie es erneut.",
   "deleteSuccess": "Erfolgreich gelöscht",
   "deleteFailure": "Etwas ist schief gegangen, bitte versuchen Sie das Löschen erneut.",
+  "remove": "Entfernen",
   "project": {
     "overview": "Projekt Übersicht",
     "create": "Projekt erstellen",
@@ -18,9 +19,15 @@
     "all": "Alle Projekte",
     "settings": "Einstellungen",
     "name": "Projekt Name",
+    "role": "Rolle",
+    "action": "Aktion",
     "description": "Projekt Beschreibung",
     "delete": "Projekt löschen",
     "deleteConfirmation": "Wollen Sie das Projekt wirklich löschen? Dieser Vorgang kann nicht rückgängig gemacht werden und führt zum Löschen aller bereits durchgeführten Erhebungen. Falls Sie mit der Löschung einverstanden sind, geben Sie bitte den Projektnamen als Bestätigung ein:\n"
+  },
+  "user": {
+    "name": "Name",
+    "email": "Email"
   },
   "pageNotFound": "Etwas ist schief gegangen, bitte laden sie die Seite neu.",
   "pageReload": "Seite neu laden."

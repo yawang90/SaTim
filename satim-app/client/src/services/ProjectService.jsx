@@ -58,3 +58,18 @@ export const deleteProject = async ({ projectId }) => {
     }
     return data;
 };
+
+export const getProjectMembers = async ({ projectId }) => {
+    if (!projectId) {
+        throw new Error("Missing projectId");
+    }
+
+    const response = await fetch(`${API_URL}/api/projects/members?projectId=${projectId}`);
+
+    if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Failed to fetch project members');
+    }
+
+    return response.json();
+};
