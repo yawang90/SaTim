@@ -12,8 +12,6 @@
   "project": {
     "overview": "Projekt Übersicht",
     "create": "Projekt erstellen",
-    "evaluation" : "Erhebung erstellen",
-    "prevaluation": "Pre-requisites Erhebung",
     "addMember": "Neues Mitglied hinzufügen",
     "member": "Mitarbeitende",
     "all": "Alle Projekte",
@@ -25,6 +23,12 @@
     "delete": "Projekt löschen",
     "noMembers:": "Keine Mitglieder gefunden",
     "deleteConfirmation": "Wollen Sie das Projekt wirklich löschen? Dieser Vorgang kann nicht rückgängig gemacht werden und führt zum Löschen aller bereits durchgeführten Erhebungen. Falls Sie mit der Löschung einverstanden sind, geben Sie bitte den Projektnamen als Bestätigung ein:\n"
+  },
+  "survey": {
+    "title": "Pre-requisites Erhebung",
+    "create": "Pre-requisites Erhebung erstellen",
+    "name": "Name der Erhebung",
+    "description": "Beschreibung"
   },
   "user": {
     "name": "Name",

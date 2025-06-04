@@ -67,11 +67,11 @@ const ProjectPage = () => {
     ));
     gridItems.push(
         <Grid item xs={12} sm={6} md={4} key="add">
-            <ProjectCard isAddCard addCardText={t("project.evaluation")}  displayName={""} onAdd={handleOpenPREvalsDialog}/>
+            <ProjectCard isAddCard addCardText={t("survey.create")}  displayName={""} onAdd={handleOpenPREvalsDialog}/>
         </Grid>
     );
-    const handleOpenPREvalPage = (prevalId) => {
-        navigate(`/preval/${prevalId}`)
+    const handleOpenPREvalPage = (surveyId) => {
+        navigate(`/surveyCreation/${surveyId}`)
     }
     const handleOpenMemberDialog = () => setOpenMemberDialog(true);
     const handleCloseMemberDialog = () => {
@@ -167,7 +167,7 @@ const ProjectPage = () => {
                     </Box>
                     <Box sx={{pb: 5}}></Box>
                     <Box component="main" sx={{pt: 2, pb: 4, pl: 2}}>
-                        <Typography variant="h5" gutterBottom>{t(project.prevaluation)}</Typography>
+                        <Typography variant="h5" gutterBottom>{t("survey.title")}</Typography>
                             <Grid container spacing={3}>
                                 {gridItems}
                             </Grid>
@@ -187,10 +187,10 @@ const ProjectPage = () => {
                 </DialogActions>
             </Dialog>
             <Dialog open={openPREvalDialog} onClose={handleClosePREvalsDialog}>
-                <DialogTitle>Neue PR Erhebung erstellen</DialogTitle>
+                <DialogTitle>{t("survey.create")}</DialogTitle>
                 <DialogContent>
-                    <TextField autoFocus margin="dense" label="Name der PR Erhebung" fullWidth value={newPREvalsName} onChange={e => setNewPREvalsName(e.target.value)} inputProps={{ maxLength: 40 }} helperText={`${newPREvalsName.length}/40 Zeichen`}/>
-                    <TextField margin="dense" label="Beschreibung" fullWidth multiline rows={4} value={newPREvalsDescription} onChange={e => setNewPREvalsDescription(e.target.value)} inputProps={{ maxLength: 255 }} helperText={`${newPREvalsDescription.length}/255 Zeichen`}/>
+                    <TextField autoFocus margin="dense" label={t("survey.name")} fullWidth value={newPREvalsName} onChange={e => setNewPREvalsName(e.target.value)} inputProps={{ maxLength: 40 }} helperText={`${newPREvalsName.length}/40 Zeichen`}/>
+                    <TextField margin="dense" label={t("survey.description")} fullWidth multiline rows={4} value={newPREvalsDescription} onChange={e => setNewPREvalsDescription(e.target.value)} inputProps={{ maxLength: 255 }} helperText={`${newPREvalsDescription.length}/255 Zeichen`}/>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClosePREvalsDialog}>Abbrechen</Button>

@@ -6,9 +6,10 @@ import NotFoundPage from '../pages/NotFoundPage';
 import WelcomePage from '../pages/WelcomePage';
 import LoggedInRoute from "./LoggedInRoute";
 import DashboardPage from "../pages/Dashboard";
-import PREvalPage from "../pages/Projects/PREvalPage";
+import SurveyCreationPage from "../pages/Projects/Survey/SurveyCreationPage";
 import SettingsPage from "../pages/Projects/SettingsPage";
 import MemberPage from "../pages/Projects/MemberPage";
+import SurveyDashboardPage from "../pages/Projects/Survey/SurveyDashboardPage";
 
 function AppRoutes() {
     return (
@@ -20,7 +21,8 @@ function AppRoutes() {
                     <Route path="/projectSettings/:projectId" element={<SettingsPage/>}/>
                     <Route path="/projectMembers/:projectId" element={<MemberPage/>}/>
                     <Route path="/profile" element={<ProfilePage/>}/>
-                    <Route path="/preval/:evalId" element={<PREvalPage/>}/>
+                    <Route path="/surveyCreation/:projectId" element={<SurveyCreationPage/>}/>
+                    <Route path="/surveyDashboard/:projectId/:surveyId" element={<SurveyDashboardPage/>}/>
                 </Route>
 
                 <Route path="/" element={<WelcomePage/>}/>
