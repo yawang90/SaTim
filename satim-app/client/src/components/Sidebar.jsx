@@ -1,24 +1,13 @@
 import React from 'react';
-import { Divider, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
+import {Divider, Drawer, List, ListItemButton, ListItemIcon, ListItemText,} from '@mui/material';
 
 const drawerWidth = 240;
 
-const Sidebar = ({ items }) => {
+const Sidebar = ({ items, surveySection }) => {
     const [firstItem, ...restItems] = items;
 
     return (
-        <Drawer
-            variant="permanent"
-            sx={{
-                width: drawerWidth,
-                flexShrink: 0,
-                [`& .MuiDrawer-paper`]: {
-                    width: drawerWidth,
-                    boxSizing: 'border-box',
-                    top: '79px',
-                },
-            }}
-        >
+        <Drawer variant="permanent" sx={{width: drawerWidth, flexShrink: 0, [`& .MuiDrawer-paper`]: {width: drawerWidth, boxSizing: 'border-box', top: '79px',},}}>
             {firstItem && (
                 <List>
                     <ListItemButton onClick={firstItem.onClick}>
@@ -28,6 +17,7 @@ const Sidebar = ({ items }) => {
                 </List>
             )}
             <Divider />
+
             <List>
                 {restItems.map(({ label, icon, onClick }, index) => (
                     <ListItemButton key={index} onClick={onClick}>
@@ -36,6 +26,13 @@ const Sidebar = ({ items }) => {
                     </ListItemButton>
                 ))}
             </List>
+
+            {surveySection && (
+                <>
+                    <Divider />
+                    <List>{surveySection}</List>
+                </>
+            )}
         </Drawer>
     );
 };

@@ -8,19 +8,24 @@ import {dashboardSidebar, membersSidebar, projectHomeSidebar, settingsSidebar} f
 import {useSnackbar} from 'notistack';
 import IconButton from "@mui/material/IconButton";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import DescriptionIcon from '@mui/icons-material/Description';
-import FileUploadIcon from '@mui/icons-material/UploadFile';
-import LinkIcon from '@mui/icons-material/Link';
+import ListIcon from '@mui/icons-material/List';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import BrushIcon from '@mui/icons-material/Brush';
+import {SurveySidebarSection} from "../../../components/SurveySidebarSection";
 
 const SurveyDashboardPage = () => {
     const navigate = useNavigate();
     const {t} = useTranslation();
-    const {projectId, evalId} = useParams();
+    const {projectId, surveyId} = useParams();
     const sidebarItems = [
         ...dashboardSidebar(t, navigate),
         ...projectHomeSidebar(t, navigate, projectId),
         ...settingsSidebar(t, navigate, projectId),
         ...membersSidebar(t, navigate, projectId),
+    ];
+    const surveys = [
+        { id: 'eval1', name: 'Erhebung 1' },
+        { id: 'eval2', name: 'Erhebung 2' },
     ];
     const {enqueueSnackbar} = useSnackbar();
     const generatedLink = 'https://satim.onrender.com/dashboard'; // Replace with dynamic value if needed
@@ -30,21 +35,21 @@ const SurveyDashboardPage = () => {
     };
     const buttons = [
         {
-            title: 'Upload Excel',
-            description: 'Select your file',
-            icon: <FileUploadIcon fontSize="medium" />,
+            title: 'Kompetenzen ',
+            description: 'Ansicht der initialen Kompetenzen',
+            icon: <ListIcon fontSize="medium" />,
             onClick: () => alert('Upload clicked'),
         },
         {
-            title: 'Generate Link',
-            description: 'Create a shareable link',
-            icon: <LinkIcon fontSize="medium" />,
+            title: 'Layout anpassen',
+            description: 'Ansicht der Umfrage anpassen',
+            icon: <BrushIcon fontSize="medium" />,
             onClick: () => alert('Link clicked'),
         },
         {
-            title: 'View Results',
-            description: 'Check the outcome',
-            icon: <DescriptionIcon fontSize="medium" />,
+            title: 'Umfrage Resultate',
+            description: 'Übersicht der Befragungen',
+            icon: <BarChartIcon fontSize="medium" />,
             onClick: () => alert('View clicked'),
         },
     ];
@@ -52,7 +57,14 @@ const SurveyDashboardPage = () => {
     return (
         <MainLayout>
             <Box sx={{display: 'flex', height: '100vh'}}>
-                <Sidebar items={sidebarItems}/>
+                <Sidebar items={sidebarItems}   surveySection={
+                    <SurveySidebarSection
+                        t={t}
+                        navigate={navigate}
+                        projectId={projectId}
+                        surveys={surveys}
+                    />
+                }/>
                 <Box component="main" sx={{flexGrow: 1, p: 3}}>
                     <Toolbar/>
                     <Box sx={{ px: 4 }}>
@@ -86,7 +98,7 @@ const SurveyDashboardPage = () => {
                     <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', px: 2 }}>
                         <Stack direction="row" spacing={4}>
                             {buttons.map((btn, idx) => (
-                                <Button key={idx} onClick={btn.onClick} variant="outlined" sx={{minWidth: 180, height: 120, flexDirection: 'column', gap: 1, p: 2, textTransform: 'none', bgcolor: 'white', borderRadius: 2, boxShadow: 1, '&:hover': {bgcolor: '#e3f2fd',},}}>
+                                <Button key={idx} onClick={btn.onClick} variant="outlined" sx={{width: 300, height: 120, flexDirection: 'column', gap: 1, p: 2, textTransform: 'none', bgcolor: 'white', borderRadius: 2, boxShadow: 1, '&:hover': {bgcolor: '#e3f2fd',},}}>
                                     {btn.icon}
                                     <Typography variant="subtitle1" fontWeight={600}>
                                         {btn.title}

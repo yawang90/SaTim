@@ -28,7 +28,8 @@
     "title": "Pre-requisites Erhebung",
     "create": "Pre-requisites Erhebung erstellen",
     "name": "Name der Erhebung",
-    "description": "Beschreibung"
+    "description": "Beschreibung",
+    "sidebarTitle": "Erhebungen"
   },
   "user": {
     "name": "Name",
