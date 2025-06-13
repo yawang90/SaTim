@@ -31,6 +31,10 @@
     "description": "Beschreibung",
     "sidebarTitle": "Erhebungen"
   },
+  "surveyForm": {
+    "title": "Kompetenz Vergleich",
+    "description": "Hier eine Erklärung"
+  },
   "user": {
     "name": "Name",
     "email": "Email"

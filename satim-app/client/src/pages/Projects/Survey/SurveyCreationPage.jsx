@@ -41,7 +41,7 @@ const SurveyCreationPage = () => {
     const handleSave = () => {
         const projectId = 2;
         const surveyId = 3;
-        navigate(`/surveyDashboard/${projectId}/${surveyId}`);
+        navigate(`/survey/dashboard/${projectId}/${surveyId}`);
     };
 
     const handleFileChange = async (event) => {

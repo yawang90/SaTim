@@ -1,4 +1,4 @@
-import {BrowserRouter, Route, Routes, Outlet} from 'react-router-dom';
+import {BrowserRouter, Outlet, Route, Routes} from 'react-router-dom';
 import LoginPage from '../pages/LoginPage';
 import ProjectPage from '../pages/Projects/ProjectPage';
 import ProfilePage from '../pages/ProfilePage';
@@ -11,6 +11,7 @@ import SettingsPage from "../pages/Projects/SettingsPage";
 import MemberPage from "../pages/Projects/MemberPage";
 import SurveyDashboardPage from "../pages/Projects/Survey/SurveyDashboardPage";
 import CompetencesPage from "../pages/Projects/Survey/CompetencesPage";
+import SurveyPageWithSidebar from "../pages/UserSurvey/SurveyPageWithSidebar";
 
 function AppRoutes() {
     return (
@@ -22,11 +23,11 @@ function AppRoutes() {
                     <Route path="/projectSettings/:projectId" element={<SettingsPage/>}/>
                     <Route path="/projectMembers/:projectId" element={<MemberPage/>}/>
                     <Route path="/profile" element={<ProfilePage/>}/>
-                    <Route path="/surveyCreation/:projectId" element={<SurveyCreationPage/>}/>
-                    <Route path="/surveyDashboard/:projectId/:surveyId" element={<SurveyDashboardPage/>}/>
-                    <Route path="/surveyDashboard/:projectId/:surveyId/competences" element={<CompetencesPage/>}/>
+                    <Route path="/survey/creation/:projectId" element={<SurveyCreationPage/>}/>
+                    <Route path="/survey/dashboard/:projectId/:surveyId" element={<SurveyDashboardPage/>}/>
+                    <Route path="/survey/dashboard/:projectId/:surveyId/competences" element={<CompetencesPage/>}/>
                 </Route>
-
+                <Route path="/survey/form/:formId" element={<SurveyPageWithSidebar/>}/>
                 <Route path="/" element={<WelcomePage/>}/>
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="*" element={<NotFoundPage/>}/>

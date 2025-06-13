@@ -71,7 +71,7 @@ const ProjectPage = () => {
         </Grid>
     );
     const handleOpenPREvalPage = (surveyId) => {
-        navigate(`/surveyCreation/${surveyId}`)
+        navigate(`/survey/creation/${surveyId}`)
     }
     const handleOpenMemberDialog = () => setOpenMemberDialog(true);
     const handleCloseMemberDialog = () => {
