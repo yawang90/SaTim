@@ -130,7 +130,7 @@ const ProjectPage = () => {
     return (
         <MainLayout>
             <Box sx={{display: 'flex'}}>
-                <Sidebar items={sidebarItems} />
+                <Sidebar items={sidebarItems}/>
                 <Box component="main" sx={{flexGrow: 1, p: 3}}>
                     <Toolbar/>
                     <Typography variant="h4" gutterBottom>{project.projects.name}</Typography>

@@ -5,13 +5,17 @@ const drawerWidth = 240;
 
 const Sidebar = ({ items, surveySection }) => {
     const [firstItem, ...restItems] = items;
+    const isSelected = (item) => {
+        if (!item.path) return false;
+        return location.pathname.startsWith(item.path);
+    };
 
     return (
         <Drawer variant="permanent" sx={{width: drawerWidth, flexShrink: 0, [`& .MuiDrawer-paper`]: {width: drawerWidth, boxSizing: 'border-box', top: '79px',},}}>
             {firstItem && (
                 <List>
-                    <ListItemButton onClick={firstItem.onClick}>
-                        <ListItemIcon>{firstItem.icon}</ListItemIcon>
+                    <ListItemButton onClick={firstItem.onClick} selected={isSelected(firstItem)}>
+                    <ListItemIcon>{firstItem.icon}</ListItemIcon>
                         <ListItemText primary={firstItem.label} />
                     </ListItemButton>
                 </List>
@@ -19,9 +23,9 @@ const Sidebar = ({ items, surveySection }) => {
             <Divider />
 
             <List>
-                {restItems.map(({ label, icon, onClick }, index) => (
-                    <ListItemButton key={index} onClick={onClick}>
-                        <ListItemIcon>{icon}</ListItemIcon>
+                {restItems.map(({ label, icon, onClick, path }, index) => (
+                    <ListItemButton key={index} onClick={onClick} selected={isSelected({ path })}>
+                    <ListItemIcon>{icon}</ListItemIcon>
                         <ListItemText primary={label} />
                     </ListItemButton>
                 ))}

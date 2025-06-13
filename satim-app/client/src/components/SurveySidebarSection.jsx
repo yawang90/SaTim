@@ -3,10 +3,14 @@ import {ListItemButton, ListItemIcon, ListItemText, Collapse, List} from "@mui/m
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React from 'react';
+import {useLocation} from "react-router-dom";
 
 export const SurveySidebarSection = ({ t, navigate, projectId, surveys }) => {
     const [open, setOpen] = React.useState(true);
-
+    const location = useLocation();
+    const isSurveySelected = (surveyId) => {
+        return location.pathname.includes(`/surveyDashboard/${projectId}/${surveyId}`);
+    };
     const handleClick = () => {
         setOpen(!open);
     };
@@ -27,8 +31,8 @@ export const SurveySidebarSection = ({ t, navigate, projectId, surveys }) => {
                             key={survey.id}
                             sx={{ pl: 4 }}
                             onClick={() =>
-                                navigate(`/surveyDashboard/${projectId}/${survey.id}`)
-                            }
+                                navigate(`/surveyDashboard/${projectId}/${survey.id}`)}
+                            selected={isSurveySelected(survey.id)}
                         >
                             <ListItemText primary={survey.name} />
                         </ListItemButton>

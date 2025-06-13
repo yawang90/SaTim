@@ -8,6 +8,7 @@ export const dashboardSidebar = (t, navigate) => [
         label: t("project.all"),
         icon: <DashboardIcon />,
         onClick: () => navigate('/dashboard'),
+        path: '/dashboard',
     },
 ];
 
@@ -16,6 +17,7 @@ export const settingsSidebar = (t, navigate, projectId) => [
         label: t("project.settings"),
         icon: <SettingsIcon />,
         onClick: () => navigate(`/projectSettings/${projectId}`),
+        path: `/projectSettings/${projectId}`,
     },
 ];
 
@@ -24,6 +26,7 @@ export const membersSidebar = (t, navigate, projectId) => [
         label: t("project.member"),
         icon: <GroupIcon />,
         onClick: () => navigate(`/projectMembers/${projectId}`),
+        path: `/projectMembers/${projectId}`,
     },
 ];
 
@@ -32,5 +35,6 @@ export const projectHomeSidebar = (t, navigate, projectId) => [
         label: t("project.overview"),
         icon: <HomeFilledIcon />,
         onClick: () => navigate(`/project/${projectId}`),
+        path: `/project/${projectId}`,
     },
 ];

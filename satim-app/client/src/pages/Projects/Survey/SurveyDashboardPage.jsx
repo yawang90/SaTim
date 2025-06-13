@@ -24,8 +24,8 @@ const SurveyDashboardPage = () => {
         ...membersSidebar(t, navigate, projectId),
     ];
     const surveys = [
-        { id: 'eval1', name: 'Erhebung 1' },
-        { id: 'eval2', name: 'Erhebung 2' },
+        { id: 'survey1', name: 'Erhebung 1' },
+        { id: 'survey2', name: 'Erhebung 2' },
     ];
     const {enqueueSnackbar} = useSnackbar();
     const generatedLink = 'https://satim.onrender.com/dashboard'; // Replace with dynamic value if needed
@@ -38,7 +38,7 @@ const SurveyDashboardPage = () => {
             title: 'Kompetenzen ',
             description: 'Ansicht der initialen Kompetenzen',
             icon: <ListIcon fontSize="medium" />,
-            onClick: () => alert('Upload clicked'),
+            onClick: () => navigate(`/surveyDashboard/${projectId}/${surveyId}/competences`)
         },
         {
             title: 'Layout anpassen',
