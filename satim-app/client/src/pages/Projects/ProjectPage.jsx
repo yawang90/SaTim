@@ -1,18 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-    Avatar,
-    Box,
-    Button,
-    CircularProgress,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    Grid,
-    TextField,
-    Toolbar,
-    Typography
-} from '@mui/material';
+import {Avatar, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField, Toolbar, Typography} from '@mui/material';
 import Sidebar from '../../components/Sidebar';
 import MainLayout from "../../layouts/MainLayout";
 import ProjectCard from "../../components/ProjectCard";
@@ -35,44 +22,28 @@ const ProjectPage = () => {
         ...settingsSidebar(t, navigate, projectId),
         ...membersSidebar(t, navigate, projectId),
     ];
-    const [openPREvalDialog, setOpenPREvalsDialog] = useState(false);
-    const [prevals, setprevals] = useState([]);
-    const [newPREvalsName, setNewPREvalsName] = useState('');
-    const [newPREvalsDescription, setNewPREvalsDescription] = useState('');
+    const [surveys, setSurveys] = useState([]);
     const [openMemberDialog, setOpenMemberDialog] = useState(false);
     const [newMemberName, setNewMemberName] = useState('');
-    const handleOpenPREvalsDialog = () => {
-        setOpenPREvalsDialog(true);
-    };
-    const handleClosePREvalsDialog = () => {
-        setOpenPREvalsDialog(false);
-        setNewPREvalsName('');
-        setNewPREvalsDescription('');
-    };
-    const handleSavePREvals = () => {
-        if (newPREvalsName.trim()) {
-            const newProject = {
-                id: Date.now(),
-                name: newPREvalsName,
-                description: newPREvalsDescription,
-            };
-            setprevals(prev => [...prev, newProject]);
-            handleClosePREvalsDialog();
-        }
-    };
-    const gridItems = prevals.map((preval) => (
-        <Grid item xs={12} sm={6} md={4} key={preval.id}>
-            <ProjectCard project={preval} displayName={preval.name} onClick={() => handleOpenPREvalPage(preval.id)}/>
+    const navigateSurveyCreation = () => {
+        navigate(`/survey/creation/${projectId}`)
+    }
+    const navigateSurveyDashboard = (surveyId) => {
+        navigate(`/survey/dashboard/${surveyId}`)
+    }
+
+    const gridItems = surveys.map((survey) => (
+        <Grid item xs={12} sm={6} md={4} key={survey.id}>
+            <ProjectCard project={survey} displayName={survey.name} onClick={() => navigateSurveyDashboard(survey.id)}/>
         </Grid>
     ));
+
     gridItems.push(
         <Grid item xs={12} sm={6} md={4} key="add">
-            <ProjectCard isAddCard addCardText={t("survey.create")}  displayName={""} onAdd={handleOpenPREvalsDialog}/>
+            <ProjectCard isAddCard addCardText={t("survey.create")}  displayName={""} onAdd={() => navigateSurveyCreation()}/>
         </Grid>
     );
-    const handleOpenPREvalPage = (surveyId) => {
-        navigate(`/survey/creation/${surveyId}`)
-    }
+
     const handleOpenMemberDialog = () => setOpenMemberDialog(true);
     const handleCloseMemberDialog = () => {
         setOpenMemberDialog(false);
@@ -184,17 +155,6 @@ const ProjectPage = () => {
                     <Button onClick={handleAddMember} variant="contained">
                         Hinzufügen
                     </Button>
-                </DialogActions>
-            </Dialog>
-            <Dialog open={openPREvalDialog} onClose={handleClosePREvalsDialog}>
-                <DialogTitle>{t("survey.create")}</DialogTitle>
-                <DialogContent>
-                    <TextField autoFocus margin="dense" label={t("survey.name")} fullWidth value={newPREvalsName} onChange={e => setNewPREvalsName(e.target.value)} inputProps={{ maxLength: 40 }} helperText={`${newPREvalsName.length}/40 Zeichen`}/>
-                    <TextField margin="dense" label={t("survey.description")} fullWidth multiline rows={4} value={newPREvalsDescription} onChange={e => setNewPREvalsDescription(e.target.value)} inputProps={{ maxLength: 255 }} helperText={`${newPREvalsDescription.length}/255 Zeichen`}/>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClosePREvalsDialog}>Abbrechen</Button>
-                    <Button onClick={handleSavePREvals} variant="contained">Speichern</Button>
                 </DialogActions>
             </Dialog>
         </MainLayout>

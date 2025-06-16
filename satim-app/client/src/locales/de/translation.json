@@ -9,6 +9,8 @@
   "deleteSuccess": "Erfolgreich gelöscht",
   "deleteFailure": "Etwas ist schief gegangen, bitte versuchen Sie das Löschen erneut.",
   "remove": "Entfernen",
+  "continue": "Weiter",
+  "back": "Zurück",
   "project": {
     "overview": "Projekt Übersicht",
     "create": "Projekt erstellen",
@@ -29,7 +31,12 @@
     "create": "Pre-requisites Erhebung erstellen",
     "name": "Name der Erhebung",
     "description": "Beschreibung",
-    "sidebarTitle": "Erhebungen"
+    "sidebarTitle": "Erhebungen",
+    "details": "Erhebungs Details",
+    "upload": "Datei hochladen",
+    "confirm": "Datei bestätigen",
+    "preview": "Bitte überprüfen Sie ihre hochgeladene Datei:",
+    "open": "Öffnen"
   },
   "surveyForm": {
     "title": "Kompetenz Vergleich",

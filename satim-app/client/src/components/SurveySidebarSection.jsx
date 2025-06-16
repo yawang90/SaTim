@@ -9,7 +9,7 @@ export const SurveySidebarSection = ({ t, navigate, projectId, surveys }) => {
     const [open, setOpen] = React.useState(true);
     const location = useLocation();
     const isSurveySelected = (surveyId) => {
-        return location.pathname.includes(`/survey/dashboard/${projectId}/${surveyId}`);
+        return location.pathname.includes(`/survey/dashboard/${surveyId}`);
     };
     const handleClick = () => {
         setOpen(!open);
@@ -31,7 +31,7 @@ export const SurveySidebarSection = ({ t, navigate, projectId, surveys }) => {
                             key={survey.id}
                             sx={{ pl: 4 }}
                             onClick={() =>
-                                navigate(`/survey/dashboard/${projectId}/${survey.id}`)}
+                                navigate(`/survey/dashboard/${survey.id}`)}
                             selected={isSurveySelected(survey.id)}
                         >
                             <ListItemText primary={survey.name} />

@@ -38,7 +38,7 @@ const SurveyDashboardPage = () => {
             title: 'Kompetenzen ',
             description: 'Ansicht der initialen Kompetenzen',
             icon: <ListIcon fontSize="medium" />,
-            onClick: () => navigate(`/survey/dashboard/${projectId}/${surveyId}/competences`)
+            onClick: () => navigate(`/survey/dashboard/${surveyId}/competences`)
         },
         {
             title: 'Layout anpassen',
