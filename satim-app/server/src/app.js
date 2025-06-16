@@ -3,6 +3,7 @@ import cors from 'cors';
 import userRoutes from './routes/userRoutes.js';
 import dotenv from 'dotenv';
 import projectsRoutes from "./routes/projectsRoutes.js";
+import surveysRoutes from "./routes/surveysRoutes.js";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/api/users', userRoutes);
 app.use('/api/projects', projectsRoutes);
+app.use('/api/surveys', surveysRoutes);
 
 export default app;
 

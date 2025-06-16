@@ -1,10 +1,4 @@
-import {
-    saveNewProject,
-    findAllProjects,
-    findProject,
-    editProject,
-    deleteProject,
-    findAllMembersForProject
+import {saveNewProject, findAllProjects, findProject, editProject, deleteProject, findAllMembersForProject
 } from '../services/projectService.js';
 import {projectValidationSchema} from '../validation/projectValidation.js';
 import {stringifyBigInts} from "./helper.js";

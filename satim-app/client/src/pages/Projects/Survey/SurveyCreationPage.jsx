@@ -1,20 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {
-    Box,
-    Button,
-    Collapse,
-    Paper,
-    Step,
-    StepLabel,
-    Stepper,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-    Toolbar,
-    Typography
-} from '@mui/material';
+import {Alert, Box, Button, Collapse, Paper, Step, StepLabel, Stepper, Table, TableBody, TableCell, TableHead, TableRow, Toolbar, Typography} from '@mui/material';
 import Sidebar from '../../../components/Sidebar';
 import MainLayout from '../../../layouts/MainLayout';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
@@ -22,6 +7,7 @@ import {parseExcelFile} from '../../../services/ExcelParser';
 import {dashboardSidebar} from '../../../components/SidebarConfig';
 import {useNavigate} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
+import {createSurvey} from "../../../services/SurveyService";
 
 const steps = ['Datei hochladen', 'Datei bestätigen'];
 
@@ -29,35 +15,31 @@ const SurveyCreationPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const fileInputRef = useRef(null);
-
+    const [file, setFile] = useState(null);
     const [fileRows, setFileRows] = useState([]);
     const [headers, setHeaders] = useState([]);
     const [activeStep, setActiveStep] = useState(0);
+    const [uploadStatus, setUploadStatus] = useState(null);
 
     const handleBoxClick = () => {
         fileInputRef.current.click();
     };
 
-    const handleSave = () => {
-        const projectId = 2;
-        const surveyId = 3;
-        navigate(`/survey/dashboard/${projectId}/${surveyId}`);
-    };
-
     const handleFileChange = async (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
+        const selectedFile = event.target.files[0];
+        if (!selectedFile) return;
 
-        if (!file.name.match(/\.(xls|xlsx)$/)) {
+        if (!selectedFile.name.match(/\.(xls|xlsx)$/)) {
             alert('Bitte eine gültige Excel-Datei hochladen (.xls oder .xlsx)');
             return;
         }
 
         try {
-            const parsedRows = await parseExcelFile(file);
+            const parsedRows = await parseExcelFile(selectedFile);
             if (parsedRows.length > 0) {
                 setHeaders(Object.keys(parsedRows[0]));
                 setFileRows(parsedRows);
+                setFile(selectedFile);
                 setActiveStep(1);
             } else {
                 setHeaders([]);
@@ -67,6 +49,27 @@ const SurveyCreationPage = () => {
         } catch (error) {
             console.error('Fehler beim Verarbeiten der Datei:', error);
             alert('Fehler beim Verarbeiten der Datei.');
+        }
+    };
+
+    const handleSave = async () => {
+        if (!file) {
+            setUploadStatus({ type: 'error', message: 'Keine Datei ausgewählt.' });
+            return;
+        }
+        try {
+            await createSurvey(file, 'Meine PR Erhebung');
+
+            setUploadStatus({ type: 'success', message: 'Datei erfolgreich hochgeladen!' });
+
+            setTimeout(() => {
+                const projectId = 2;
+                const surveyId = 3;
+                navigate(`/survey/dashboard/${projectId}/${surveyId}`);
+            }, 1500);
+        } catch (error) {
+            console.error('Upload failed:', error);
+            setUploadStatus({ type: 'error', message: 'Fehler beim Hochladen der Datei.' });
         }
     };
 
@@ -92,20 +95,7 @@ const SurveyCreationPage = () => {
                         <Paper
                             elevation={3}
                             onClick={handleBoxClick}
-                            sx={{
-                                width: 280,
-                                p: 4,
-                                m: 'auto',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                border: '2px dashed #ccc',
-                                borderRadius: 2,
-                                cursor: 'pointer',
-                                textAlign: 'center',
-                            }}
-                        >
+                            sx={{width: 280, p: 4, m: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', border: '2px dashed #ccc', borderRadius: 2, cursor: 'pointer', textAlign: 'center',}}>
                             <UploadFileIcon sx={{ fontSize: 50, color: 'primary.main' }} />
                             <Typography variant="body1" mt={2}>
                                 Klicken Sie hier, um eine Excel-Datei hochzuladen
@@ -127,6 +117,12 @@ const SurveyCreationPage = () => {
                                     Daten übernehmen
                                 </Button>
                             </Box>
+
+                            {uploadStatus && (
+                                <Alert severity={uploadStatus.type} sx={{ mt: 2 }}>
+                                    {uploadStatus.message}
+                                </Alert>
+                            )}
 
                             <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>
                                 Vorschau der hochgeladenen Datei:

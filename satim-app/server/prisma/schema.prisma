@@ -43,6 +43,38 @@ model project_access {
   @@id([project_id, user_id])
 }
 
+model survey {
+  id           String     @id @default(uuid())
+  title        String
+  description  String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  excelFileUrl String?
+  responses    response[]
+}
+
+model response {
+  id         String   @id @default(uuid())
+  sessionId  String   @unique
+  survey     survey   @relation(fields: [surveyId], references: [id])
+  surveyId   String
+  createdAt  DateTime @default(now())
+  answers    answer[]
+  @@index([surveyId])
+}
+
+model answer {
+  id         String   @id @default(uuid())
+  response   response @relation(fields: [responseId], references: [id])
+  responseId String
+  questionId String
+  choice     String
+  competencesFrom String[]
+  competencesTo String[]
+  @@index([responseId])
+  @@index([questionId])
+}
+
 enum changed_by {
   SATIM_APP
 }
@@ -57,4 +89,9 @@ enum user_role {
   ADMIN
   PARTICIPANT
   GENERAL
+}
+
+enum Choice {
+  yes
+  no
 }
