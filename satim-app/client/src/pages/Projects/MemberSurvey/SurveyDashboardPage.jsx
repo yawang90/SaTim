@@ -1,5 +1,5 @@
-import React from 'react';
-import {Box, Button, Paper, Stack, Toolbar, Tooltip, Typography} from '@mui/material';
+import React, {useEffect, useState} from 'react';
+import {Box, Button, CircularProgress, Paper, Stack, Toolbar, Tooltip, Typography} from '@mui/material';
 import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import MainLayout from "../../../layouts/MainLayout";
@@ -10,30 +10,40 @@ import IconButton from "@mui/material/IconButton";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ListIcon from '@mui/icons-material/List';
 import BarChartIcon from '@mui/icons-material/BarChart';
-import BrushIcon from '@mui/icons-material/Brush';
 import {SurveySidebarSection} from "../../../components/SurveySidebarSection";
+import SettingsIcon from '@mui/icons-material/Settings';
+import {getAllSurveysByProject, getSurveyById} from "../../../services/SurveyService";
+
+const APP_URL = import.meta.env.VITE_APP_URL;
 
 const SurveyDashboardPage = () => {
     const navigate = useNavigate();
     const {t} = useTranslation();
-    const {projectId, surveyId} = useParams();
+    const {surveyId} = useParams();
+    const [survey, setSurvey] = useState([]);
+    const [surveys, setSurveys] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [loadingSurveys, setLoadingSurveys] = useState(false);
+    const [projectId, setProjectId] = useState(false);
     const sidebarItems = [
         ...dashboardSidebar(t, navigate),
         ...projectHomeSidebar(t, navigate, projectId),
         ...settingsSidebar(t, navigate, projectId),
         ...membersSidebar(t, navigate, projectId),
     ];
-    const surveys = [
-        { id: 'survey1', name: 'Erhebung 1' },
-        { id: 'survey2', name: 'Erhebung 2' },
-    ];
     const {enqueueSnackbar} = useSnackbar();
-    const generatedLink = 'https://satim.onrender.com/dashboard'; // Replace with dynamic value if needed
+    const generatedLink = APP_URL + '/survey/form/' + surveyId;
     const handleCopy = () => {
         navigator.clipboard.writeText(generatedLink);
         enqueueSnackbar('Link copied to clipboard!', {variant: 'success'});
     };
     const buttons = [
+        {
+            title: 'Umfrage Resultate',
+            description: 'Übersicht der Befragungen',
+            icon: <BarChartIcon fontSize="medium" />,
+            onClick: () => alert('View clicked'),
+        },
         {
             title: 'Kompetenzen ',
             description: 'Ansicht der initialen Kompetenzen',
@@ -41,18 +51,41 @@ const SurveyDashboardPage = () => {
             onClick: () => navigate(`/survey/dashboard/${surveyId}/competences`)
         },
         {
-            title: 'Layout anpassen',
-            description: 'Ansicht der Umfrage anpassen',
-            icon: <BrushIcon fontSize="medium" />,
+            title: 'Einstellungen',
+            description: 'Erhebung anpassen',
+            icon: <SettingsIcon fontSize="medium" />,
             onClick: () => alert('Link clicked'),
-        },
-        {
-            title: 'Umfrage Resultate',
-            description: 'Übersicht der Befragungen',
-            icon: <BarChartIcon fontSize="medium" />,
-            onClick: () => alert('View clicked'),
-        },
+        }
     ];
+
+    useEffect(() => {
+        if (surveyId) {
+            setLoading(true);
+            getSurveyById(surveyId).then(data => {
+                setSurvey(data);
+                setProjectId(data.projectId);
+            }).catch(() => {
+                enqueueSnackbar('Fehler beim Laden der Umfrage', { variant: 'error' });
+            }).finally(() => setLoading(false));
+        }
+    }, [surveyId]);
+
+    useEffect(() => {
+        if (projectId) {
+            setLoadingSurveys(true);
+            getAllSurveysByProject({ projectId }).then(data => {
+                setSurveys(data);
+            }).finally(() => setLoadingSurveys(false));
+        }
+    }, [projectId]);
+
+    if (loading || loadingSurveys) {
+        return (
+            <Box sx={{height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center',}}>
+                <CircularProgress />
+            </Box>
+        );
+    }
 
     return (
         <MainLayout>
@@ -61,15 +94,14 @@ const SurveyDashboardPage = () => {
                     <SurveySidebarSection
                         t={t}
                         navigate={navigate}
-                        projectId={projectId}
                         surveys={surveys}
                     />
                 }/>
                 <Box component="main" sx={{flexGrow: 1, p: 3}}>
                     <Toolbar/>
                     <Box sx={{ px: 4 }}>
-                        <Typography variant="h4" gutterBottom>{"Meine Erhebung"}</Typography>
-                        <Typography variant="h6" gutterBottom>{"Beschreibung"}</Typography>
+                        <Typography variant="h4" gutterBottom>{survey.title}</Typography>
+                        <Typography variant="h6" gutterBottom>{survey.description}</Typography>
                     </Box>
                     <Box sx={{pb: 5}}></Box>
                     <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', px: 2 }}>

@@ -28,8 +28,8 @@
     "deleteConfirmation": "Wollen Sie das Projekt wirklich löschen? Dieser Vorgang kann nicht rückgängig gemacht werden und führt zum Löschen aller bereits durchgeführten Erhebungen. Falls Sie mit der Löschung einverstanden sind, geben Sie bitte den Projektnamen als Bestätigung ein:\n"
   },
   "survey": {
-    "title": "Pre-requisites Erhebung",
-    "create": "Pre-requisites Erhebung erstellen",
+    "title": "Prerequisites Erhebungen",
+    "create": "Neue Erhebung erstellen",
     "name": "Name der Erhebung",
     "description": "Beschreibung",
     "sidebarTitle": "Erhebungen",

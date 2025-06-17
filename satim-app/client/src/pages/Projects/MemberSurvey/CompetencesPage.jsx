@@ -29,7 +29,6 @@ const CompetencesPage = () => {
                     <SurveySidebarSection
                         t={t}
                         navigate={navigate}
-                        projectId={projectId}
                         surveys={surveys}
                     />
                 }/>

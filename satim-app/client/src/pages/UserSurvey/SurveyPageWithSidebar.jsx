@@ -4,7 +4,6 @@ import SurveySidebar from './SurveySidebar';
 import SurveyFormPage from './SurveyFormPage';
 
 export default function SurveyPageWithSidebar() {
-
     const questions = [ /* same hardcoded questions */ ];
     const [answers, setAnswers] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);

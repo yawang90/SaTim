@@ -1,31 +1,11 @@
 import React, {useRef, useState} from 'react';
-import {
-    Alert,
-    Backdrop,
-    Box,
-    Button,
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    Paper,
-    Step,
-    StepLabel,
-    Stepper,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-    TextField,
-    Toolbar,
-    Typography
-} from '@mui/material';
+import {Alert, Backdrop, Box, Button, Dialog, DialogContent, DialogTitle, Paper, Step, StepLabel, Stepper, Table, TableBody, TableCell, TableHead, TableRow, TextField, Toolbar, Typography} from '@mui/material';
 import Sidebar from '../../../components/Sidebar';
 import MainLayout from '../../../layouts/MainLayout';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import {parseExcelFile} from '../../../services/ExcelParser';
 import {dashboardSidebar} from '../../../components/SidebarConfig';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {createSurvey} from "../../../services/SurveyService";
 import FileOpenIcon from '@mui/icons-material/FileOpen';
@@ -36,6 +16,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 const SurveyCreationPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const {projectId} = useParams();
     const steps = [t('survey.details'), t('survey.upload'), t('survey.confirm')];
     const fileInputRef = useRef(null);
     const [file, setFile] = useState(null);
@@ -86,14 +67,9 @@ const SurveyCreationPage = () => {
         }
         try {
             setIsSaving(true);
-            await createSurvey(file, title, description);
-
+            const survey = await createSurvey(projectId, file, title, description);
             setUploadStatus({ type: 'success', message: 'Datei erfolgreich hochgeladen!' });
-
-            setTimeout(() => {
-                const surveyId = 3;
-                navigate(`/survey/dashboard/${surveyId}`);
-            }, 1500);
+            navigate(`/survey/dashboard/${survey.id}`);
         } catch (error) {
             console.error('Upload failed:', error);
             setUploadStatus({ type: 'error', message: 'Fehler beim Hochladen der Datei.' });

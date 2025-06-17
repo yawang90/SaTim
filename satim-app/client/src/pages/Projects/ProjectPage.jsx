@@ -8,6 +8,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {dashboardSidebar, membersSidebar, projectHomeSidebar, settingsSidebar} from "../../components/SidebarConfig";
 import {getProjectById, getProjectMembers} from "../../services/ProjectService";
+import {getAllSurveysByProject} from "../../services/SurveyService";
 
 const ProjectPage = () => {
     const navigate = useNavigate();
@@ -15,6 +16,8 @@ const ProjectPage = () => {
     const { projectId } = useParams();
     const [project, setProject] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [loadingMembers, setLoadingMembers] = useState(true);
+    const [loadingSurveys, setLoadingSurveys] = useState(true);
     const [members, setMembers] = useState([]);
     const sidebarItems = [
         ...dashboardSidebar(t, navigate),
@@ -34,7 +37,7 @@ const ProjectPage = () => {
 
     const gridItems = surveys.map((survey) => (
         <Grid item xs={12} sm={6} md={4} key={survey.id}>
-            <ProjectCard project={survey} displayName={survey.name} onClick={() => navigateSurveyDashboard(survey.id)}/>
+            <ProjectCard project={survey} displayName={survey.title} onClick={() => navigateSurveyDashboard(survey.id)}/>
         </Grid>
     ));
 
@@ -61,13 +64,14 @@ const ProjectPage = () => {
 
     useEffect(() => {
         const fetchMembers = async () => {
+            setLoadingMembers(true);
             try {
                 const data = await getProjectMembers({projectId});
                 setMembers(data);
             } catch (err) {
                 console.error("Failed to fetch project members:", err);
             } finally {
-                setLoading(false);
+                setLoadingMembers(false);
             }
         };
         fetchMembers();
@@ -75,6 +79,7 @@ const ProjectPage = () => {
 
     useEffect(() => {
         const fetchProject = async () => {
+            setLoading(true);
             try {
                 const data = await getProjectById({projectId});
                 setProject(data);
@@ -87,7 +92,22 @@ const ProjectPage = () => {
         fetchProject();
     }, [projectId]);
 
-    if (loading) {
+    useEffect(() => {
+        const fetchSurveys = async () => {
+            try {
+                setLoadingSurveys(true);
+                const data = await getAllSurveysByProject({projectId});
+                setSurveys(data);
+            } catch (error) {
+                console.error("Failed to fetch surveys:", error);
+            } finally {
+                setLoadingSurveys(false);
+            }
+        };
+        fetchSurveys();
+    }, [projectId]);
+
+    if (loading || loadingSurveys || loadingMembers) {
         return (
             <Box sx={{height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center',}}>
                 <CircularProgress />
@@ -137,7 +157,7 @@ const ProjectPage = () => {
                         </Box>
                     </Box>
                     <Box sx={{pb: 5}}></Box>
-                    <Box component="main" sx={{pt: 2, pb: 4, pl: 2}}>
+                    <Box component="main" sx={{pt: 2, pb: 4}}>
                         <Typography variant="h5" gutterBottom>{t("survey.title")}</Typography>
                             <Grid container spacing={3}>
                                 {gridItems}

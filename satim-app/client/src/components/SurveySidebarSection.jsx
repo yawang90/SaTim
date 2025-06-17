@@ -5,7 +5,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React from 'react';
 import {useLocation} from "react-router-dom";
 
-export const SurveySidebarSection = ({ t, navigate, projectId, surveys }) => {
+export const SurveySidebarSection = ({ t, navigate, surveys }) => {
     const [open, setOpen] = React.useState(true);
     const location = useLocation();
     const isSurveySelected = (surveyId) => {
@@ -34,7 +34,7 @@ export const SurveySidebarSection = ({ t, navigate, projectId, surveys }) => {
                                 navigate(`/survey/dashboard/${survey.id}`)}
                             selected={isSurveySelected(survey.id)}
                         >
-                            <ListItemText primary={survey.name} />
+                            <ListItemText primary={survey.title} />
                         </ListItemButton>
                     ))}
                 </List>

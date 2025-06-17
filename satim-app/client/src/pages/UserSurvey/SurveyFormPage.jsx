@@ -4,8 +4,10 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ComparisonCard from '../../components/ComparisonCard';
+import {useTranslation} from "react-i18next";
 
 export default function SurveyFormPage() {
+    const { t } = useTranslation();
     const questions = [
         {
             id: 'q1',
