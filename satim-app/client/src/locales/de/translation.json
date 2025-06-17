@@ -4,6 +4,7 @@
   "save": "Speichern",
   "cancel": "Abbrechen",
   "confirm": "Bestätigen",
+  "loading": "Loading...",
   "updateSuccess": "Änderungen übernommen",
   "updateFailure": "Etwas ist schief gegangen, bitte versuchen Sie es erneut.",
   "deleteSuccess": "Erfolgreich gelöscht",

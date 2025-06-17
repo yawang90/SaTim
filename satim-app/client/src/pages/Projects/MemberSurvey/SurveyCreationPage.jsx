@@ -1,5 +1,25 @@
 import React, {useRef, useState} from 'react';
-import {Alert, Box, Button, Dialog, DialogContent, DialogTitle, Paper, Step, StepLabel, Stepper, Table, TableBody, TableCell, TableHead, TableRow, TextField, Toolbar, Typography} from '@mui/material';
+import {
+    Alert,
+    Backdrop,
+    Box,
+    Button,
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    Paper,
+    Step,
+    StepLabel,
+    Stepper,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    TextField,
+    Toolbar,
+    Typography
+} from '@mui/material';
 import Sidebar from '../../../components/Sidebar';
 import MainLayout from '../../../layouts/MainLayout';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
@@ -11,6 +31,7 @@ import {createSurvey} from "../../../services/SurveyService";
 import FileOpenIcon from '@mui/icons-material/FileOpen';
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from '@mui/icons-material/Close';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const SurveyCreationPage = () => {
     const { t } = useTranslation();
@@ -25,6 +46,7 @@ const SurveyCreationPage = () => {
     const [tableOpen, setTableOpen] = useState(false);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [isSaving, setIsSaving] = useState(false);
 
     const handleBoxClick = () => {
         fileInputRef.current.click();
@@ -63,6 +85,7 @@ const SurveyCreationPage = () => {
             return;
         }
         try {
+            setIsSaving(true);
             await createSurvey(file, title, description);
 
             setUploadStatus({ type: 'success', message: 'Datei erfolgreich hochgeladen!' });
@@ -74,6 +97,8 @@ const SurveyCreationPage = () => {
         } catch (error) {
             console.error('Upload failed:', error);
             setUploadStatus({ type: 'error', message: 'Fehler beim Hochladen der Datei.' });
+        } finally {
+            setIsSaving(false);
         }
     };
 
@@ -96,6 +121,9 @@ const SurveyCreationPage = () => {
 
     return (
         <MainLayout>
+            <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={isSaving}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <Box sx={{ display: 'flex', width: '100%'}}>
                 <Sidebar items={dashboardSidebar(t, navigate)} />
                 <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
@@ -145,7 +173,7 @@ const SurveyCreationPage = () => {
                                 <Button variant="outlined" onClick={handleBack}>
                                     {t('back')}
                                 </Button>
-                                <Button variant="contained" onClick={handleSave}>
+                                <Button variant="contained" onClick={handleSave} disabled={isSaving}>
                                     {t('survey.confirm')}
                                 </Button>
                             </Box>

@@ -6,11 +6,11 @@ import NotFoundPage from '../pages/NotFoundPage';
 import WelcomePage from '../pages/WelcomePage';
 import LoggedInRoute from "./LoggedInRoute";
 import DashboardPage from "../pages/Dashboard";
-import SurveyCreationPage from "../pages/Projects/Survey/SurveyCreationPage";
+import SurveyCreationPage from "../pages/Projects/MemberSurvey/SurveyCreationPage";
 import SettingsPage from "../pages/Projects/SettingsPage";
 import MemberPage from "../pages/Projects/MemberPage";
-import SurveyDashboardPage from "../pages/Projects/Survey/SurveyDashboardPage";
-import CompetencesPage from "../pages/Projects/Survey/CompetencesPage";
+import SurveyDashboardPage from "../pages/Projects/MemberSurvey/SurveyDashboardPage";
+import CompetencesPage from "../pages/Projects/MemberSurvey/CompetencesPage";
 import SurveyPageWithSidebar from "../pages/UserSurvey/SurveyPageWithSidebar";
 
 function AppRoutes() {
