@@ -31,6 +31,7 @@ model users {
   changed_by     String?          @db.VarChar(255)
   project_access project_access[]
   projects       projects[]
+  response       response[]
 }
 
 model project_access {
@@ -63,6 +64,9 @@ model response {
   surveyId   String
   createdAt  DateTime @default(now())
   answers    answer[]
+  userId     Int?
+  user       users?   @relation(fields: [userId], references: [id])
+  @@index([userId])
   @@index([surveyId])
 }
 

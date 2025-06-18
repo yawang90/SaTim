@@ -32,3 +32,26 @@ export const getAllSurveysByProject = async ({projectId}) => {
     }
     return response.json();
 };
+
+export const getOrCreateResponse = async (surveyId, userId) => {
+/*    const formData = new FormData();
+    formData.append('surveyId', surveyId);
+    formData.append('userId', userId);
+
+    const response = await fetch(`${API_URL}/api/surveys/response/getOrCreate`, {
+        method: 'POST',
+        body: formData
+    });
+    if (!response.ok) {
+        throw new Error('Failed to get response');
+    }
+    return response.json();*/
+}
+
+export const getCompetences = async (surveyId) => {
+    const response = await fetch(`${API_URL}/api/surveys/competences/get?surveyId=${surveyId}`);
+    if (!response.ok) {
+        throw new Error('Failed to fetch survey');
+    }
+    return response.json();
+}

@@ -41,7 +41,13 @@
   },
   "surveyForm": {
     "title": "Kompetenz Vergleich",
-    "description": "Hier eine Erklärung"
+    "description": "Hier eine Erklärung",
+    "progress": "Übersicht Fortschritt",
+    "questions": "Fragen",
+    "competenceA": "Kompetenz A",
+    "competenceB": "Kompetenz B",
+    "next": "Weiter",
+    "back": "Zurück"
   },
   "user": {
     "name": "Name",

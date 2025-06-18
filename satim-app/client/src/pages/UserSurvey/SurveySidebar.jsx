@@ -2,9 +2,11 @@ import React, {useState} from 'react';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import {Box, Button, LinearProgress, Paper, Stack, Tooltip, Typography,} from '@mui/material';
+import {Box, Button, Paper, Stack, Tooltip, Typography,} from '@mui/material';
+import {useTranslation} from "react-i18next";
 
 export default function SurveySidebar() {
+    const { t } = useTranslation();
     const questions = [
         {
             id: 'q1',
@@ -27,8 +29,7 @@ export default function SurveySidebar() {
     ];
 
     const [answers, setAnswers] = useState([
-        { questionId: 'q1', choice: 'left' }, // answered Blue
-        // q2 unanswered
+        { questionId: 'q1', choice: 'left' },
     ]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
     const isCompleted = false;
@@ -50,18 +51,6 @@ export default function SurveySidebar() {
                 <Typography variant="h6" fontWeight="600" gutterBottom>
                     Survey Progress
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    {completedCount} of {questions.length} questions completed
-                </Typography>
-
-                <Box mt={1}>
-                    <LinearProgress
-                        variant="determinate"
-                        value={progressPercentage}
-                        sx={{height: 8, borderRadius: 5, backgroundColor: 'grey.300', '& .MuiLinearProgress-bar': {backgroundColor: 'primary.main',},}}
-                    />
-                </Box>
-
                 {isCompleted && (
                     <Paper
                         variant="outlined"
@@ -92,9 +81,7 @@ export default function SurveySidebar() {
                                 ) : (
                                     <RadioButtonUncheckedIcon color="disabled" />
                                 )
-                            } endIcon={
-                                isCurrentQuestion ? <ChevronRightIcon color="primary" /> : null
-                            }>
+                            } endIcon={isCurrentQuestion ? <ChevronRightIcon color="primary" /> : null}>
                                 <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', flexGrow: 1, overflow: 'hidden',}}>
                                     <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600 }}>
                                         Question {index + 1}
