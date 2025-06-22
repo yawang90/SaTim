@@ -12,6 +12,7 @@ import MemberPage from "../pages/Projects/MemberPage";
 import SurveyDashboardPage from "../pages/Projects/MemberSurvey/SurveyDashboardPage";
 import CompetencesPage from "../pages/Projects/MemberSurvey/CompetencesPage";
 import SurveyPageWithSidebar from "../pages/UserSurvey/SurveyPageWithSidebar";
+import ResultsPage from "../pages/Projects/MemberSurvey/ResultsPage";
 
 function AppRoutes() {
     return (
@@ -26,6 +27,7 @@ function AppRoutes() {
                     <Route path="/survey/creation/:projectId" element={<SurveyCreationPage/>}/>
                     <Route path="/survey/dashboard/:surveyId" element={<SurveyDashboardPage/>}/>
                     <Route path="/survey/dashboard/:surveyId/competences" element={<CompetencesPage/>}/>
+                    <Route path="/survey/dashboard/:projectId/:surveyId/results" element={<ResultsPage/>}/>
                 </Route>
                 <Route path="/survey/form/:surveyId" element={<SurveyPageWithSidebar/>}/>
                 <Route path="/" element={<WelcomePage/>}/>

@@ -42,7 +42,7 @@ const SurveyDashboardPage = () => {
             title: 'Umfrage Resultate',
             description: 'Übersicht der Befragungen',
             icon: <BarChartIcon fontSize="medium" />,
-            onClick: () => alert('View clicked'),
+            onClick: () => navigate(`/survey/dashboard/${projectId}/${surveyId}/results`)
         },
         {
             title: 'Kompetenzen ',
