@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import {Box, Button, Paper, Stack, Tooltip, Typography,} from '@mui/material';
+import {Box, Button, Paper, Stack, Typography,} from '@mui/material';
 import {useTranslation} from "react-i18next";
 
 export default function SurveySidebar() {
@@ -10,26 +10,26 @@ export default function SurveySidebar() {
     const questions = [
         {
             id: 'q1',
-            title: 'What is your favorite color?',
-            leftOption: { title: 'Blue' },
-            rightOption: { title: 'Red' },
+            title: 'Frage 1',
+            leftOption: { title: 'Ja' },
+            rightOption: { title: 'Nein' },
         },
         {
             id: 'q2',
-            title: 'Do you prefer cats or dogs?',
-            leftOption: { title: 'Cats' },
-            rightOption: { title: 'Dogs' },
+            title: 'Frage 1',
+            leftOption: { title: 'Ja' },
+            rightOption: { title: 'Nein' },
         },
         {
             id: 'q3',
-            title: 'Morning or evening person?',
-            leftOption: { title: 'Morning' },
-            rightOption: { title: 'Evening' },
+            title: 'Frage 1',
+            leftOption: { title: 'Ja' },
+            rightOption: { title: 'Nein' },
         },
     ];
 
     const [answers, setAnswers] = useState([
-        { questionId: 'q1', choice: 'left' },
+        { questionId: 'q1', choice: 'left' }, { questionId: 'q2', choice: 'right' }, { questionId: 'q3', choice: 'left' }
     ]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
     const isCompleted = false;
@@ -46,10 +46,10 @@ export default function SurveySidebar() {
     const progressPercentage = (completedCount / questions.length) * 100;
 
     return (
-        <Paper elevation={1} sx={{width: 320, height: '100vh', overflowY: 'auto', borderRight: 1, borderColor: 'divider', bgcolor: 'background.paper', px: 3, py: 3, display: 'flex', flexDirection: 'column',}}>
+        <Paper elevation={1} sx={{width: 320, overflowY: 'auto', borderRight: 1, borderColor: 'divider', bgcolor: 'background.paper', px: 3, py: 3, display: 'flex', flexDirection: 'column',}}>
             <Box mb={3}>
                 <Typography variant="h6" fontWeight="600" gutterBottom>
-                    Survey Progress
+                    Übersicht
                 </Typography>
                 {isCompleted && (
                     <Paper
@@ -65,7 +65,7 @@ export default function SurveySidebar() {
 
             <Box flexGrow={1} overflow="auto" sx={{ pr: 1 }}>
                 <Typography variant="subtitle2" fontWeight="600" mb={1}>
-                    Questions
+                    Liste der Fragen
                 </Typography>
 
                 <Stack spacing={1}>
@@ -84,13 +84,8 @@ export default function SurveySidebar() {
                             } endIcon={isCurrentQuestion ? <ChevronRightIcon color="primary" /> : null}>
                                 <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', flexGrow: 1, overflow: 'hidden',}}>
                                     <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600 }}>
-                                        Question {index + 1}
+                                        Frage {index + 1}
                                     </Typography>
-                                    <Tooltip title={question.title}>
-                                        <Typography variant="body2" noWrap sx={{ maxWidth: '220px', fontWeight: 500 }}>
-                                            {question.title}
-                                        </Typography>
-                                    </Tooltip>
                                     {answer && (
                                         <Box component="span" mt={0.5} px={1} py={0.25} bgcolor="primary.light" color="primary.dark" borderRadius={1} fontSize="0.75rem" fontWeight={600} sx={{ userSelect: 'none' }}>
                                             {answer.choice === 'left'

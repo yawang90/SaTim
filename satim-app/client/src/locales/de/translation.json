@@ -47,7 +47,9 @@
     "competenceA": "Kompetenz A",
     "competenceB": "Kompetenz B",
     "next": "Weiter",
-    "back": "Zurück"
+    "back": "Zurück",
+    "thanksTitle": "Vielen Dank, die Erhebung ist jetzt abgeschlossen",
+    "thanksSubtitle": "Sie können jeder Zeit die Antworten nochmals anpassen. Benutzen Sie hierfür die Übersicht der Fragen auf der linken Seite."
   },
   "user": {
     "name": "Name",

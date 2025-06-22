@@ -9,21 +9,22 @@ import {useParams} from "react-router-dom";
 
 export default function SurveyFormPage() {
     const {t} = useTranslation();
-    const { surveyId } = useParams();
-    const questions = [
+    const {surveyId} = useParams();
+    const questionLayout =
         {
             id: 'q1',
             title: 'Nehmen Sie an, dass ein/eine Schüler:in nicht über Kompetenz a verfügt. Ist es dann sehr wahrscheinlich, dass er/sie auch nicht über Kompetenz b verfügt?',
             leftOption: {title: 'Ja'},
             rightOption: {title: 'Nein'},
-        }
-    ];
-
+        };
     const [answers, setAnswers] = useState([]);
     const [competences, setCompetences] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const currentQuestion = questions[currentQuestionIndex];
-    const currentAnswer = answers.find((a) => a.questionId === currentQuestion.id);
+    const currentAnswer = answers[0];
+    const [competenceA, setCompetenceA] = useState(null);
+    const [competenceB, setCompetenceB] = useState(null);
+    const maxQuestions = 5;
+    const surveyCompleted = answers.length >= maxQuestions;
 
     const answerQuestion = (questionId, choice) => {
         setAnswers((prev) => {
@@ -38,13 +39,17 @@ export default function SurveyFormPage() {
     };
 
     const handleAnswer = (choice) => {
-        answerQuestion(currentQuestion.id, choice);
+        answerQuestion(1, choice);
     };
 
     const nextQuestion = () => {
-        if (currentQuestionIndex < questions.length - 1) {
-            setCurrentQuestionIndex((i) => i + 1);
+        const randomIndexA = Math.floor(Math.random() * competences.length);
+        let randomIndexB = Math.floor(Math.random() * competences.length);
+        while (randomIndexB === randomIndexA && competences.length > 1) {
+            randomIndexB = Math.floor(Math.random() * competences.length);
         }
+        setCompetenceA(competences[randomIndexA]);
+        setCompetenceB(competences[randomIndexB]);
     };
 
     const previousQuestion = () => {
@@ -69,12 +74,25 @@ export default function SurveyFormPage() {
             const column3 = competencesData[competencesKeys[2]];
             const column4 = competencesData[competencesKeys[3]];
             setCompetences(column3);
+            if (!competenceA && !competenceB) {
+                nextQuestion();
+            }
         }
         fetchCompetences();
     }, [competences]);
 
     return (
         <Box sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh', bgcolor: 'background.default',}}>
+            {surveyCompleted ? (
+                <Box textAlign="center" mt={10}>
+                    <Typography variant="h4" gutterBottom>
+                        {t("surveyForm.thanksTitle")}
+                    </Typography>
+                    <Typography variant="subtitle1">
+                        {t("surveyForm.thanksSubtitle")}
+                    </Typography>
+                </Box>
+            ) : (
             <Box sx={{flex: 1, bgcolor: 'grey.100', px: {xs: 2, md: 6}, py: {xs: 4, md: 8}, overflowY: 'auto',}}>
                 <Box maxWidth="900px" mx="auto">
                     <Box textAlign="left" mb={6}>
@@ -82,7 +100,7 @@ export default function SurveyFormPage() {
                             {t("surveyForm.competenceA")}
                         </Typography>
                         <Typography variant="subtitle1">
-                            {competences[0]}
+                            {competenceA}
                         </Typography>
                     </Box>
                     <Box textAlign="left" mb={6}>
@@ -90,12 +108,12 @@ export default function SurveyFormPage() {
                             {t("surveyForm.competenceB")}
                         </Typography>
                         <Typography variant="subtitle1">
-                            {competences[1]}
+                            {competenceB}
                         </Typography>
                     </Box>
                     <Box textAlign="center" mb={6}>
-                        <Typography variant="h4" fontWeight="bold" gutterBottom>
-                            {currentQuestion.title}
+                        <Typography variant="h5" fontWeight="bold" gutterBottom>
+                            {questionLayout.title}
                         </Typography>
                     </Box>
 
@@ -103,33 +121,34 @@ export default function SurveyFormPage() {
                         <Grid container spacing={4} mb={6}>
                             <Grid item xs={12} md={6}>
                                 <ComparisonCard
-                                    side="left"
-                                    title={currentQuestion.leftOption.title}
-                                    onSelect={() => handleAnswer('left')}
-                                    isSelected={currentAnswer?.choice === 'left'}
+                                    title={questionLayout.leftOption.title}
+                                    onSelect={() => handleAnswer('yes')}
+                                    isSelected={currentAnswer?.choice === 'yes'}
                                     isAnswered={!!currentAnswer}
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
                                 <ComparisonCard
-                                    side="right"
-                                    title={currentQuestion.rightOption.title}
-                                    onSelect={() => handleAnswer('right')}
-                                    isSelected={currentAnswer?.choice === 'right'}
+                                    title={questionLayout.rightOption.title}
+                                    onSelect={() => handleAnswer('no')}
+                                    isSelected={currentAnswer?.choice === 'no'}
                                     isAnswered={!!currentAnswer}
                                 />
                             </Grid>
                         </Grid></Box>
                     <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                        <Button variant="outlined" startIcon={<ChevronLeftIcon/>} onClick={previousQuestion} disabled={currentQuestionIndex === 0}>
+                        <Button variant="outlined" startIcon={<ChevronLeftIcon/>} onClick={previousQuestion}
+                                disabled={currentQuestionIndex === 0}>
                             {t("surveyForm.back")}
                         </Button>
-                        <Button variant="contained" endIcon={<ChevronRightIcon/>} onClick={nextQuestion} disabled={!currentAnswer}>
+                        <Button variant="contained" endIcon={<ChevronRightIcon/>} onClick={nextQuestion}
+                                disabled={!currentAnswer}>
                             {t("surveyForm.next")}
                         </Button>
                     </Box>
                 </Box>
             </Box>
+            )}
         </Box>
     );
 }
