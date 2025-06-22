@@ -42,13 +42,14 @@ const SurveyDashboardPage = () => {
             title: 'Umfrage Resultate',
             description: 'Übersicht der Befragungen',
             icon: <BarChartIcon fontSize="medium" />,
-            onClick: () => navigate(`/survey/dashboard/${projectId}/${surveyId}/results`)
+            onClick: () => navigate(`/survey/dashboard/${surveyId}/results`)
         },
         {
             title: 'Kompetenzen ',
             description: 'Ansicht der initialen Kompetenzen',
             icon: <ListIcon fontSize="medium" />,
-            onClick: () => navigate(`/survey/dashboard/${surveyId}/competences`)
+            onClick: () => alert('Link clicked'),
+     // onClick: () => navigate(`/survey/dashboard/${surveyId}/competences`)
         },
         {
             title: 'Einstellungen',

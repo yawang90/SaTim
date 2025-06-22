@@ -37,7 +37,11 @@
     "upload": "Datei hochladen",
     "confirm": "Datei bestätigen",
     "preview": "Bitte überprüfen Sie ihre hochgeladene Datei:",
-    "open": "Öffnen"
+    "open": "Öffnen",
+    "results": "Anzahl teilgenommen",
+    "result": "Ergebnisse der Erhebung: ",
+    "view": "Ansicht",
+    "export": "Export"
   },
   "surveyForm": {
     "title": "Kompetenz Vergleich",

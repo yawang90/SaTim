@@ -2,7 +2,7 @@ import {
     findAllSurveys,
     findCompetences,
     findOrCreateResponse,
-    findSurvey, saveAnswer,
+    findSurvey, getEnrichedResponses, getResponses, saveAnswer,
     storeSurveyExcel
 } from "../services/surveyService.js";
 import {nanoid} from 'nanoid';
@@ -57,6 +57,25 @@ export const getOrCreateResponse = async (req, res) => {
         return res.status(400).json({message: 'Missing surveyId'});
     }
     const response = await findOrCreateResponse({userId, surveyId});
+    res.json(response)
+}
+
+export const getResponsesBySurvey = async (req, res) => {
+    const {surveyId} = req.query;
+    if (!surveyId) {
+        return res.status(400).json({message: 'Missing surveyId'});
+    }
+    const response = await getResponses({surveyId});
+    res.json(response)
+}
+
+export const getEnrichedResponsesBySurvey = async (req, res) => {
+    const surveyId = req.query;
+    const responseId = req.query;
+    if (!surveyId || !responseId) {
+        return res.status(400).json({message: 'Missing surveyId or responseId'});
+    }
+    const response = await getEnrichedResponses(surveyId, responseId);
     res.json(response)
 }
 

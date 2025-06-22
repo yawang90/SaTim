@@ -83,7 +83,59 @@ export const findOrCreateResponse = async({userId, surveyId}) => {
     return newResponse;
 }
 
-export const findCompetences = async ({surveyId}) => {
+export const getResponses = async({surveyId}) => {
+    const existingResponses = await prisma.response.findMany({
+        where: {
+            surveyId: surveyId,
+        },
+        include: {
+            questions: true,
+        },
+    });
+    return existingResponses;
+}
+
+export const getEnrichedResponses = async ({surveyId, responseId}) => {
+    const surveyRows = await getSurveyData(surveyId);
+    console.log("Survey structure:", surveyRows);
+
+    const response = await prisma.response.findFirst({
+        where: {
+            id: responseId,      // response.id
+            surveyId: surveyId,  // response.surveyId
+        },
+        include: {
+            questions: true,
+        },
+    });
+
+
+    console.log("Fetched responses:", response);
+    const result = []
+    response.questions.forEach((question) => {
+        const resultQuestion = {};
+        const competencesFromIndex = surveyRows[0].findIndex((cell) => {
+            return String(cell).includes(question.competencesFrom);
+        });
+        const competencesToIndex = surveyRows[0].findIndex((cell) => {
+            return String(cell).includes(question.competencesTo);
+        });
+
+        if (competencesFromIndex !== -1) {
+            resultQuestion.competencesFromId = question.competencesFrom;
+            resultQuestion.competencesFrom = surveyRows[2][competencesFromIndex];
+        }
+        if (competencesToIndex !== -1) {
+            resultQuestion.competencesToId = question.competencesTo;
+            resultQuestion.competencesTo = surveyRows[2][competencesToIndex];
+        }
+        resultQuestion.answer = question.answer;
+        result.push(resultQuestion);
+    });
+    return result;
+};
+
+async function getSurveyData(surveyId) {
     const survey = await findSurvey(surveyId)
     if (!survey.excelFileUrl) {
         throw new Error('Failed to fetch Excel URL from Prisma');
@@ -96,13 +148,17 @@ export const findCompetences = async ({surveyId}) => {
     const buffer = await excelFile.arrayBuffer();
     const result = extractRows(buffer, 4);
     const rows = Object.values(result);
+    return rows;
+}
+
+export const findCompetences = async ({surveyId}) => {
+    const rows = await getSurveyData(surveyId);
     const merged = rows[0].map((_, index) => {
         return rows.reduce((acc, row, colIndex) => {
             acc[`col${colIndex + 1}`] = row[index];
             return acc;
         }, {});
     });
-
     return merged;
 }
 
@@ -117,7 +173,6 @@ export const saveAnswer = async ({responseId, answer, competencesFrom, competenc
     });
     return question;
 }
-
 
 function extractRows(buffer, numberRows) {
     const workbook = XLSX.read(buffer, {type: 'buffer'});
@@ -143,7 +198,6 @@ async function getExcelURLFromSupabase(filePath) {
         console.log(signedUrlError);
         throw new Error("Signed URL error");
     }
-
     const fileUrl = signedUrlData.signedUrl;
     return fileUrl;
 }

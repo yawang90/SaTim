@@ -27,7 +27,7 @@ function AppRoutes() {
                     <Route path="/survey/creation/:projectId" element={<SurveyCreationPage/>}/>
                     <Route path="/survey/dashboard/:surveyId" element={<SurveyDashboardPage/>}/>
                     <Route path="/survey/dashboard/:surveyId/competences" element={<CompetencesPage/>}/>
-                    <Route path="/survey/dashboard/:projectId/:surveyId/results" element={<ResultsPage/>}/>
+                    <Route path="/survey/dashboard/:surveyId/results" element={<ResultsPage/>}/>
                 </Route>
                 <Route path="/survey/form/:surveyId" element={<SurveyPageWithSidebar/>}/>
                 <Route path="/" element={<WelcomePage/>}/>

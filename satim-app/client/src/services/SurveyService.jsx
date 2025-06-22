@@ -69,3 +69,18 @@ export const saveAnswerToResponse = async (responseId, answer, competenceFrom, c
     return response.json();
 };
 
+export const getResponsesBySurvey = async (surveyId) => {
+    const response = await fetch(`${API_URL}/api/surveys/response/get?surveyId=${surveyId}`);
+    if (!response.ok) {
+        throw new Error('Failed to get response');
+    }
+    return response.json();
+}
+
+export const getEnrichedResponse = async (surveyId, responseId) => {
+    const response = await fetch(`${API_URL}/api/surveys/response/enriched/get?surveyId=${surveyId}&responseId=${responseId}`);
+    if (!response.ok) {
+        throw new Error('Failed to get response');
+    }
+    return response.json();
+}

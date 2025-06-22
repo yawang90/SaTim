@@ -2,8 +2,8 @@ import express from "express";
 import multer from 'multer';
 import {
     getAllSurveys,
-    getCompetences,
-    getOrCreateResponse,
+    getCompetences, getEnrichedResponsesBySurvey,
+    getOrCreateResponse, getResponsesBySurvey,
     getSurvey, saveAnswerToResponse,
     uploadSurveyExcel
 } from "../controllers/surveyController.js";
@@ -14,7 +14,10 @@ const upload = multer();
 router.post('/create', upload.single('file'), uploadSurveyExcel);
 router.get('/get', getSurvey);
 router.get('/getAll', getAllSurveys)
-router.get('/response/getOrCreate', getOrCreateResponse)
 router.get('/competences/get', getCompetences)
+router.get('/response/getOrCreate', getOrCreateResponse)
+router.get('/response/get', getResponsesBySurvey)
+router.get('/response/enriched/get', getEnrichedResponsesBySurvey)
 router.post('/response/saveAnswer', saveAnswerToResponse)
+
 export default router;
