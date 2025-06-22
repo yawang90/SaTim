@@ -4,7 +4,7 @@ import {
     getAllSurveys,
     getCompetences,
     getOrCreateResponse,
-    getSurvey,
+    getSurvey, saveAnswerToResponse,
     uploadSurveyExcel
 } from "../controllers/surveyController.js";
 
@@ -14,6 +14,7 @@ const upload = multer();
 router.post('/create', upload.single('file'), uploadSurveyExcel);
 router.get('/get', getSurvey);
 router.get('/getAll', getAllSurveys)
-router.post('/response/getOrCreate', getOrCreateResponse)
+router.get('/response/getOrCreate', getOrCreateResponse)
 router.get('/competences/get', getCompetences)
+router.post('/response/saveAnswer', saveAnswerToResponse)
 export default router;

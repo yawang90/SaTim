@@ -1,15 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, Grid, Typography} from '@mui/material';
+import {Box, Button, CircularProgress, Grid, Typography} from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ComparisonCard from '../../components/ComparisonCard';
 import {useTranslation} from "react-i18next";
-import {getCompetences, getOrCreateResponse} from "../../services/SurveyService";
+import {getCompetences, getOrCreateResponse, saveAnswerToResponse} from "../../services/SurveyService";
 import {useParams} from "react-router-dom";
 
 export default function SurveyFormPage() {
     const {t} = useTranslation();
     const {surveyId} = useParams();
+    const userId = localStorage.getItem('userId');
     const questionLayout =
         {
             id: 'q1',
@@ -17,30 +18,28 @@ export default function SurveyFormPage() {
             leftOption: {title: 'Ja'},
             rightOption: {title: 'Nein'},
         };
-    const [answers, setAnswers] = useState([]);
+    const [response, setResponse] = useState([]);
     const [competences, setCompetences] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const currentAnswer = answers[0];
-    const [competenceA, setCompetenceA] = useState(null);
-    const [competenceB, setCompetenceB] = useState(null);
+    const [currentChoice, setCurrentChoice] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [competenceFrom, setCompetenceFrom] = useState(null);
+    const [competenceTo, setCompetenceTo] = useState(null);
     const maxQuestions = 5;
-    const surveyCompleted = answers.length >= maxQuestions;
-
-    const answerQuestion = (questionId, choice) => {
-        setAnswers((prev) => {
-            const existingIndex = prev.findIndex((a) => a.questionId === questionId);
-            if (existingIndex >= 0) {
-                const copy = [...prev];
-                copy[existingIndex] = {questionId, choice};
-                return copy;
-            }
-            return [...prev, {questionId, choice}];
-        });
-    };
 
     const handleAnswer = (choice) => {
-        answerQuestion(1, choice);
+        setCurrentChoice(choice);
     };
+
+    const saveAnswer = async () => {
+        try {
+            setLoading(true);
+            await saveAnswerToResponse(response.id, currentChoice, competenceFrom.col1, competenceTo.col1);
+            nextQuestion();
+        } finally {
+            setLoading(false);
+        }
+    }
 
     const nextQuestion = () => {
         const randomIndexA = Math.floor(Math.random() * competences.length);
@@ -48,8 +47,8 @@ export default function SurveyFormPage() {
         while (randomIndexB === randomIndexA && competences.length > 1) {
             randomIndexB = Math.floor(Math.random() * competences.length);
         }
-        setCompetenceA(competences[randomIndexA]);
-        setCompetenceB(competences[randomIndexB]);
+        setCompetenceFrom(competences[randomIndexA]);
+        setCompetenceTo(competences[randomIndexB]);
     };
 
     const previousQuestion = () => {
@@ -59,31 +58,52 @@ export default function SurveyFormPage() {
     };
 
     useEffect(() => {
+        const setFromToCompetences = async () => {
+            if (!competenceFrom && !competenceTo) {
+                nextQuestion();
+            }
+        }
+        setFromToCompetences();
+    }, [competences]);
+
+    useEffect(() => {
         const getResponse = async () => {
-            await getOrCreateResponse();
+            const responseData = await getOrCreateResponse(surveyId, userId);
+            setResponse(responseData);
+            if (responseData.questions.length === 0) {
+                // TODO
+            } else {
+                setCurrentQuestionIndex(responseData.questions.length - 1)
+            }
         }
         getResponse();
     }, []);
 
     useEffect(() => {
         const fetchCompetences = async () => {
-            const competencesData = await getCompetences(surveyId);
-            const competencesKeys = Object.keys(competencesData);
-            const column1 = competencesData[competencesKeys[0]];
-            const column2 = competencesData[competencesKeys[1]];
-            const column3 = competencesData[competencesKeys[2]];
-            const column4 = competencesData[competencesKeys[3]];
-            setCompetences(column3);
-            if (!competenceA && !competenceB) {
-                nextQuestion();
+            try {
+                setLoading(true);
+                const competencesData = await getCompetences(surveyId);
+                setCompetences(competencesData);
+            } finally {
+                setLoading(false)
             }
         }
         fetchCompetences();
-    }, [competences]);
+    }, []);
+
+
+    if (loading) {
+        return (
+            <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                <CircularProgress />
+            </Box>
+        );
+    }
 
     return (
         <Box sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh', bgcolor: 'background.default',}}>
-            {surveyCompleted ? (
+            {response?.questions?.length >= maxQuestions ? (
                 <Box textAlign="center" mt={10}>
                     <Typography variant="h4" gutterBottom>
                         {t("surveyForm.thanksTitle")}
@@ -100,7 +120,7 @@ export default function SurveyFormPage() {
                             {t("surveyForm.competenceA")}
                         </Typography>
                         <Typography variant="subtitle1">
-                            {competenceA}
+                            {competenceFrom?.col3}
                         </Typography>
                     </Box>
                     <Box textAlign="left" mb={6}>
@@ -108,7 +128,7 @@ export default function SurveyFormPage() {
                             {t("surveyForm.competenceB")}
                         </Typography>
                         <Typography variant="subtitle1">
-                            {competenceB}
+                            {competenceTo?.col3}
                         </Typography>
                     </Box>
                     <Box textAlign="center" mb={6}>
@@ -122,17 +142,17 @@ export default function SurveyFormPage() {
                             <Grid item xs={12} md={6}>
                                 <ComparisonCard
                                     title={questionLayout.leftOption.title}
-                                    onSelect={() => handleAnswer('yes')}
-                                    isSelected={currentAnswer?.choice === 'yes'}
-                                    isAnswered={!!currentAnswer}
+                                    onSelect={() => handleAnswer('Ja')}
+                                    isSelected={currentChoice === 'Ja'}
+                                    isAnswered={!!currentChoice}
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
                                 <ComparisonCard
                                     title={questionLayout.rightOption.title}
-                                    onSelect={() => handleAnswer('no')}
-                                    isSelected={currentAnswer?.choice === 'no'}
-                                    isAnswered={!!currentAnswer}
+                                    onSelect={() => handleAnswer('Nein')}
+                                    isSelected={currentChoice === 'Nein'}
+                                    isAnswered={!!currentChoice}
                                 />
                             </Grid>
                         </Grid></Box>
@@ -141,8 +161,7 @@ export default function SurveyFormPage() {
                                 disabled={currentQuestionIndex === 0}>
                             {t("surveyForm.back")}
                         </Button>
-                        <Button variant="contained" endIcon={<ChevronRightIcon/>} onClick={nextQuestion}
-                                disabled={!currentAnswer}>
+                        <Button variant="contained" endIcon={<ChevronRightIcon/>} onClick={saveAnswer} disabled={!currentChoice}>
                             {t("surveyForm.next")}
                         </Button>
                     </Box>

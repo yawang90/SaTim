@@ -51,6 +51,74 @@ export const findAllSurveys = async ({projectId}) => {
     });
 }
 
+export const findOrCreateResponse = async({userId, surveyId}) => {
+    const user = Number(userId);
+
+    const existingResponse = await prisma.response.findFirst({
+        where: {
+            surveyId: surveyId,
+            userId: user,
+        },
+        include: {
+            questions: true,
+        },
+    });
+
+    if (existingResponse) {
+        return existingResponse;
+    }
+
+    const newResponse = await prisma.response.create({
+        data: {
+            survey: {
+                connect: { id: surveyId },
+            },
+            user: { connect: { id: user } },
+        },
+        include: {
+            questions: true,
+        },
+    });
+
+    return newResponse;
+}
+
+export const findCompetences = async ({surveyId}) => {
+    const survey = await findSurvey(surveyId)
+    if (!survey.excelFileUrl) {
+        throw new Error('Failed to fetch Excel URL from Prisma');
+    }
+    const fileUrl = await getExcelURLFromSupabase(survey.excelFileUrl);
+    const excelFile = await fetch(fileUrl);
+    if (!excelFile.ok) {
+        throw new Error('Failed to fetch Excel file from Supabase');
+    }
+    const buffer = await excelFile.arrayBuffer();
+    const result = extractRows(buffer, 4);
+    const rows = Object.values(result);
+    const merged = rows[0].map((_, index) => {
+        return rows.reduce((acc, row, colIndex) => {
+            acc[`col${colIndex + 1}`] = row[index];
+            return acc;
+        }, {});
+    });
+
+    return merged;
+}
+
+export const saveAnswer = async ({responseId, answer, competencesFrom, competencesTo}) => {
+    const question = await prisma.question.create({
+        data: {
+            response: { connect: { id: responseId } },
+            answer,
+            competencesFrom: Array.isArray(competencesFrom) ? competencesFrom : [competencesFrom],
+            competencesTo: Array.isArray(competencesTo) ? competencesTo : [competencesTo]
+        },
+    });
+    return question;
+}
+
+
 function extractRows(buffer, numberRows) {
     const workbook = XLSX.read(buffer, {type: 'buffer'});
     const sheetName = workbook.SheetNames[0];
@@ -78,20 +146,4 @@ async function getExcelURLFromSupabase(filePath) {
 
     const fileUrl = signedUrlData.signedUrl;
     return fileUrl;
-}
-
-export const findCompetences = async ({surveyId}) => {
-    const survey = await findSurvey(surveyId)
-    if (!survey.excelFileUrl) {
-        throw new Error('Failed to fetch Excel URL from Prisma');
-    }
-    const fileUrl = await getExcelURLFromSupabase(survey.excelFileUrl);
-    const excelFile = await fetch(fileUrl);
-    if (!excelFile.ok) {
-        throw new Error('Failed to fetch Excel file from Supabase');
-    }
-    const buffer = await excelFile.arrayBuffer();
-    const result = extractRows(buffer, 4);
-
-    return result;
 }

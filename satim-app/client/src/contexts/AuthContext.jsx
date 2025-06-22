@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = () => {
         const token = localStorage.getItem('token');
-        const storedUserId = localStorage.getItem('userId');  // Store userId after login
+        const storedUserId = localStorage.getItem('userId');
         if (token && storedUserId) {
             setIsLoggedIn(true);
             setUserId(storedUserId);

@@ -59,27 +59,24 @@ model survey {
 
 model response {
   id         String   @id @default(uuid())
-  sessionId  String   @unique
   survey     survey   @relation(fields: [surveyId], references: [id])
   surveyId   String
   createdAt  DateTime @default(now())
-  answers    answer[]
-  userId     Int?
-  user       users?   @relation(fields: [userId], references: [id])
+  questions  question[]
+  userId     Int
+  user       users   @relation(fields: [userId], references: [id])
   @@index([userId])
   @@index([surveyId])
 }
 
-model answer {
+model question {
   id         String   @id @default(uuid())
   response   response @relation(fields: [responseId], references: [id])
   responseId String
-  questionId String
-  choice     String
+  answer     choice
   competencesFrom String[]
   competencesTo String[]
   @@index([responseId])
-  @@index([questionId])
 }
 
 enum changed_by {
@@ -98,7 +95,7 @@ enum user_role {
   GENERAL
 }
 
-enum Choice {
-  yes
-  no
+enum choice {
+  Ja
+  Nein
 }

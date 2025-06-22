@@ -34,24 +34,38 @@ export const getAllSurveysByProject = async ({projectId}) => {
 };
 
 export const getOrCreateResponse = async (surveyId, userId) => {
-/*    const formData = new FormData();
-    formData.append('surveyId', surveyId);
-    formData.append('userId', userId);
-
-    const response = await fetch(`${API_URL}/api/surveys/response/getOrCreate`, {
-        method: 'POST',
-        body: formData
-    });
+    const response = await fetch(`${API_URL}/api/surveys/response/getOrCreate?surveyId=${surveyId}&userId=${userId}`);
     if (!response.ok) {
         throw new Error('Failed to get response');
     }
-    return response.json();*/
+    return response.json();
 }
 
 export const getCompetences = async (surveyId) => {
     const response = await fetch(`${API_URL}/api/surveys/competences/get?surveyId=${surveyId}`);
     if (!response.ok) {
-        throw new Error('Failed to fetch survey');
+        throw new Error('Failed to fetch competences');
     }
     return response.json();
 }
+
+export const saveAnswerToResponse = async (responseId, answer, competenceFrom, competenceTo) => {
+    const response = await fetch(`${API_URL}/api/surveys/response/saveAnswer`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json',},
+        body: JSON.stringify({
+            responseId,
+            answer,
+            competencesFrom: competenceFrom,
+            competencesTo: competenceTo,
+        }),
+    });
+
+    if (!response.ok) {
+        const err = await response.text();
+        throw new Error(`Failed to save answer: ${err}`);
+    }
+
+    return response.json();
+};
+

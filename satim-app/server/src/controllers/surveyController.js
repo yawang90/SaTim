@@ -1,4 +1,10 @@
-import {findAllSurveys, findCompetences, findSurvey, storeSurveyExcel} from "../services/surveyService.js";
+import {
+    findAllSurveys,
+    findCompetences,
+    findOrCreateResponse,
+    findSurvey, saveAnswer,
+    storeSurveyExcel
+} from "../services/surveyService.js";
 import {nanoid} from 'nanoid';
 import * as XLSX from 'xlsx';
 
@@ -43,7 +49,15 @@ export const getAllSurveys = async (req, res) => {
 }
 
 export const getOrCreateResponse = async (req, res) => {
-
+    const {userId, surveyId} = req.query;
+    if (!userId) {
+        return res.status(400).json({message: 'Missing userId'});
+    }
+    if (!surveyId) {
+        return res.status(400).json({message: 'Missing surveyId'});
+    }
+    const response = await findOrCreateResponse({userId, surveyId});
+    res.json(response)
 }
 
 export const addUniqueTechnicalId = (buffer) => {
@@ -75,3 +89,17 @@ export const getCompetences = async (req, res) => {
     const competences = await findCompetences({surveyId});
     res.json(competences)
 }
+
+export const saveAnswerToResponse = async (req, res) => {
+    try {
+        const { responseId, answer, competencesFrom, competencesTo } = req.body;
+        if (!responseId || !answer) {
+            return res.status(400).json({ message: 'Missing or invalid input data' });
+        }
+        const question = await saveAnswer({responseId, answer, competencesFrom, competencesTo});
+        return res.status(201).json(question);
+    } catch (error) {
+        console.error('Error creating question:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
