@@ -1,18 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {
-    Box,
-    Button,
-    Card,
-    CardContent,
-    CircularProgress,
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    Grid,
-    Toolbar,
-    Typography,
-} from "@mui/material";
-import {GetApp, Visibility} from "@mui/icons-material";
+import {Box, Button, Card, CardContent, CircularProgress, Dialog, DialogContent, DialogTitle, Grid, Toolbar, Typography,} from "@mui/material";
+import {GetApp, Timeline, Visibility} from "@mui/icons-material";
 import Sidebar from "../../../components/Sidebar";
 import {SurveySidebarSection} from "../../../components/SurveySidebarSection";
 import MainLayout from "../../../layouts/MainLayout";
@@ -21,12 +9,17 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {
     getAllSurveysByProject,
-    getEnrichedResponse, getResponseExcel,
+    getEnrichedResponse,
+    getResponseExcel,
     getResponsesBySurvey,
     getSurveyById
 } from "../../../services/SurveyService";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import {ReactFlow, ReactFlowProvider} from "reactflow";
+import 'reactflow/dist/style.css';
+import {getTreeLayoutedElements} from "../../../components/GraphLayout";
+import {CustomNode} from "../../../components/Node";
 
 const ResultsPage = () => {
     const navigate = useNavigate();
@@ -42,7 +35,10 @@ const ResultsPage = () => {
     const [responses, setResponses] = useState([]);
     const [selectedResponse, setSelectedResponse] = useState(null);
     const [dialogOpen, setDialogOpen] = useState(false);
-
+    const [graphOpen, setGraphOpen] = useState(false);
+    const [nodes, setNodes] = useState([]);
+    const [edges, setEdges] = useState([]);
+    const nodeTypes = {custom: CustomNode};
     const handleOpenDialog = async (response) => {
         setLoadingResponses(true);
         const enrichedResponse = await getEnrichedResponse(response.surveyId, response.id);
@@ -50,9 +46,24 @@ const ResultsPage = () => {
         setLoadingResponses(false);
         setDialogOpen(true);
     };
+
     const handleCloseDialog = () => {
         setDialogOpen(false);
         setSelectedResponse(null);
+    };
+
+    const handleOpenGraph = async (response) => {
+        setLoadingResponses(true);
+        const enrichedResponse = await getEnrichedResponse(response.surveyId, response.id);
+        setLoadingResponses(false);
+        transformToGraph(enrichedResponse)
+        setGraphOpen(true);
+    }
+
+    const handleCloseGraph = () => {
+        setGraphOpen(false);
+        setNodes([]);
+        setEdges([]);
     };
 
     const exportResponse = async(response) => {
@@ -70,6 +81,46 @@ const ResultsPage = () => {
             console.error('Error downloading file:', error);
         }
     }
+    const transformToGraph = (data ) => {
+            const nodeMap = new Map();
+            const edges = [];
+            let nodeCounter = 0;
+
+            data.forEach(item => {
+                const fromId = item.competencesFromId[0];
+                const toId = item.competencesToId[0];
+
+                if (item.answer === 'Ja') {
+                    if (!nodeMap.has(fromId)) {
+                        nodeMap.set(fromId, {
+                            id: fromId,
+                            type: 'custom',
+                            data: { label: item.competencesFrom },
+                            position: { x: 0, y: 0 }
+                        });
+                        nodeCounter = nodeCounter + 1;
+                    }
+                    if (!nodeMap.has(toId)) {
+                        nodeMap.set(toId, {
+                            id: toId,
+                            type: 'custom',
+                            data: { label: item.competencesTo },
+                            position: { x: 0, y: 0}
+                        });
+                        nodeCounter = nodeCounter + 1;
+                    }
+                    edges.push({
+                        id: `${fromId}-${toId}`,
+                        source: fromId,
+                        target: toId,
+                        animated: true,
+                    });
+                }
+            });
+        const { nodes: layoutedNodes, edges: layoutedEdges } = getTreeLayoutedElements(Array.from(nodeMap.values()), edges, 'TB');
+        setNodes(layoutedNodes);
+        setEdges(layoutedEdges);
+    };
 
     useEffect(() => {
         if (surveyId) {
@@ -169,6 +220,7 @@ const ResultsPage = () => {
                                                 <Box display="flex" gap={1}>
                                                     <Button variant="outlined" startIcon={<Visibility />} onClick={() => handleOpenDialog(response)}>{t("survey.view")}</Button>
                                                     <Button variant="outlined" startIcon={<GetApp />} onClick={() => exportResponse(response)}>{t("survey.export")}</Button>
+                                                    <Button variant="outlined" startIcon={<Timeline />} onClick={() => handleOpenGraph(response)}>{t("survey.analysis")}</Button>
                                                 </Box>
                                             </Box>
                                         </CardContent>
@@ -198,6 +250,16 @@ const ResultsPage = () => {
                     ))}
                 </DialogContent>
             </Dialog>
+            <Dialog open={graphOpen} onClose={handleCloseGraph} maxWidth="sm" fullScreen>
+                <DialogTitle>{t("survey.analysis")}</DialogTitle>
+                <DialogContent dividers sx={{ p: 0 }}>
+                    <IconButton aria-label="close" onClick={() => handleCloseGraph()} sx={{position: 'absolute', right: 8, top: 8, color: (theme) => theme.palette.grey[500],}} size="large"><CloseIcon/></IconButton>
+                    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+                        <ReactFlowProvider><ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView /></ReactFlowProvider>
+                    </div>
+                </DialogContent>
+            </Dialog>
+
         </MainLayout>
     );
 }

@@ -41,7 +41,8 @@
     "results": "Anzahl teilgenommen",
     "result": "Ergebnisse der Erhebung: ",
     "view": "Ansicht",
-    "export": "Export"
+    "export": "Export",
+    "analysis": "Analyse"
   },
   "surveyForm": {
     "title": "Kompetenz Vergleich",
