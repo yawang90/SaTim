@@ -21,7 +21,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {
     getAllSurveysByProject,
-    getEnrichedResponse,
+    getEnrichedResponse, getResponseExcel,
     getResponsesBySurvey,
     getSurveyById
 } from "../../../services/SurveyService";
@@ -44,14 +44,32 @@ const ResultsPage = () => {
     const [dialogOpen, setDialogOpen] = useState(false);
 
     const handleOpenDialog = async (response) => {
+        setLoadingResponses(true);
         const enrichedResponse = await getEnrichedResponse(response.surveyId, response.id);
         setSelectedResponse(enrichedResponse);
+        setLoadingResponses(false);
         setDialogOpen(true);
     };
     const handleCloseDialog = () => {
         setDialogOpen(false);
         setSelectedResponse(null);
     };
+
+    const exportResponse = async(response) => {
+        try {
+            const excelResult = await getResponseExcel(response.id);
+            const url = window.URL.createObjectURL(excelResult);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'qmatrix.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Error downloading file:', error);
+        }
+    }
 
     useEffect(() => {
         if (surveyId) {
@@ -150,7 +168,7 @@ const ResultsPage = () => {
                                                 </Box>
                                                 <Box display="flex" gap={1}>
                                                     <Button variant="outlined" startIcon={<Visibility />} onClick={() => handleOpenDialog(response)}>{t("survey.view")}</Button>
-                                                    <Button variant="outlined" startIcon={<GetApp />}>{t("survey.export")}</Button>
+                                                    <Button variant="outlined" startIcon={<GetApp />} onClick={() => exportResponse(response)}>{t("survey.export")}</Button>
                                                 </Box>
                                             </Box>
                                         </CardContent>

@@ -84,3 +84,12 @@ export const getEnrichedResponse = async (surveyId, responseId) => {
     }
     return response.json();
 }
+
+export const getResponseExcel = async (responseId) => {
+    const response = await fetch(`${API_URL}/api/surveys/response/excel/get?responseId=${responseId}`);
+    if (!response.ok) {
+        throw new Error('Failed to get response');
+    }
+    const blob = await response.blob();
+    return blob;
+}

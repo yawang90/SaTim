@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import prisma from "../config/prismaClient.js";
 import * as XLSX from "xlsx";
+import ExcelJS from 'exceljs';
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -97,20 +98,15 @@ export const getResponses = async({surveyId}) => {
 
 export const getEnrichedResponses = async ({surveyId, responseId}) => {
     const surveyRows = await getSurveyData(surveyId);
-    console.log("Survey structure:", surveyRows);
-
     const response = await prisma.response.findFirst({
         where: {
-            id: responseId,      // response.id
-            surveyId: surveyId,  // response.surveyId
+            id: responseId,
+            surveyId: surveyId,
         },
         include: {
             questions: true,
         },
     });
-
-
-    console.log("Fetched responses:", response);
     const result = []
     response.questions.forEach((question) => {
         const resultQuestion = {};
@@ -172,6 +168,41 @@ export const saveAnswer = async ({responseId, answer, competencesFrom, competenc
         },
     });
     return question;
+}
+
+export const createExcelFromResponse = async ({responseId}) => {
+    const response = await prisma.response.findFirst({
+        where: {
+            id: responseId
+        },
+        include: {
+            questions: true,
+        },
+    });
+    const competencesRows = await getSurveyData(response.surveyId);
+    const ids = competencesRows[0];
+    const competencesIds = competencesRows[1];
+
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet('Matrix');
+    sheet.addRow(['', ...competencesIds]);
+
+    ids.forEach((rowId) => {
+        const index = ids.indexOf(rowId);
+        const rowValues = [competencesIds[index]];
+
+        ids.forEach((colId) => {
+            const match = response.questions.some((q) =>
+                q.competencesFrom.includes(rowId) && q.competencesTo.includes(colId) && q.answer === 'Ja'
+            );
+            rowValues.push(match ? 1 : 0);
+        });
+
+        sheet.addRow(rowValues);
+    });
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    return buffer;
 }
 
 function extractRows(buffer, numberRows) {

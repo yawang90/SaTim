@@ -1,4 +1,5 @@
 import {
+    createExcelFromResponse,
     findAllSurveys,
     findCompetences,
     findOrCreateResponse,
@@ -122,3 +123,14 @@ export const saveAnswerToResponse = async (req, res) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 };
+
+export const getResponseExcel = async (req, res) => {
+    const responseId = req.query;
+    if (!responseId) {
+        return res.status(400).json({message: 'Missing responseId'});
+    }
+    const response = await createExcelFromResponse(responseId);
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename="qmatrix.xlsx"');
+    res.send(response);
+}

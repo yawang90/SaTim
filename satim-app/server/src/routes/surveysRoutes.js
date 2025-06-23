@@ -3,7 +3,7 @@ import multer from 'multer';
 import {
     getAllSurveys,
     getCompetences, getEnrichedResponsesBySurvey,
-    getOrCreateResponse, getResponsesBySurvey,
+    getOrCreateResponse, getResponseExcel, getResponsesBySurvey,
     getSurvey, saveAnswerToResponse,
     uploadSurveyExcel
 } from "../controllers/surveyController.js";
@@ -19,5 +19,6 @@ router.get('/response/getOrCreate', getOrCreateResponse)
 router.get('/response/get', getResponsesBySurvey)
 router.get('/response/enriched/get', getEnrichedResponsesBySurvey)
 router.post('/response/saveAnswer', saveAnswerToResponse)
+router.get('/response/excel/get', getResponseExcel)
 
 export default router;
