@@ -43,7 +43,9 @@
     "view": "Ansicht",
     "export": "Export",
     "analysis": "Analyse",
-    "overview": "Übersicht"
+    "overview": "Übersicht",
+    "register": "Für das beantworten der Umfrage melden sie sich bitte an oder registrieren Sie sich",
+    "registerTitle": "Anmeldung erforderlich"
   },
   "surveyForm": {
     "title": "Kompetenz Vergleich",
@@ -55,7 +57,7 @@
     "next": "Weiter",
     "back": "Zurück",
     "thanksTitle": "Vielen Dank, die Erhebung ist jetzt abgeschlossen",
-    "thanksSubtitle": "Sie können jeder Zeit die Antworten nochmals anpassen. Benutzen Sie hierfür die Übersicht der Fragen auf der linken Seite."
+    "thanksSubtitle": ""
   },
   "user": {
     "name": "Name",

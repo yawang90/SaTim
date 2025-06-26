@@ -11,7 +11,7 @@ import SettingsPage from "../pages/Projects/SettingsPage";
 import MemberPage from "../pages/Projects/MemberPage";
 import SurveyDashboardPage from "../pages/Projects/MemberSurvey/SurveyDashboardPage";
 import CompetencesPage from "../pages/Projects/MemberSurvey/CompetencesPage";
-import SurveyPageWithSidebar from "../pages/UserSurvey/SurveyPageWithSidebar";
+import SurveyPage from "../pages/UserSurvey/SurveyPage";
 import ResultsPage from "../pages/Projects/MemberSurvey/ResultsPage";
 
 function AppRoutes() {
@@ -29,7 +29,7 @@ function AppRoutes() {
                     <Route path="/survey/dashboard/:surveyId/competences" element={<CompetencesPage/>}/>
                     <Route path="/survey/dashboard/:surveyId/results" element={<ResultsPage/>}/>
                 </Route>
-                <Route path="/survey/form/:surveyId" element={<SurveyPageWithSidebar/>}/>
+                <Route path="/survey/form/:surveyId" element={<SurveyPage/>}/>
                 <Route path="/" element={<WelcomePage/>}/>
                 <Route path="/login" element={<LoginPage/>}/>
                 <Route path="*" element={<NotFoundPage/>}/>

@@ -17,7 +17,7 @@ const modalStyle = {
     p: 4,
 };
 
-const LoginButton = (width) => {
+const LoginButton = ({width='400', redirectTo = "/dashboard"}) => {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const {login} = useAuth();
@@ -40,7 +40,7 @@ const LoginButton = (width) => {
         try {
             await loginUser(loginFormData.email, loginFormData.password);
             login();
-            navigate('/dashboard');
+            navigate(redirectTo);
         } catch (err) {
             alert(err.message);
         } finally {

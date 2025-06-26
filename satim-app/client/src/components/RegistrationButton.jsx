@@ -17,7 +17,7 @@ const modalStyle = {
     p: 4,
 };
 
-const RegistrationButton = () => {
+const RegistrationButton = ({ redirectTo = "/dashboard" }) => {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const {login} = useAuth();
@@ -38,7 +38,7 @@ const RegistrationButton = () => {
             await registerUser(registrationFormData);
             await loginUser(registrationFormData.email, registrationFormData.password)
             login();
-            navigate('/dashboard');
+            navigate(redirectTo);
             handleClose();
         } catch (err) {
             alert(`Bitte überprüfen Sie ihre Email und ihr Passwort: ${err.message}`);

@@ -4,28 +4,21 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ComparisonCard from '../../components/ComparisonCard';
 import {useTranslation} from "react-i18next";
-import {getCompetences, getOrCreateResponse, saveAnswerToResponse} from "../../services/SurveyService";
-import {useParams} from "react-router-dom";
+import {saveAnswerToResponse} from "../../services/SurveyService";
 
-export default function SurveyFormPage() {
+export default function SurveyPageForm({competences, response, currentQuestionIndex, goToNextQuestion, goToQuestion}) {
     const {t} = useTranslation();
-    const {surveyId} = useParams();
-    const userId = localStorage.getItem('userId');
     const questionLayout =
         {
             id: 'q1',
-            title: 'Nehmen Sie an, dass ein/eine Schüler:in nicht über Kompetenz a verfügt. Ist es dann sehr wahrscheinlich, dass er/sie auch nicht über Kompetenz b verfügt?',
+            title: 'Nehmen Sie an, dass ein/eine Schüler:in nicht über Kompetenz A verfügt. Ist es dann sehr wahrscheinlich, dass er/sie auch nicht über Kompetenz B verfügt?',
             leftOption: {title: 'Ja'},
             rightOption: {title: 'Nein'},
         };
-    const [response, setResponse] = useState([]);
-    const [competences, setCompetences] = useState([]);
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [currentChoice, setCurrentChoice] = useState(null);
-    const [loading, setLoading] = useState(false);
     const [competenceFrom, setCompetenceFrom] = useState(null);
     const [competenceTo, setCompetenceTo] = useState(null);
-    const maxQuestions = 5;
+    const [loading, setLoading] = useState(false);
 
     const handleAnswer = (choice) => {
         setCurrentChoice(choice);
@@ -50,11 +43,12 @@ export default function SurveyFormPage() {
         setCompetenceFrom(competences[randomIndexA]);
         setCompetenceTo(competences[randomIndexB]);
         setCurrentChoice(null);
+        goToNextQuestion();
     };
 
     const previousQuestion = () => {
         if (currentQuestionIndex > 0) {
-            setCurrentQuestionIndex((i) => i - 1);
+            goToQuestion((i) => i - 1);
         }
     };
 
@@ -68,31 +62,19 @@ export default function SurveyFormPage() {
     }, [competences]);
 
     useEffect(() => {
-        const getResponse = async () => {
-            const responseData = await getOrCreateResponse(surveyId, userId);
-            setResponse(responseData);
-            if (responseData.questions.length === 0) {
-                // TODO
-            } else {
-                setCurrentQuestionIndex(responseData.questions.length - 1)
-            }
-        }
-        getResponse();
-    }, []);
+        const question = response?.questions?.[currentQuestionIndex];
+        if (!question) return;
 
-    useEffect(() => {
-        const fetchCompetences = async () => {
-            try {
-                setLoading(true);
-                const competencesData = await getCompetences(surveyId);
-                setCompetences(competencesData);
-            } finally {
-                setLoading(false)
-            }
-        }
-        fetchCompetences();
-    }, []);
+        const fromKey = question.competencesFrom?.[0];
+        const toKey = question.competencesTo?.[0];
 
+        const competenceFrom = competences.find(item => item.col1 === fromKey) || null;
+        const competenceTo = competences.find(item => item.col1 === toKey) || null;
+
+        setCompetenceFrom(competenceFrom);
+        setCompetenceTo(competenceTo);
+        setCurrentChoice(question.answer || null);
+    }, [currentQuestionIndex, competences, response]);
 
     if (loading) {
         return (
@@ -101,19 +83,8 @@ export default function SurveyFormPage() {
             </Box>
         );
     }
-
     return (
-        <Box sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh', bgcolor: 'background.default',}}>
-            {response?.questions?.length >= maxQuestions ? (
-                <Box textAlign="center" mt={10}>
-                    <Typography variant="h4" gutterBottom>
-                        {t("surveyForm.thanksTitle")}
-                    </Typography>
-                    <Typography variant="subtitle1">
-                        {t("surveyForm.thanksSubtitle")}
-                    </Typography>
-                </Box>
-            ) : (
+        <Box sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh', bgcolor: 'background.default'}}>
             <Box sx={{flex: 1, bgcolor: 'grey.100', px: {xs: 2, md: 6}, py: {xs: 4, md: 8}, overflowY: 'auto',}}>
                 <Box maxWidth="900px" mx="auto">
                     <Box textAlign="left" mb={6}>
@@ -159,7 +130,7 @@ export default function SurveyFormPage() {
                         </Grid></Box>
                     <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Button variant="outlined" startIcon={<ChevronLeftIcon/>} onClick={previousQuestion}
-                                disabled={currentQuestionIndex === 0}>
+                                disabled={currentQuestionIndex === 0 || currentQuestionIndex === -1}>
                             {t("surveyForm.back")}
                         </Button>
                         <Button variant="contained" endIcon={<ChevronRightIcon/>} onClick={saveAnswer} disabled={!currentChoice}>
@@ -168,7 +139,6 @@ export default function SurveyFormPage() {
                     </Box>
                 </Box>
             </Box>
-            )}
         </Box>
     );
 }
