@@ -42,7 +42,8 @@
     "result": "Ergebnisse der Erhebung: ",
     "view": "Ansicht",
     "export": "Export",
-    "analysis": "Analyse"
+    "analysis": "Analyse",
+    "overview": "Übersicht"
   },
   "surveyForm": {
     "title": "Kompetenz Vergleich",

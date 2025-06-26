@@ -49,6 +49,7 @@ export default function SurveyFormPage() {
         }
         setCompetenceFrom(competences[randomIndexA]);
         setCompetenceTo(competences[randomIndexB]);
+        setCurrentChoice(null);
     };
 
     const previousQuestion = () => {
