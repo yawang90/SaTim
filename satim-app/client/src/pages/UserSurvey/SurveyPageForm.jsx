@@ -129,7 +129,7 @@ export default function SurveyPageForm({response, currentQuestionIndex, goToNext
                         </Grid></Box>
                     <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Button variant="outlined" startIcon={<ChevronLeftIcon/>} onClick={previousQuestion}
-                                disabled={currentQuestionIndex === 0 || currentQuestionIndex === -1}>
+                                disabled={currentQuestionIndex < response?.questions?.length - 2}>
                             {t("surveyForm.back")}
                         </Button>
                         <Button variant="contained" endIcon={<ChevronRightIcon/>} onClick={saveAnswer} disabled={!currentChoice}>

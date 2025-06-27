@@ -26,18 +26,25 @@ export default function SurveyPageSidebar({goToQuestion, currentQuestionIndex, q
                 <Stack spacing={1}>
                     {questions?.map((question, index) => {
                         const isCurrentQuestion = index === currentQuestionIndex;
+                        const isClickable = index >= questions.length - 3;
+
                         return (
-                            <Button key={question.id} onClick={() => setNextQuestion(index)} variant={isCurrentQuestion ? 'contained' : 'outlined'} color={isCurrentQuestion ? 'primary' : 'inherit'} sx={{justifyContent: 'flex-start', textTransform: 'none', borderRadius: 2, py: 1.25, px: 2, boxShadow: isCurrentQuestion ? 3 : 'none', '&:hover': {boxShadow: 3, borderColor: 'primary.main',},}} endIcon={isCurrentQuestion ? <ChevronRightIcon color="primary" /> : null}>
+                            <Button
+                                key={question.id}
+                                onClick={() => isClickable && setNextQuestion(index)}
+                                variant={isCurrentQuestion ? 'contained' : 'outlined'}
+                                color={isClickable ? (isCurrentQuestion ? 'primary' : 'inherit') : 'inherit'}
+                                disabled={!isClickable}
+                                sx={{justifyContent: 'flex-start', textTransform: 'none', borderRadius: 2, py: 1.25, px: 2, boxShadow: isCurrentQuestion ? 3 : 'none', opacity: isClickable ? 1 : 0.5, pointerEvents: isClickable ? 'auto' : 'none', '&:hover': {boxShadow: isClickable ? 3 : 'none', borderColor: isClickable ? 'primary.main' : 'divider',},
+                                }}
+                                endIcon={isCurrentQuestion && isClickable ? <ChevronRightIcon color="primary" /> : null}>
                                 <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', flexGrow: 1, overflow: 'hidden',}}>
                                     <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600 }}>
-                                        {t("survey.question")+ index}
+                                        {t("survey.question") + index}
                                     </Typography>
-                                        <Box component="span" mt={0.5} px={1} py={0.25} bgcolor="primary.light" color="primary.dark" borderRadius={1} fontSize="0.75rem" fontWeight={600}   sx={{
-                                            userSelect: 'none',
-                                            bgcolor: question.answer ? 'primary.light' : 'accent.info',
-                                        }}>
-                                            {question.answer || t("survey.current")}
-                                        </Box>
+                                    <Box component="span" mt={0.5} px={1} py={0.25} borderRadius={1} fontSize="0.75rem" fontWeight={600} sx={{userSelect: 'none', bgcolor: question.answer ? 'primary.light' : 'grey.300', color: question.answer ? 'primary.dark' : 'grey.800',}}>
+                                        {question.answer || t("survey.current")}
+                                    </Box>
                                 </Box>
                             </Button>
                         );
