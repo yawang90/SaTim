@@ -29,3 +29,11 @@ export const loginUser = async (email, password) => {
     return data;
 };
 
+export const getUserById = async (userId) => {
+    const response = await fetch(`${API_URL}/api/users/get?userId=${userId}`);
+    if (!response.ok) {
+        throw new Error('Failed to fetch user');
+    }
+    return response.json();
+}
+

@@ -1,4 +1,4 @@
-import {saveNewUser, loginUserService} from '../services/userService.js';
+import {findUser, loginUserService, saveNewUser} from '../services/userService.js';
 import {registerValidationSchema} from "../validation/userValidation.js";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
@@ -43,3 +43,12 @@ export const loginUser = async (req, res) => {
         res.status(500).json({message: 'Server error'});
     }
 };
+
+export const getUserById = async (req,res) => {
+    const {userId} = req.query;
+    if (!userId) {
+        return res.status(400).json({message: 'Missing userId'});
+    }
+    const user = await findUser(userId);
+    res.json(user)
+}

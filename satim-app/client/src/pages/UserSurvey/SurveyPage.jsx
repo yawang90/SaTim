@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Box, CircularProgress, Paper, Stack, Typography} from '@mui/material';
 import SurveyPageSidebar from './SurveyPageSidebar';
 import SurveyPageForm from './SurveyPageForm';
-import {getCompetences, getOrCreateResponse} from "../../services/SurveyService";
+import {getOrCreateResponse} from "../../services/SurveyService";
 import {useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import RegistrationButton from "../../components/RegistrationButton";
@@ -15,7 +15,6 @@ export default function SurveyPage() {
     const [loading, setLoading] = useState(false);
     const [isCompleted, setIsCompleted] = useState(false)
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [competences, setCompetences] = useState([]);
     const [response, setResponse] = useState([]);
     const maxQuestions = 20;
 
@@ -24,7 +23,6 @@ export default function SurveyPage() {
     };
 
     const goToNextQuestion = () => {
-        setCurrentQuestionIndex(-1);
         getResponse();
     }
 
@@ -37,6 +35,7 @@ export default function SurveyPage() {
 
     const getResponse = async () => {
         const responseData = await getOrCreateResponse(surveyId, userId);
+        responseData.questions.push({"id": "test", "answer": "Aktuelle Frage"});
         setResponse(responseData);
         if (responseData.questions.length === 0) {
             setCurrentQuestionIndex(0)
@@ -45,19 +44,6 @@ export default function SurveyPage() {
         }
         setIsCompleted(responseData.questions.length >= maxQuestions);
     }
-
-    useEffect(() => {
-        const fetchCompetences = async () => {
-            try {
-                setLoading(true);
-                const competencesData = await getCompetences(surveyId);
-                setCompetences(competencesData);
-            } finally {
-                setLoading(false)
-            }
-        }
-        fetchCompetences();
-    }, [surveyId]);
 
     if (!userId) {
         return (
@@ -100,15 +86,13 @@ export default function SurveyPage() {
                 </Box>
             ) : (
                 <Box sx={{display: 'flex'}}>
-                    {response.questions?.length > 0 ? (
                     <SurveyPageSidebar
                         goToQuestion={goToQuestion}
                         questions={response.questions}
                         currentQuestionIndex={currentQuestionIndex}
-                    />):(<></>)}
+                    />
                     <Box sx={{flex: 1}}>
                         <SurveyPageForm
-                            competences={competences}
                             response={response}
                             currentQuestionIndex={currentQuestionIndex}
                             goToQuestion={goToQuestion}

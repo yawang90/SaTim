@@ -4,10 +4,12 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ComparisonCard from '../../components/ComparisonCard';
 import {useTranslation} from "react-i18next";
-import {saveAnswerToResponse} from "../../services/SurveyService";
+import {getCompetences, saveAnswerToResponse} from "../../services/SurveyService";
+import {useParams} from "react-router-dom";
 
-export default function SurveyPageForm({competences, response, currentQuestionIndex, goToNextQuestion, goToQuestion}) {
+export default function SurveyPageForm({response, currentQuestionIndex, goToNextQuestion, goToQuestion}) {
     const {t} = useTranslation();
+    const {surveyId} = useParams();
     const questionLayout =
         {
             id: 'q1',
@@ -15,6 +17,7 @@ export default function SurveyPageForm({competences, response, currentQuestionIn
             leftOption: {title: 'Ja'},
             rightOption: {title: 'Nein'},
         };
+    const [competences, setCompetences] = useState([]);
     const [currentChoice, setCurrentChoice] = useState(null);
     const [competenceFrom, setCompetenceFrom] = useState(null);
     const [competenceTo, setCompetenceTo] = useState(null);
@@ -35,13 +38,7 @@ export default function SurveyPageForm({competences, response, currentQuestionIn
     }
 
     const nextQuestion = () => {
-        const randomIndexA = Math.floor(Math.random() * competences.length);
-        let randomIndexB = Math.floor(Math.random() * competences.length);
-        while (randomIndexB === randomIndexA && competences.length > 1) {
-            randomIndexB = Math.floor(Math.random() * competences.length);
-        }
-        setCompetenceFrom(competences[randomIndexA]);
-        setCompetenceTo(competences[randomIndexB]);
+        getNextQuestionFromAlgorithm();
         setCurrentChoice(null);
         goToNextQuestion();
     };
@@ -50,6 +47,16 @@ export default function SurveyPageForm({competences, response, currentQuestionIn
         if (currentQuestionIndex > 0) {
             goToQuestion((i) => i - 1);
         }
+    };
+
+    const getNextQuestionFromAlgorithm = () => {
+        const randomIndexA = Math.floor(Math.random() * competences.length);
+        let randomIndexB = Math.floor(Math.random() * competences.length);
+        while (randomIndexB === randomIndexA && competences.length > 1) {
+            randomIndexB = Math.floor(Math.random() * competences.length);
+        }
+        setCompetenceFrom(competences[randomIndexA]);
+        setCompetenceTo(competences[randomIndexB]);
     };
 
     useEffect(() => {
@@ -74,7 +81,20 @@ export default function SurveyPageForm({competences, response, currentQuestionIn
         setCompetenceFrom(competenceFrom);
         setCompetenceTo(competenceTo);
         setCurrentChoice(question.answer || null);
-    }, [currentQuestionIndex, competences, response]);
+    }, [currentQuestionIndex]);
+
+    useEffect(() => {
+        const fetchCompetences = async () => {
+            try {
+                setLoading(true);
+                const competencesData = await getCompetences(surveyId);
+                setCompetences(competencesData);
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchCompetences();
+    }, []);
 
     if (loading) {
         return (

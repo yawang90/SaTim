@@ -26,6 +26,7 @@ const AppBarWithUserIcon = () => {
     };
 
     const handleProfile = () => {
+        navigate('/profile')
         handleClose();
     };
 

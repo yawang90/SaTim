@@ -21,3 +21,8 @@ export const saveNewUser = async ({ first_name, last_name, email, password }) =>
 export const loginUserService = async (email) => {
     return prisma.users.findUnique({where: {email}});
 };
+
+export const findUser = async (userId) => {
+    const user = Number(userId);
+    return prisma.users.findUnique({where: {id: user}});
+}
