@@ -32,8 +32,11 @@ export default function SurveyPageSidebar({goToQuestion, currentQuestionIndex, q
                                     <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600 }}>
                                         {t("survey.question")+ index}
                                     </Typography>
-                                        <Box component="span" mt={0.5} px={1} py={0.25} bgcolor="primary.light" color="primary.dark" borderRadius={1} fontSize="0.75rem" fontWeight={600} sx={{ userSelect: 'none' }}>
-                                            {question.answer}
+                                        <Box component="span" mt={0.5} px={1} py={0.25} bgcolor="primary.light" color="primary.dark" borderRadius={1} fontSize="0.75rem" fontWeight={600}   sx={{
+                                            userSelect: 'none',
+                                            bgcolor: question.answer ? 'primary.light' : 'accent.info',
+                                        }}>
+                                            {question.answer || t("survey.current")}
                                         </Box>
                                 </Box>
                             </Button>

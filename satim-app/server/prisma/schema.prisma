@@ -73,7 +73,7 @@ model question {
   id         String   @id @default(uuid())
   response   response @relation(fields: [responseId], references: [id])
   responseId String
-  answer     choice
+  answer     choice?
   competencesFrom String[]
   competencesTo String[]
   @@index([responseId])

@@ -30,7 +30,7 @@ export default function SurveyPageForm({response, currentQuestionIndex, goToNext
     const saveAnswer = async () => {
         try {
             setLoading(true);
-            await saveAnswerToResponse(response.id, currentChoice, competenceFrom.col1, competenceTo.col1);
+            await saveAnswerToResponse(currentChoice, response.questions[currentQuestionIndex].id);
             nextQuestion();
         } finally {
             setLoading(false);
@@ -38,7 +38,6 @@ export default function SurveyPageForm({response, currentQuestionIndex, goToNext
     }
 
     const nextQuestion = () => {
-        getNextQuestionFromAlgorithm();
         setCurrentChoice(null);
         goToNextQuestion();
     };
@@ -49,29 +48,9 @@ export default function SurveyPageForm({response, currentQuestionIndex, goToNext
         }
     };
 
-    const getNextQuestionFromAlgorithm = () => {
-        const randomIndexA = Math.floor(Math.random() * competences.length);
-        let randomIndexB = Math.floor(Math.random() * competences.length);
-        while (randomIndexB === randomIndexA && competences.length > 1) {
-            randomIndexB = Math.floor(Math.random() * competences.length);
-        }
-        setCompetenceFrom(competences[randomIndexA]);
-        setCompetenceTo(competences[randomIndexB]);
-    };
-
-    useEffect(() => {
-        const setFromToCompetences = async () => {
-            if (!competenceFrom && !competenceTo) {
-                nextQuestion();
-            }
-        }
-        setFromToCompetences();
-    }, [competences]);
-
     useEffect(() => {
         const question = response?.questions?.[currentQuestionIndex];
         if (!question) return;
-
         const fromKey = question.competencesFrom?.[0];
         const toKey = question.competencesTo?.[0];
 
@@ -81,7 +60,7 @@ export default function SurveyPageForm({response, currentQuestionIndex, goToNext
         setCompetenceFrom(competenceFrom);
         setCompetenceTo(competenceTo);
         setCurrentChoice(question.answer || null);
-    }, [currentQuestionIndex]);
+    }, [currentQuestionIndex, competences]);
 
     useEffect(() => {
         const fetchCompetences = async () => {

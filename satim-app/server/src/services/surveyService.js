@@ -54,7 +54,6 @@ export const findAllSurveys = async ({projectId}) => {
 
 export const findOrCreateResponse = async({userId, surveyId}) => {
     const user = Number(userId);
-
     const existingResponse = await prisma.response.findFirst({
         where: {
             surveyId: surveyId,
@@ -66,7 +65,7 @@ export const findOrCreateResponse = async({userId, surveyId}) => {
     });
 
     if (existingResponse) {
-        return existingResponse;
+        return appendNewQuestionIfNeeded(existingResponse, surveyId, existingResponse.id);
     }
 
     const newResponse = await prisma.response.create({
@@ -80,8 +79,7 @@ export const findOrCreateResponse = async({userId, surveyId}) => {
             questions: true,
         },
     });
-
-    return newResponse;
+    return appendNewQuestionIfNeeded(newResponse, newQuestion, surveyId, newResponse.id);
 }
 
 export const getResponses = async({surveyId}) => {
@@ -158,14 +156,11 @@ export const findCompetences = async ({surveyId}) => {
     return merged;
 }
 
-export const saveAnswer = async ({responseId, answer, competencesFrom, competencesTo}) => {
-    const question = await prisma.question.create({
-        data: {
-            response: { connect: { id: responseId } },
-            answer,
-            competencesFrom: Array.isArray(competencesFrom) ? competencesFrom : [competencesFrom],
-            competencesTo: Array.isArray(competencesTo) ? competencesTo : [competencesTo]
-        },
+
+export const saveAnswer = async ({answer, questionId}) => {
+    const question = await prisma.question.update({
+        where: { id: questionId },
+        data: { answer },
     });
     return question;
 }
@@ -231,4 +226,36 @@ async function getExcelURLFromSupabase(filePath) {
     }
     const fileUrl = signedUrlData.signedUrl;
     return fileUrl;
+}
+
+async function getRandomQuestion(surveyId, responseId) {
+    const competences = await findCompetences({surveyId});
+    const randomIndexA = Math.floor(Math.random() * competences.length);
+    let randomIndexB = Math.floor(Math.random() * competences.length);
+    while (randomIndexB === randomIndexA && competences.length > 1) {
+        randomIndexB = Math.floor(Math.random() * competences.length);
+    }
+    const competencesFrom = competences[randomIndexA].col1;
+    const competencesTo = competences[randomIndexB].col1;
+    const question = await prisma.question.create({
+        data: {
+            response: { connect: { id: responseId } },
+            answer: null,
+            competencesFrom: Array.isArray(competencesFrom) ? competencesFrom : [competencesFrom],
+            competencesTo: Array.isArray(competencesTo) ? competencesTo : [competencesTo]
+        },
+    });
+    return question;
+}
+
+async function appendNewQuestionIfNeeded(response, surveyId, responseId) {
+    const questions = response.questions;
+    const lastQuestion = questions.at(-1);
+
+    if (questions.length === 0 || lastQuestion?.answer) {
+        const newQuestion = await getRandomQuestion(surveyId, responseId)
+        questions.push(newQuestion);
+    }
+
+    return response;
 }

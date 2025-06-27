@@ -49,15 +49,13 @@ export const getCompetences = async (surveyId) => {
     return response.json();
 }
 
-export const saveAnswerToResponse = async (responseId, answer, competenceFrom, competenceTo) => {
+export const saveAnswerToResponse = async (answer, questionId) => {
     const response = await fetch(`${API_URL}/api/surveys/response/saveAnswer`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json',},
         body: JSON.stringify({
-            responseId,
             answer,
-            competencesFrom: competenceFrom,
-            competencesTo: competenceTo,
+            questionId: questionId
         }),
     });
 

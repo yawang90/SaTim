@@ -112,11 +112,11 @@ export const getCompetences = async (req, res) => {
 
 export const saveAnswerToResponse = async (req, res) => {
     try {
-        const { responseId, answer, competencesFrom, competencesTo } = req.body;
-        if (!responseId || !answer) {
+        const { answer, questionId } = req.body;
+        if (!questionId || !answer) {
             return res.status(400).json({ message: 'Missing or invalid input data' });
         }
-        const question = await saveAnswer({responseId, answer, competencesFrom, competencesTo});
+        const question = await saveAnswer({answer, questionId});
         return res.status(201).json(question);
     } catch (error) {
         console.error('Error creating question:', error);

@@ -14,7 +14,7 @@ export default function SurveyPage() {
     const userId = localStorage.getItem('userId');
     const [loading, setLoading] = useState(false);
     const [isCompleted, setIsCompleted] = useState(false)
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1);
     const [response, setResponse] = useState([]);
     const maxQuestions = 20;
 
@@ -34,29 +34,27 @@ export default function SurveyPage() {
 
 
     const getResponse = async () => {
-        const responseData = await getOrCreateResponse(surveyId, userId);
-        responseData.questions.push({"id": "test", "answer": "Aktuelle Frage"});
-        setResponse(responseData);
-        if (responseData.questions.length === 0) {
-            setCurrentQuestionIndex(0)
-        } else {
+        try {
+            setLoading(true);
+            const responseData = await getOrCreateResponse(surveyId, userId);
+            setResponse(responseData);
             setCurrentQuestionIndex(responseData.questions.length - 1)
+            setIsCompleted(responseData.questions.length > maxQuestions);
+        } finally {
+            setLoading(false);
         }
-        setIsCompleted(responseData.questions.length >= maxQuestions);
     }
 
     if (!userId) {
         return (
             <Box display="flex" justifyContent="center" alignItems="center" height="100vh" bgcolor="background.default">
-                <Paper elevation={3} sx={{ p: 6, borderRadius: 4, textAlign: 'center' }}>
+                <Paper elevation={3} sx={{p: 6, borderRadius: 4, textAlign: 'center'}}>
                     <Typography variant="h4" gutterBottom>
                         {t("survey.registerTitle")}
                     </Typography>
-
-                    <Typography variant="body1" sx={{ mb: 4 }}>
+                    <Typography variant="body1" sx={{mb: 4}}>
                         {t("survey.register")}
                     </Typography>
-
                     <Stack spacing={2} direction="column" alignItems="center">
                         <RegistrationButton redirectTo={`/survey/form/${surveyId}`}/>
                         <LoginButton redirectTo={`/survey/form/${surveyId}`}/>

@@ -47,7 +47,8 @@
     "register": "Für das beantworten der Umfrage melden sie sich bitte an oder registrieren Sie sich",
     "registerTitle": "Anmeldung erforderlich",
     "questions": "Beantwortete Fragen",
-    "question": "Frage "
+    "question": "Frage ",
+    "current": "Bitte beantworten"
   },
   "surveyForm": {
     "title": "Kompetenz Vergleich",
