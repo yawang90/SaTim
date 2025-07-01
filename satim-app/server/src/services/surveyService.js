@@ -186,10 +186,22 @@ export const createExcelFromResponse = async ({responseId}) => {
         const rowValues = [competencesIds[index]];
 
         ids.forEach((colId) => {
-            const match = response.questions.some((q) =>
-                q.competencesFrom.includes(rowId) && q.competencesTo.includes(colId) && q.answer === 'Ja'
+            const match = response.questions.find(
+                (q) => q.competencesFrom.includes(rowId) && q.competencesTo.includes(colId)
             );
-            rowValues.push(match ? 1 : 0);
+
+            if (match) {
+                if (match.answer === 'Ja') {
+                    rowValues.push(1);
+                } else if (match.answer === 'Nein') {
+                    rowValues.push(0);
+                } else {
+                    rowValues.push(999);
+                }
+            } else {
+                rowValues.push(999);
+            }
+
         });
 
         sheet.addRow(rowValues);
