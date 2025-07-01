@@ -1,11 +1,21 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, CircularProgress, Grid, Typography} from '@mui/material';
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Box,
+    Button,
+    CircularProgress,
+    Grid,
+    Typography
+} from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ComparisonCard from '../../components/ComparisonCard';
 import {useTranslation} from "react-i18next";
 import {getCompetences, saveAnswerToResponse} from "../../services/SurveyService";
 import {useParams} from "react-router-dom";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 export default function SurveyPageForm({response, currentQuestionIndex, goToNextQuestion, goToQuestion}) {
     const {t} = useTranslation();
@@ -47,6 +57,27 @@ export default function SurveyPageForm({response, currentQuestionIndex, goToNext
             goToQuestion((i) => i - 1);
         }
     };
+
+    const [isAExpanded, setIsAExpanded] = useState(true);
+    const [isBExpanded, setIsBExpanded] = useState(true);
+    const handleToggleA = () => {
+        const next = !isAExpanded;
+        setIsAExpanded(next);
+        localStorage.setItem('competenceAExpanded', next);
+    };
+
+    const handleToggleB = () => {
+        const next = !isBExpanded;
+        setIsBExpanded(next);
+        localStorage.setItem('competenceBExpanded', next);
+    };
+
+    useEffect(() => {
+        const a = localStorage.getItem('competenceAExpanded') === 'true';
+        const b = localStorage.getItem('competenceBExpanded') === 'true';
+        setIsAExpanded(a);
+        setIsBExpanded(b);
+    }, []);
 
     useEffect(() => {
         const question = response?.questions?.[currentQuestionIndex];
@@ -93,6 +124,16 @@ export default function SurveyPageForm({response, currentQuestionIndex, goToNext
                         <Typography variant="subtitle1">
                             {competenceFrom?.col3}
                         </Typography>
+                        <Accordion expanded={isAExpanded} onChange={handleToggleA}>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                <Typography fontWeight={600}>{t("surveyForm.details")}</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography variant="subtitle1">
+                                    {competenceFrom?.col9}
+                                </Typography>
+                            </AccordionDetails>
+                        </Accordion>
                     </Box>
                     <Box textAlign="left" mb={6}>
                         <Typography variant="h5" fontWeight="bold" gutterBottom>
@@ -101,6 +142,16 @@ export default function SurveyPageForm({response, currentQuestionIndex, goToNext
                         <Typography variant="subtitle1">
                             {competenceTo?.col3}
                         </Typography>
+                        <Accordion expanded={isBExpanded} onChange={handleToggleB}>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                <Typography fontWeight={600}>{t("surveyForm.details")}</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography variant="subtitle1">
+                                    {competenceTo?.col9}
+                                </Typography>
+                            </AccordionDetails>
+                        </Accordion>
                     </Box>
                     <Box textAlign="center" mb={6}>
                         <Typography variant="h5" fontWeight="bold" gutterBottom>

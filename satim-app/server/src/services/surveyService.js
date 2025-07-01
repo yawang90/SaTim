@@ -79,7 +79,7 @@ export const findOrCreateResponse = async({userId, surveyId}) => {
             questions: true,
         },
     });
-    return appendNewQuestionIfNeeded(newResponse, newQuestion, surveyId, newResponse.id);
+    return appendNewQuestionIfNeeded(newResponse, surveyId, newResponse.id);
 }
 
 export const getResponses = async({surveyId}) => {
@@ -140,7 +140,7 @@ async function getSurveyData(surveyId) {
         throw new Error('Failed to fetch Excel file from Supabase');
     }
     const buffer = await excelFile.arrayBuffer();
-    const result = extractRows(buffer, 4);
+    const result = extractRows(buffer, 10);
     const rows = Object.values(result);
     return rows;
 }
@@ -155,7 +155,6 @@ export const findCompetences = async ({surveyId}) => {
     });
     return merged;
 }
-
 
 export const saveAnswer = async ({answer, questionId}) => {
     const question = await prisma.question.update({
@@ -219,7 +218,6 @@ async function getExcelURLFromSupabase(filePath) {
     const {data: signedUrlData, error: signedUrlError} = await supabase.storage
         .from(supabaseBucket)
         .createSignedUrl(filePath, 60 * 7 * 24);
-
     if (signedUrlError) {
         console.log(signedUrlError);
         throw new Error("Signed URL error");
