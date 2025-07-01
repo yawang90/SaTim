@@ -1,22 +1,27 @@
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
 
-export function parseExcelFile(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
+export async function parseExcelFile(file) {
+    const buffer = await file.arrayBuffer();
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.load(buffer);
+    const worksheet = workbook.worksheets[0];
 
-        reader.onload = (e) => {
-            try {
-                const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
-                const sheet = workbook.Sheets[workbook.SheetNames[0]];
-                const json = XLSX.utils.sheet_to_json(sheet, { defval: '' });
-                resolve(json);
-            } catch (err) {
-                reject(err);
-            }
-        };
+    const json = [];
 
-        reader.onerror = () => reject(reader.error);
-        reader.readAsArrayBuffer(file);
+    worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
+        if (!row.hidden) {
+            const rowValues = row.values;
+            json.push(rowValues.slice(1));
+        }
     });
+
+    const headers = json[0];
+    const data = json.slice(1).map(row =>
+        headers.reduce((obj, header, idx) => {
+            obj[header] = row[idx] || '';
+            return obj;
+        }, {})
+    );
+
+    return data;
 }

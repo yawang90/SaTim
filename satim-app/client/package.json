@@ -25,8 +25,7 @@
     "react-router-dom": "^7.5.3",
     "reactflow": "^11.11.4",
     "sass": "^1.87.0",
-    "web-vitals": "^2.1.4",
-    "xlsx": "^0.18.5"
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "dev": "vite",

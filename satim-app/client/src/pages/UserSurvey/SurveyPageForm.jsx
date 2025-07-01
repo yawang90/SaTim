@@ -130,7 +130,7 @@ export default function SurveyPageForm({response, currentQuestionIndex, goToNext
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Typography variant="subtitle1">
-                                    {competenceFrom?.col9}
+                                    {competenceFrom?.col8 || "-"}
                                 </Typography>
                             </AccordionDetails>
                         </Accordion>
@@ -148,7 +148,7 @@ export default function SurveyPageForm({response, currentQuestionIndex, goToNext
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Typography variant="subtitle1">
-                                    {competenceTo?.col9}
+                                    {competenceTo?.col8 || "-"}
                                 </Typography>
                             </AccordionDetails>
                         </Accordion>
