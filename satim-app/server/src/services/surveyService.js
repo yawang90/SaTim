@@ -2,6 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 import prisma from "../config/prismaClient.js";
 import * as XLSX from "xlsx";
 import ExcelJS from 'exceljs';
+import {runKoppenPythonScript} from "../../python/runPython.js";
 
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -263,9 +264,28 @@ async function appendNewQuestionIfNeeded(response, surveyId, responseId) {
     const lastQuestion = questions.at(-1);
 
     if (questions.length === 0 || lastQuestion?.answer) {
-        const newQuestion = await getRandomQuestion(surveyId, responseId)
+        const newQuestion = await getQuestionKoppen(surveyId, responseId)
+        console.log("question", newQuestion)
         questions.push(newQuestion);
     }
 
     return response;
+}
+
+async function getQuestionKoppen(surveyId, responseId) {
+    const competences = await getSurveyData(surveyId);
+    const yesAnswers = []; // TODO fetch from survey response
+    const noAnswers = [];
+    const result = await runKoppenPythonScript(competences[0], yesAnswers, noAnswers);
+    const competencesFrom = result[0];
+    const competencesTo = result[1];
+    const question = await prisma.question.create({
+        data: {
+            response: {connect: {id: responseId}},
+            answer: null,
+            competencesFrom: Array.isArray(competencesFrom) ? competencesFrom : [competencesFrom],
+            competencesTo: Array.isArray(competencesTo) ? competencesTo : [competencesTo]
+        },
+    });
+    return question;
 }
