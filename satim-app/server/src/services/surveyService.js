@@ -95,8 +95,7 @@ export const getResponses = async({surveyId}) => {
     return existingResponses;
 }
 
-export const getEnrichedResponses = async ({surveyId, responseId}) => {
-    const surveyRows = await getSurveyData(surveyId);
+async function getResponse(responseId, surveyId) {
     const response = await prisma.response.findFirst({
         where: {
             id: responseId,
@@ -106,6 +105,12 @@ export const getEnrichedResponses = async ({surveyId, responseId}) => {
             questions: true,
         },
     });
+    return response;
+}
+
+export const getEnrichedResponses = async ({surveyId, responseId}) => {
+    const surveyRows = await getSurveyData(surveyId);
+    const response = await getResponse(responseId, surveyId);
     const result = []
     response.questions.forEach((question) => {
         const resultQuestion = {};
@@ -265,7 +270,6 @@ async function appendNewQuestionIfNeeded(response, surveyId, responseId) {
 
     if (questions.length === 0 || lastQuestion?.answer) {
         const newQuestion = await getQuestionKoppen(surveyId, responseId)
-        console.log("question", newQuestion)
         questions.push(newQuestion);
     }
 
@@ -274,8 +278,16 @@ async function appendNewQuestionIfNeeded(response, surveyId, responseId) {
 
 async function getQuestionKoppen(surveyId, responseId) {
     const competences = await getSurveyData(surveyId);
-    const yesAnswers = []; // TODO fetch from survey response
+    const response = await getResponse(responseId, surveyId);
+    const yesAnswers = [];
     const noAnswers = [];
+    response.questions.forEach((question) => {
+        if (question.answer === 'Ja') {
+            yesAnswers.push([question.competencesFrom[0], question.competencesTo[0]]);
+        } else if (question.answer === 'Nein') {
+            noAnswers.push([question.competencesFrom[0], question.competencesTo[0]]);
+        }
+    });
     const result = await runKoppenPythonScript(competences[0], yesAnswers, noAnswers);
     const competencesFrom = result[0];
     const competencesTo = result[1];
