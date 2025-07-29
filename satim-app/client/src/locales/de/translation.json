@@ -68,6 +68,19 @@
     "email": "Email",
     "title": "Profil"
   },
+  "login": {
+    "description": "Anmelden",
+    "error": "Fehler beim Login. Email oder Passwort nicht korrekt."
+  },
+  "registration": {
+    "description": "Registrieren",
+    "create": "Konto erstellen",
+    "missing": "Bitte füllen Sie alle Pflichtfelder ab.",
+    "mismatch": "Die Passwörter stimmen nicht überein. Bitte überprüfen Sie ihre Eingabe.",
+    "email": "Bitte geben Sie eine korrekte Email an.",
+    "password": "Das Passwort muss mindestens 6 Zeichen lang sein. Bitte überprüfen Sie ihre Eingabe.",
+    "error": "Bitte überprüfen Sie ihre Email und ihr Passwort."
+  },
   "pageNotFound": "Etwas ist schief gegangen, bitte laden sie die Seite neu.",
   "pageReload": "Seite neu laden."
 }
