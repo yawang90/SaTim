@@ -159,7 +159,7 @@ export default function SurveyPageForm({response, currentQuestionIndex, goToNext
                         </Typography>
                     </Box>
 
-                    <Box sx={{display: 'flex', justifyContent: 'center', mb: 6}}>
+                    <Box sx={{display: 'flex', justifyContent: 'center'}}>
                         <Grid container spacing={4} mb={6}>
                             <Grid item xs={12} md={6}>
                                 <ComparisonCard
@@ -178,11 +178,11 @@ export default function SurveyPageForm({response, currentQuestionIndex, goToNext
                                 />
                             </Grid>
                         </Grid></Box>
-                    <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                        <Button variant="outlined" startIcon={<ChevronLeftIcon/>} onClick={previousQuestion}
-                                disabled={currentQuestionIndex < response?.questions?.length - 2}>
-                            {t("surveyForm.back")}
-                        </Button>
+                    <Box sx={{display: 'flex', alignItems: 'center'}}>
+                        {/*<Button variant="outlined" startIcon={<ChevronLeftIcon/>} onClick={previousQuestion}*/}
+                        {/*        disabled={currentQuestionIndex < response?.questions?.length - 1}>*/}
+                        {/*    {t("surveyForm.back")}*/}
+                        {/*</Button>*/}
                         <Button variant="contained" endIcon={<ChevronRightIcon/>} onClick={saveAnswer} disabled={!currentChoice}>
                             {t("surveyForm.next")}
                         </Button>

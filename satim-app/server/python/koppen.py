@@ -8,7 +8,7 @@ def koppen_query_algorithm(items, P_yes, P_neg):
         item for item in possible_item_combinations
         if not already_known(item, P_yes, P_neg)
     ]
-    return possible_results[0] or None
+    return possible_results[0] if len(possible_item_combinations) > 0 else None
 
 def already_known(item, P_yes, P_neg):
     if item in P_yes or item in P_neg:
@@ -21,9 +21,9 @@ def infer_IR1(P_yes, P_neg):
     pyes_changed = True
     while pyes_changed:
         pyes_changed = False
-        current_items = list(P_yes)
-        for (A1, a1) in current_items:
-            for (B1, b1) in current_items:
+        current_pyes = list(P_yes)
+        for (A1, a1) in current_pyes:
+            for (B1, b1) in current_pyes:
                 if a1 == B1 and not A1 == b1:
                     if not already_known((A1, b1), P_yes, P_neg):
                         P_yes.append((A1, b1))
