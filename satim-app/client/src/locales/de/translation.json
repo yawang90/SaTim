@@ -70,7 +70,8 @@
   },
   "login": {
     "description": "Anmelden",
-    "error": "Fehler beim Login. Email oder Passwort nicht korrekt."
+    "error": "Fehler beim Login. Email oder Passwort nicht korrekt.",
+    "invalid": "Bitte füllen Sie Email und Passwort ein."
   },
   "registration": {
     "description": "Registrieren",

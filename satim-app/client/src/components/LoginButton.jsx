@@ -29,6 +29,10 @@ const LoginButton = ({width='400', redirectTo = "/dashboard"}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!loginFormData.password.trim() || !loginFormData.email.trim()) {
+            enqueueSnackbar(t("login.invalid"), { variant: "warning" });
+            return;
+        }
         setLoading(true);
         try {
             await loginUser(loginFormData.email, loginFormData.password);
