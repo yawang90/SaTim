@@ -74,17 +74,25 @@ export const getProjectMembers = async ({ projectId }) => {
     return response.json();
 };
 
-export const addProjectMember = async ({ projectId }) => {
-    if (!projectId) {
-        throw new Error("Missing projectId");
-    }
+export const addProjectMember = async ({ member, projectId }) => {
+    if (!projectId) throw new Error("Missing projectId");
+    if (!member) throw new Error("Missing member");
 
-    const response = await fetch(`${API_URL}/api/projects/members?projectId=${projectId}`);
+    const response = await fetch(`${API_URL}/api/projects/addMembers?projectId=${projectId}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            userId: member.id ?? null
+        })
+    });
+
+    const data = await response.json();
 
     if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || 'Failed to fetch project members');
+        throw new Error(data.message || "Failed to add project member");
     }
 
-    return response.json();
+    return data;
 };

@@ -1,4 +1,5 @@
 import prisma from '../config/prismaClient.js';
+import {project_access_role} from "@prisma/client";
 
 export const saveNewProject = async ({name, description, userId}) => {
     const ownerId = Number(userId);
@@ -83,3 +84,29 @@ export const findAllMembersForProject = async ({ projectId }) => {
         },
     });
 };
+
+export const addMemberToProject = async ({projectId, userId}) => {
+    const existingAccess = await prisma.project_access.findUnique({
+        where: {
+            project_id_user_id: {
+                project_id: Number(projectId),
+                user_id: userId
+            }
+        }
+    });
+
+    if (existingAccess) {
+        return existingAccess;
+    }
+
+    return prisma.project_access.create({
+        data: {
+            project_id: Number(projectId),
+            user_id: userId,
+            role: project_access_role.editor
+        },
+        include: {
+            users: true
+        }
+    });
+}

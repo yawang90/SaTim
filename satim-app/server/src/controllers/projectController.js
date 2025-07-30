@@ -1,4 +1,11 @@
-import {saveNewProject, findAllProjects, findProject, editProject, deleteProject, findAllMembersForProject
+import {
+    saveNewProject,
+    findAllProjects,
+    findProject,
+    editProject,
+    deleteProject,
+    findAllMembersForProject,
+    addMemberToProject
 } from '../services/projectService.js';
 import {projectValidationSchema} from '../validation/projectValidation.js';
 import {stringifyBigInts} from "./helper.js";
@@ -92,5 +99,27 @@ export const getProjectMembers = async (req, res) => {
     } catch (error) {
         console.error('Error fetching project members:', error);
         res.status(500).json({ message: 'Could not fetch project members' });
+    }
+};
+
+export const addProjectMembers = async (req, res) => {
+    const { projectId } = req.query;
+    const { userId } = req.body;
+
+    if (!projectId) {
+        return res.status(400).json({ message: "Missing projectId" });
+    }
+
+    if (!userId) {
+        return res.status(400).json({ message: "Provide either userId" });
+    }
+
+    try {
+        const access = await addMemberToProject({ projectId, userId });
+        return res.json(access);
+
+    } catch (err) {
+        console.error("Error adding member:", err);
+        res.status(500).json({ message: "Failed to add project member" });
     }
 };

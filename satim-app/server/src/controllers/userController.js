@@ -56,12 +56,13 @@ export const getUserById = async (req,res) => {
 export const getUsersByNameOrEmail = async (req, res) => {
     try {
         const query = req.query.query?.trim() || "";
+        const projectId = req.query.projectId?.trim() || "";
 
         if (!query) {
             return res.json([]);
         }
 
-        const users = await findUsersByNameOrEmail(query);
+        const users = await findUsersByNameOrEmail(query, projectId);
         res.json(users);
     } catch (err) {
         console.error("Error searching users:", err);

@@ -1,5 +1,6 @@
 import express from 'express';
 import {
+    addProjectMembers,
     createProject,
     getAllProjects,
     getProject, getProjectMembers,
@@ -15,5 +16,6 @@ router.get('/get', getProject)
 router.get('/members', getProjectMembers);
 router.put('/update', updateProject);
 router.delete('/delete', removeProject);
+router.post('/addMembers', addProjectMembers);
 
 export default router;

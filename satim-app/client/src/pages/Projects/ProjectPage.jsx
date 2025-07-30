@@ -21,7 +21,7 @@ import AddIcon from "@mui/icons-material/Add";
 import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {dashboardSidebar, membersSidebar, projectHomeSidebar, settingsSidebar} from "../../components/SidebarConfig";
-import {getProjectById, getProjectMembers} from "../../services/ProjectService";
+import {addProjectMember, getProjectById, getProjectMembers} from "../../services/ProjectService";
 import {getAllSurveysByProject} from "../../services/SurveyService";
 import {enqueueSnackbar} from "notistack";
 import {findUsersByNameOrEmail} from "../../services/UserService";
@@ -32,9 +32,9 @@ const ProjectPage = () => {
     const {projectId} = useParams();
     const [project, setProject] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [loadingMembers, setLoadingMembers] = useState(true);
     const [loadingSurveys, setLoadingSurveys] = useState(true);
     const [loadingAddMember, setLoadingAddMember] = useState(false);
+    const [loadingMembers, setLoadingMembers] = useState(true);
     const [members, setMembers] = useState([]);
     const [error, setError] = useState(null);
     const sidebarItems = [
@@ -48,7 +48,7 @@ const ProjectPage = () => {
     const [selectedMember, setSelectedMember] = useState(null);
     const [searchLoading, setSearchLoading] = useState(false);
     const [openMemberDialog, setOpenMemberDialog] = useState(false);
-    const [newMemberName, setNewMemberName] = useState('');
+    const [searchMember, setSearchMember] = useState('');
     const [inviteEmail, setInviteEmail] = useState("");
     const navigateSurveyCreation = () => {
         navigate(`/survey/creation/${projectId}`)
@@ -72,7 +72,8 @@ const ProjectPage = () => {
     const handleOpenMemberDialog = () => setOpenMemberDialog(true);
     const handleCloseMemberDialog = () => {
         setOpenMemberDialog(false);
-        setNewMemberName('');
+        setSearchMember('');
+        setSelectedMember(null);
     };
 
     const addMember = async (member) => {
@@ -84,21 +85,27 @@ const ProjectPage = () => {
             } finally {
                 setLoadingAddMember(false);
                 handleCloseMemberDialog();
+                await fetchMembers();
             }
     }
 
+    const fetchMembers = async () => {
+        setLoadingMembers(true);
+        try {
+            const data = await getProjectMembers({projectId});
+            setMembers(data);
+        } catch (err) {
+            enqueueSnackbar(t("error.members"), { variant: "warning" });
+        } finally {
+            setLoadingMembers(false);
+        }
+    };
+
+    const sendInvite = async (inviteEmail) => {
+
+    }
+
     useEffect(() => {
-        const fetchMembers = async () => {
-            setLoadingMembers(true);
-            try {
-                const data = await getProjectMembers({projectId});
-                setMembers(data);
-            } catch (err) {
-                enqueueSnackbar(t("error.members"), { variant: "warning" });
-            } finally {
-                setLoadingMembers(false);
-            }
-        };
         fetchMembers();
     }, [projectId]);
 
@@ -133,7 +140,7 @@ const ProjectPage = () => {
     }, [projectId]);
 
     useEffect(() => {
-        if (!newMemberName.trim()) {
+        if (!searchMember.trim()) {
             setSearchResults([]);
             return;
         }
@@ -141,7 +148,7 @@ const ProjectPage = () => {
         const delayDebounce = setTimeout(async () => {
             try {
                 setSearchLoading(true);
-                const members = await findUsersByNameOrEmail(newMemberName);
+                const members = await findUsersByNameOrEmail(searchMember, projectId);
                 setSearchResults(members);
             } catch (err) {
                 enqueueSnackbar(t("error.membersSearch"), { variant: "warning" });
@@ -151,7 +158,7 @@ const ProjectPage = () => {
         }, 400);
 
         return () => clearTimeout(delayDebounce);
-    }, [newMemberName]);
+    }, [searchMember]);
 
     if (error || !project?.projects) {
         return (
@@ -236,9 +243,9 @@ const ProjectPage = () => {
                             setSelectedMember(newValue);
                             if (newValue) setInviteEmail("");
                         }}
-                        inputValue={newMemberName}
+                        inputValue={searchMember}
                         onInputChange={(event, newInputValue) => {
-                            setNewMemberName(newInputValue);
+                            setSearchMember(newInputValue);
                         }}
                         renderInput={(params) => (
                             <TextField
@@ -284,10 +291,8 @@ const ProjectPage = () => {
                         onClick={() => {
                             if (selectedMember) {
                                 addMember(selectedMember);
-                               // setMembers(prev => [...prev, selectedMember]);
                             } else if (inviteEmail.trim()) {
-                                // Send invite to new email
-                                // TODO: call backend API for invitation
+                                sendInvite(inviteEmail.trim())
                             }
                             handleCloseMemberDialog();
                         }}
