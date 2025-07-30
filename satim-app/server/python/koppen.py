@@ -3,7 +3,10 @@ from itertools import permutations, chain
 
 def koppen_query_algorithm(items, P_yes, P_neg):
     possible_item_combinations = list(permutations(items, 2))
+    add_identity(P_yes, items)
+    add_negation(P_yes, P_neg)
     infer_IR1(P_yes, P_neg)
+    infer_IR2(P_yes, P_neg)
     possible_results = [
         item for item in possible_item_combinations
         if not already_known(item, P_yes, P_neg)
@@ -16,19 +19,40 @@ def already_known(item, P_yes, P_neg):
     else:
         return False
 
-# IR1: B1 ⊢ b1, A1 ⊢ a1, A1 ⊢ B1 => A1 ⊢ b1
+def add_identity(P_yes, items):
+    for item in items:
+        P_yes.append((item, item))
+
+def add_negation(P_yes, P_neg):
+    for (A, B) in P_yes:
+        P_neg.append((B, A))
+
+# IR1: A ⊢ x, B ⊢ A => B ⊢ x
 def infer_IR1(P_yes, P_neg):
     pyes_changed = True
     while pyes_changed:
         pyes_changed = False
         current_pyes = list(P_yes)
-        for (A1, a1) in current_pyes:
-            for (B1, b1) in current_pyes:
-                if a1 == B1 and not A1 == b1:
-                    if not already_known((A1, b1), P_yes, P_neg):
-                        P_yes.append((A1, b1))
+        for (A, x) in current_pyes:
+            for (B, A2) in current_pyes: # B, A2 represents B ⊢ A
+                if A2 == A and not B == x:
+                    if not already_known((B, x), P_yes, P_neg):
+                        P_yes.append((B, x))
+                        add_negation(P_yes, P_neg)
                         pyes_changed = True
 
+# IR2: A ⊢ x, y not ⊢ A => y not ⊢ x
+def infer_IR2(P_yes, P_neg):
+    pneg_changed = True
+    while pneg_changed:
+        pneg_changed = False
+        current_pneg = list(P_neg)
+        for (A, x) in P_yes:
+            for (y, A2) in current_pneg:
+                if A2 == A:
+                    if not already_known((y, x), P_yes, P_neg):
+                        P_neg.append((y, x))
+                        pneg_changed = True
 
 items = json.load(sys.stdin)
 competence_items = items.get("competenceItems", [])
