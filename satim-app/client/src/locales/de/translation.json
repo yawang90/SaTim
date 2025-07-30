@@ -12,6 +12,7 @@
   "remove": "Entfernen",
   "continue": "Weiter",
   "back": "Zurück",
+  "serviceError": "Etwas ist schiefgegangen, bitte laden Sie die Seite erneut.",
   "project": {
     "overview": "Projekt Übersicht",
     "create": "Projekt erstellen",
@@ -81,6 +82,11 @@
     "email": "Bitte geben Sie eine korrekte Email an.",
     "password": "Das Passwort muss mindestens 6 Zeichen lang sein. Bitte überprüfen Sie ihre Eingabe.",
     "error": "Bitte überprüfen Sie ihre Email und ihr Passwort."
+  },
+  "error": {
+    "title": "Etwas ist schiefgegangen",
+    "reload":  "Seite neu laden.",
+    "service": "Diese Seite ist nicht verfügbar, bitte laden Sie die Seite erneut."
   },
   "pageNotFound": "Etwas ist schief gegangen, bitte laden sie die Seite neu.",
   "pageReload": "Seite neu laden."

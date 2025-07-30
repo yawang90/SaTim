@@ -34,7 +34,7 @@ export const findAllProjects = async ({userId}) => {
 export const findProject = async ({projectId}) => {
     const project = Number(projectId);
 
-    return prisma.project_access.findFirst({
+    return prisma.project_access.findFirstOrThrow({
         where: {
             project_id: project
         },

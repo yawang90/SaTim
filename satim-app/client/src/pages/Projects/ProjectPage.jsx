@@ -9,22 +9,28 @@ import {useTranslation} from "react-i18next";
 import {dashboardSidebar, membersSidebar, projectHomeSidebar, settingsSidebar} from "../../components/SidebarConfig";
 import {getProjectById, getProjectMembers} from "../../services/ProjectService";
 import {getAllSurveysByProject} from "../../services/SurveyService";
+import { useSnackbar } from "notistack";
 
 const ProjectPage = () => {
     const navigate = useNavigate();
-    const { t } = useTranslation();
-    const { projectId } = useParams();
+    const {t} = useTranslation();
+    const {projectId} = useParams();
+    const {enqueueSnackbar} = useSnackbar();
+
     const [project, setProject] = useState(null);
     const [loading, setLoading] = useState(true);
     const [loadingMembers, setLoadingMembers] = useState(true);
     const [loadingSurveys, setLoadingSurveys] = useState(true);
     const [members, setMembers] = useState([]);
+    const [error, setError] = useState(null);
+
     const sidebarItems = [
         ...dashboardSidebar(t, navigate),
         ...projectHomeSidebar(t, navigate, projectId),
         ...settingsSidebar(t, navigate, projectId),
         ...membersSidebar(t, navigate, projectId),
     ];
+
     const [surveys, setSurveys] = useState([]);
     const [openMemberDialog, setOpenMemberDialog] = useState(false);
     const [newMemberName, setNewMemberName] = useState('');
@@ -69,7 +75,7 @@ const ProjectPage = () => {
                 const data = await getProjectMembers({projectId});
                 setMembers(data);
             } catch (err) {
-                console.error("Failed to fetch project members:", err);
+                enqueueSnackbar(t("error.service"), { variant: "warning" });
             } finally {
                 setLoadingMembers(false);
             }
@@ -84,7 +90,7 @@ const ProjectPage = () => {
                 const data = await getProjectById({projectId});
                 setProject(data);
             } catch (error) {
-                console.error("Failed to fetch project:", error);
+                setError(t("error.service"));
             } finally {
                 setLoading(false);
             }
@@ -99,7 +105,7 @@ const ProjectPage = () => {
                 const data = await getAllSurveysByProject({projectId});
                 setSurveys(data);
             } catch (error) {
-                console.error("Failed to fetch surveys:", error);
+                enqueueSnackbar(t("error.service"), { variant: "warning" });
             } finally {
                 setLoadingSurveys(false);
             }
@@ -107,13 +113,26 @@ const ProjectPage = () => {
         fetchSurveys();
     }, [projectId]);
 
+    if (error) {
+        return (
+            <MainLayout><Box sx={{height: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center"}}>
+                <Typography variant="h4" gutterBottom>{t("error.title", "Something went wrong")}</Typography>
+                <Typography variant="body1" gutterBottom>{error}</Typography>
+                <Button variant="contained" onClick={() => window.location.reload()}>
+                    {t("error.reload")}
+                </Button>
+            </Box></MainLayout>
+        );
+    }
+
     if (loading || loadingSurveys || loadingMembers) {
         return (
             <Box sx={{height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center',}}>
-                <CircularProgress />
+                <CircularProgress/>
             </Box>
         );
     }
+
     if (!project?.projects) {
         return null;
     }

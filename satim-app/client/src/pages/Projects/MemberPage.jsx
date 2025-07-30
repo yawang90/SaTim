@@ -1,28 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {
-    Box,
-    CircularProgress,
-    Typography,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Button
-} from '@mui/material';
+import {Box, CircularProgress, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button} from '@mui/material';
 import Sidebar from '../../components/Sidebar';
 import MainLayout from "../../layouts/MainLayout";
 import {useNavigate, useParams} from "react-router-dom";
-import {
-    dashboardSidebar,
-    membersSidebar,
-    projectHomeSidebar,
-    settingsSidebar
-} from "../../components/SidebarConfig";
+import {dashboardSidebar, membersSidebar, projectHomeSidebar, settingsSidebar} from "../../components/SidebarConfig";
 import {useTranslation} from "react-i18next";
 import {getProjectMembers} from "../../services/ProjectService";
+import { useSnackbar} from "notistack";
 
 const MemberPage = () => {
     const navigate = useNavigate();
@@ -30,6 +14,7 @@ const MemberPage = () => {
     const [members, setMembers] = useState([]);
     const [loading, setLoading] = useState(true);
     const {projectId} = useParams();
+    const {enqueueSnackbar} = useSnackbar();
 
     const sidebarItems = [
         ...dashboardSidebar(t, navigate),
@@ -44,7 +29,7 @@ const MemberPage = () => {
                 const data = await getProjectMembers({projectId});
                 setMembers(data);
             } catch (err) {
-                console.error("Failed to fetch project members:", err);
+                enqueueSnackbar(t("error.service"), { variant: "warning" });
             } finally {
                 setLoading(false);
             }
