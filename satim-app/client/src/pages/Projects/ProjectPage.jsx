@@ -1,5 +1,19 @@
 import React, {useEffect, useState} from 'react';
-import {Avatar, Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField, Toolbar, Typography} from '@mui/material';
+import {
+    Autocomplete,
+    Avatar,
+    Box,
+    Button,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Grid,
+    TextField,
+    Toolbar,
+    Typography
+} from '@mui/material';
 import Sidebar from '../../components/Sidebar';
 import MainLayout from "../../layouts/MainLayout";
 import ProjectCard from "../../components/ProjectCard";
@@ -9,31 +23,33 @@ import {useTranslation} from "react-i18next";
 import {dashboardSidebar, membersSidebar, projectHomeSidebar, settingsSidebar} from "../../components/SidebarConfig";
 import {getProjectById, getProjectMembers} from "../../services/ProjectService";
 import {getAllSurveysByProject} from "../../services/SurveyService";
-import { useSnackbar } from "notistack";
+import {enqueueSnackbar} from "notistack";
+import {findUsersByNameOrEmail} from "../../services/UserService";
 
 const ProjectPage = () => {
     const navigate = useNavigate();
     const {t} = useTranslation();
     const {projectId} = useParams();
-    const {enqueueSnackbar} = useSnackbar();
-
     const [project, setProject] = useState(null);
     const [loading, setLoading] = useState(true);
     const [loadingMembers, setLoadingMembers] = useState(true);
     const [loadingSurveys, setLoadingSurveys] = useState(true);
+    const [loadingAddMember, setLoadingAddMember] = useState(false);
     const [members, setMembers] = useState([]);
     const [error, setError] = useState(null);
-
     const sidebarItems = [
         ...dashboardSidebar(t, navigate),
         ...projectHomeSidebar(t, navigate, projectId),
         ...settingsSidebar(t, navigate, projectId),
         ...membersSidebar(t, navigate, projectId),
     ];
-
     const [surveys, setSurveys] = useState([]);
+    const [searchResults, setSearchResults] = useState([]);
+    const [selectedMember, setSelectedMember] = useState(null);
+    const [searchLoading, setSearchLoading] = useState(false);
     const [openMemberDialog, setOpenMemberDialog] = useState(false);
     const [newMemberName, setNewMemberName] = useState('');
+    const [inviteEmail, setInviteEmail] = useState("");
     const navigateSurveyCreation = () => {
         navigate(`/survey/creation/${projectId}`)
     }
@@ -58,15 +74,18 @@ const ProjectPage = () => {
         setOpenMemberDialog(false);
         setNewMemberName('');
     };
-    const handleAddMember = () => {
-        if (newMemberName.trim()) {
-            setMembers(prev => [
-                ...prev,
-                {id: Date.now(), name: newMemberName.trim()}
-            ]);
-            handleCloseMemberDialog();
-        }
-    };
+
+    const addMember = async (member) => {
+            setLoadingAddMember(true);
+            try {
+                await addProjectMember({member, projectId});
+            } catch (err) {
+                enqueueSnackbar(t("error.membersAdd"), { variant: "warning" });
+            } finally {
+                setLoadingAddMember(false);
+                handleCloseMemberDialog();
+            }
+    }
 
     useEffect(() => {
         const fetchMembers = async () => {
@@ -75,7 +94,7 @@ const ProjectPage = () => {
                 const data = await getProjectMembers({projectId});
                 setMembers(data);
             } catch (err) {
-                enqueueSnackbar(t("error.service"), { variant: "warning" });
+                enqueueSnackbar(t("error.members"), { variant: "warning" });
             } finally {
                 setLoadingMembers(false);
             }
@@ -105,7 +124,7 @@ const ProjectPage = () => {
                 const data = await getAllSurveysByProject({projectId});
                 setSurveys(data);
             } catch (error) {
-                enqueueSnackbar(t("error.service"), { variant: "warning" });
+                enqueueSnackbar(t("error.surveys"), { variant: "warning" });
             } finally {
                 setLoadingSurveys(false);
             }
@@ -113,7 +132,28 @@ const ProjectPage = () => {
         fetchSurveys();
     }, [projectId]);
 
-    if (error) {
+    useEffect(() => {
+        if (!newMemberName.trim()) {
+            setSearchResults([]);
+            return;
+        }
+
+        const delayDebounce = setTimeout(async () => {
+            try {
+                setSearchLoading(true);
+                const members = await findUsersByNameOrEmail(newMemberName);
+                setSearchResults(members);
+            } catch (err) {
+                enqueueSnackbar(t("error.membersSearch"), { variant: "warning" });
+            } finally {
+                setSearchLoading(false);
+            }
+        }, 400);
+
+        return () => clearTimeout(delayDebounce);
+    }, [newMemberName]);
+
+    if (error || !project?.projects) {
         return (
             <MainLayout><Box sx={{height: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center"}}>
                 <Typography variant="h4" gutterBottom>{t("error.title", "Something went wrong")}</Typography>
@@ -125,16 +165,12 @@ const ProjectPage = () => {
         );
     }
 
-    if (loading || loadingSurveys || loadingMembers) {
+    if (loading || loadingSurveys || loadingMembers || loadingAddMember) {
         return (
             <Box sx={{height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center',}}>
                 <CircularProgress/>
             </Box>
         );
-    }
-
-    if (!project?.projects) {
-        return null;
     }
 
     return (
@@ -170,7 +206,7 @@ const ProjectPage = () => {
                                     <AddIcon sx={{fontSize: 32, color: 'grey'}}/>
                                 </Avatar>
                                 <Typography variant="body2" align="center">
-                                    Hinzufügen
+                                    {t('project.addMembers')}
                                 </Typography>
                             </Box>
                         </Box>
@@ -184,15 +220,80 @@ const ProjectPage = () => {
                     </Box>
                 </Box>
             </Box>
-            <Dialog open={openMemberDialog} onClose={handleCloseMemberDialog}>
-                <DialogTitle>{t(project.addMember)}</DialogTitle>
-                <DialogContent>
-                    <TextField autoFocus margin="dense" label="Name des Mitglieds" type="text" fullWidth value={newMemberName} onChange={e => setNewMemberName(e.target.value)} helperText="Email des Benutzers suchen..."/>
+            <Dialog open={openMemberDialog} onClose={handleCloseMemberDialog} fullWidth>
+                <DialogTitle>{t("project.addMember")}</DialogTitle>
+                <DialogContent sx={{ mt: 3, mb: 2 }}>
+                    <Autocomplete
+                        options={searchResults}
+                        filterOptions={(options) => options}
+                        getOptionLabel={(option) =>
+                            `${option.firstName ?? option.first_name ?? ""} ${option.lastName ?? option.last_name ?? ""} (${option.email ?? ""})`
+                        }
+                        loading={searchLoading}
+                        value={selectedMember}
+                        noOptionsText={`${t("member.noResults")} — ${t("member.enterEmailBelow")}`}
+                        onChange={(event, newValue) => {
+                            setSelectedMember(newValue);
+                            if (newValue) setInviteEmail("");
+                        }}
+                        inputValue={newMemberName}
+                        onInputChange={(event, newInputValue) => {
+                            setNewMemberName(newInputValue);
+                        }}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                placeholder={t("member.label")}
+                                helperText={t("member.email")}
+                                fullWidth
+                            />
+                        )}
+                        renderOption={(props, option) => {
+                            const { key, ...rest } = props;
+                            return (
+                                <Box key={key} component="li" {...rest} sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                                    <Avatar src={option.avatarUrl} sx={{ width: 32, height: 32 }}>
+                                        {(option.firstName ?? option.first_name ?? "?")[0]}
+                                    </Avatar>
+                                    <span>{option.firstName ?? option.first_name} {option.lastName ?? option.last_name}</span>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {option.email}
+                                    </Typography>
+                                </Box>
+                            );
+                        }}
+                    />
+                    <Box sx={{ mt: 3 }}>
+                        <TextField
+                            label={t("member.inviteEmail")}
+                            placeholder="example@email.com"
+                            fullWidth
+                            value={inviteEmail}
+                            onChange={(e) => {
+                                setInviteEmail(e.target.value);
+                                setSelectedMember(null);
+                            }}
+                            helperText={t("member.inviteHelper")}
+                        />
+                    </Box>
                 </DialogContent>
+
                 <DialogActions>
-                    <Button onClick={handleCloseMemberDialog}>Abbrechen</Button>
-                    <Button onClick={handleAddMember} variant="contained">
-                        Hinzufügen
+                    <Button onClick={handleCloseMemberDialog}>{t("cancel")}</Button>
+                    <Button
+                        onClick={() => {
+                            if (selectedMember) {
+                                addMember(selectedMember);
+                               // setMembers(prev => [...prev, selectedMember]);
+                            } else if (inviteEmail.trim()) {
+                                // Send invite to new email
+                                // TODO: call backend API for invitation
+                            }
+                            handleCloseMemberDialog();
+                        }}
+                        variant="contained"
+                        disabled={!selectedMember && !(inviteEmail && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inviteEmail))}>
+                        {selectedMember ? t("project.addMember") : t("member.sendInvite")}
                     </Button>
                 </DialogActions>
             </Dialog>

@@ -1,4 +1,4 @@
-import {findUser, loginUserService, saveNewUser} from '../services/userService.js';
+import {findUser, findUsersByNameOrEmail, loginUserService, saveNewUser} from '../services/userService.js';
 import {registerValidationSchema} from "../validation/userValidation.js";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
@@ -52,3 +52,19 @@ export const getUserById = async (req,res) => {
     const user = await findUser(userId);
     res.json(user)
 }
+
+export const getUsersByNameOrEmail = async (req, res) => {
+    try {
+        const query = req.query.query?.trim() || "";
+
+        if (!query) {
+            return res.json([]);
+        }
+
+        const users = await findUsersByNameOrEmail(query);
+        res.json(users);
+    } catch (err) {
+        console.error("Error searching users:", err);
+        res.status(500).json({error: "Internal server error"});
+    }
+};

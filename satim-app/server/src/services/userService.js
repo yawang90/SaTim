@@ -26,3 +26,21 @@ export const findUser = async (userId) => {
     const user = Number(userId);
     return prisma.users.findUnique({where: {id: user}});
 }
+
+export const findUsersByNameOrEmail = async (query) => {
+    return prisma.users.findMany({
+        where: {
+            OR: [
+                { last_name: { contains: query, mode: "insensitive" } },
+                { email: { contains: query, mode: "insensitive" } }
+            ]
+        },
+        select: {
+            id: true,
+            first_name: true,
+            last_name: true,
+            email: true
+        },
+        take: 10
+    });
+}

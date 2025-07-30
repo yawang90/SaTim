@@ -37,3 +37,8 @@ export const getUserById = async (userId) => {
     return response.json();
 }
 
+export const findUsersByNameOrEmail = async (nameOrEmail) => {
+    const res = await fetch(`${API_URL}/api/users/search?query=${encodeURIComponent(nameOrEmail)}`);
+    if (!res.ok) throw new Error("Search failed");
+    return await res.json()
+}

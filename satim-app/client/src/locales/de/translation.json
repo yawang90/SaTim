@@ -25,7 +25,8 @@
     "action": "Aktion",
     "description": "Projekt Beschreibung",
     "delete": "Projekt löschen",
-    "noMembers:": "Keine Mitglieder gefunden",
+    "noMembers": "Keine Mitglieder gefunden",
+    "addMembers": "Hinzufügen",
     "deleteConfirmation": "Wollen Sie das Projekt wirklich löschen? Dieser Vorgang kann nicht rückgängig gemacht werden und führt zum Löschen aller bereits durchgeführten Erhebungen. Falls Sie mit der Löschung einverstanden sind, geben Sie bitte den Projektnamen als Bestätigung ein:\n"
   },
   "survey": {
@@ -86,7 +87,20 @@
   "error": {
     "title": "Etwas ist schiefgegangen",
     "reload":  "Seite neu laden.",
-    "service": "Diese Seite ist nicht verfügbar, bitte laden Sie die Seite erneut."
+    "service": "Diese Seite ist nicht verfügbar, bitte laden Sie die Seite erneut.",
+    "surveys": "Erhebungen konnten nicht geladen werden, bitte laden Sie die Seite erneut.",
+    "members": "Mitarbeitende konnten nicht geladen werden, bitte laden Sie die Seite erneut.",
+    "membersSearch": "Mitarbeitende konnten nicht gesucht werden, bitte laden Sie die Seite erneut.",
+    "membersAdd": "Mitarbeitende konnten nicht hinzugefügt werden, bitte versuchen Sie es erneut."
+  },
+  "member": {
+    "email": "Nach Email oder Nachname suchen",
+    "label": "Nachname oder Email",
+    "noResults": "Keine Ergebnisse",
+    "inviteEmail": "Mitglied nicht gefunden? Laden Sie zu dem Projekt per Email ein",
+    "inviteHelper": "Per Email einladen",
+    "enterEmailBelow": "Laden Sie neue Mitglier per Email ein",
+    "sendInvite": "Einladung senden"
   },
   "pageNotFound": "Etwas ist schief gegangen, bitte laden sie die Seite neu.",
   "pageReload": "Seite neu laden."

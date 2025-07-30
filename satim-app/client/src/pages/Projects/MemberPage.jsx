@@ -6,7 +6,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {dashboardSidebar, membersSidebar, projectHomeSidebar, settingsSidebar} from "../../components/SidebarConfig";
 import {useTranslation} from "react-i18next";
 import {getProjectMembers} from "../../services/ProjectService";
-import { useSnackbar} from "notistack";
+import {enqueueSnackbar} from "notistack";
 
 const MemberPage = () => {
     const navigate = useNavigate();
@@ -14,7 +14,6 @@ const MemberPage = () => {
     const [members, setMembers] = useState([]);
     const [loading, setLoading] = useState(true);
     const {projectId} = useParams();
-    const {enqueueSnackbar} = useSnackbar();
 
     const sidebarItems = [
         ...dashboardSidebar(t, navigate),
