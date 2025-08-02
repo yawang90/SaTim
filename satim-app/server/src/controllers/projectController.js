@@ -105,15 +105,12 @@ export const getProjectMembers = async (req, res) => {
 export const addProjectMembers = async (req, res) => {
     const { projectId } = req.query;
     const { userId } = req.body;
-
     if (!projectId) {
         return res.status(400).json({ message: "Missing projectId" });
     }
-
     if (!userId) {
         return res.status(400).json({ message: "Provide either userId" });
     }
-
     try {
         const access = await addMemberToProject({ projectId, userId });
         return res.json(access);
@@ -123,3 +120,21 @@ export const addProjectMembers = async (req, res) => {
         res.status(500).json({ message: "Failed to add project member" });
     }
 };
+
+export const sendInviteEmail = async (req, res) => {
+    const {projectId} = req.query;
+    const {email} = req.query;
+    if (!projectId) {
+        return res.status(400).json({ message: "Missing projectId" });
+    }
+    if (!email) {
+        return res.status(400).json({ message: "Provide either email" });
+    }
+    try {
+        const access = await addMemberToProject({ projectId, email });
+        return res.json(access);
+
+    } catch (err) {
+        res.status(500).json({ message: "Failed to add project member" });
+    }
+}

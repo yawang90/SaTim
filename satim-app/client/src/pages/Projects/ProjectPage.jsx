@@ -21,7 +21,7 @@ import AddIcon from "@mui/icons-material/Add";
 import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {dashboardSidebar, membersSidebar, projectHomeSidebar, settingsSidebar} from "../../components/SidebarConfig";
-import {addProjectMember, getProjectById, getProjectMembers} from "../../services/ProjectService";
+import {addProjectMember, getProjectById, getProjectMembers, sendInviteEmail} from "../../services/ProjectService";
 import {getAllSurveysByProject} from "../../services/SurveyService";
 import {enqueueSnackbar} from "notistack";
 import {findUsersByNameOrEmail} from "../../services/UserService";
@@ -31,10 +31,11 @@ const ProjectPage = () => {
     const {t} = useTranslation();
     const {projectId} = useParams();
     const [project, setProject] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [loadingSurveys, setLoadingSurveys] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [loadingSurveys, setLoadingSurveys] = useState(false);
     const [loadingAddMember, setLoadingAddMember] = useState(false);
-    const [loadingMembers, setLoadingMembers] = useState(true);
+    const [loadingMembers, setLoadingMembers] = useState(false);
+    const [loadingInvite, setLoadingInvite] = useState(false);
     const [members, setMembers] = useState([]);
     const [error, setError] = useState(null);
     const sidebarItems = [
@@ -102,7 +103,14 @@ const ProjectPage = () => {
     };
 
     const sendInvite = async (inviteEmail) => {
-
+        setLoadingInvite(true);
+        try {
+            await sendInviteEmail({inviteEmail, projectId});
+        } catch (err) {
+            enqueueSnackbar(t("error.invite"), { variant: "warning" });
+        } finally {
+            setLoadingInvite(false);
+        }
     }
 
     useEffect(() => {

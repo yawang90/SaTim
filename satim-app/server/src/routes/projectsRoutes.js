@@ -4,7 +4,7 @@ import {
     createProject,
     getAllProjects,
     getProject, getProjectMembers,
-    removeProject,
+    removeProject, sendInviteEmail,
     updateProject
 } from "../controllers/projectController.js";
 
@@ -17,5 +17,6 @@ router.get('/members', getProjectMembers);
 router.put('/update', updateProject);
 router.delete('/delete', removeProject);
 router.post('/addMembers', addProjectMembers);
+router.get('/invite', sendInviteEmail);
 
 export default router;

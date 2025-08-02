@@ -91,7 +91,8 @@
     "surveys": "Erhebungen konnten nicht geladen werden, bitte laden Sie die Seite erneut.",
     "members": "Mitarbeitende konnten nicht geladen werden, bitte laden Sie die Seite erneut.",
     "membersSearch": "Mitarbeitende konnten nicht gesucht werden, bitte laden Sie die Seite erneut.",
-    "membersAdd": "Mitarbeitende konnten nicht hinzugefügt werden, bitte versuchen Sie es erneut."
+    "membersAdd": "Mitarbeitende konnten nicht hinzugefügt werden, bitte versuchen Sie es erneut.",
+    "invite": "Einladung konnte nicht versendet werden, bitte versuchen Sie es erneut."
   },
   "member": {
     "email": "Nach Email oder Nachname suchen",

@@ -96,3 +96,11 @@ export const addProjectMember = async ({ member, projectId }) => {
 
     return data;
 };
+
+export const sendInviteEmail = async ({email, projectId}) => {
+    if (!email) throw new Error("Missing email");
+
+    const response = await fetch(`${API_URL}/api/projects/invite?email=${email}&projectId=${projectId}`)
+    if (!response.ok) throw new Error("Sending email failed");
+    return response.json()
+}
