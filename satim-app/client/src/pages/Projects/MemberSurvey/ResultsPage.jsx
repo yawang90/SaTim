@@ -214,7 +214,7 @@ const ResultsPage = () => {
                                                 <Box sx={{ flex: 1 }}>
                                                     <Typography variant="h6">Ergebnis</Typography>
                                                     <Typography variant="body2">User Id: {response?.userId}</Typography>
-                                                    <Typography variant="body2">Anzahl Fragen beantwortet: {response?.questions?.length - 1}</Typography>
+                                                    <Typography variant="body2">Anzahl Fragen: {response?.questions?.length}</Typography>
                                                     <Typography variant="body2">Status: Abgeschlossen</Typography>
                                                 </Box>
                                                 <Box display="flex" gap={1}>

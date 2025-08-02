@@ -16,7 +16,6 @@ export default function SurveyPage() {
     const [isCompleted, setIsCompleted] = useState(false)
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1);
     const [response, setResponse] = useState([]);
-    const maxQuestions = 20;
 
     const goToQuestion = (index) => {
         setCurrentQuestionIndex(index);
@@ -39,7 +38,7 @@ export default function SurveyPage() {
             const responseData = await getOrCreateResponse(surveyId, userId);
             setResponse(responseData);
             setCurrentQuestionIndex(responseData.questions.length - 1)
-            setIsCompleted(responseData.questions.length > maxQuestions);
+            setIsCompleted(responseData.completed);
         } finally {
             setLoading(false);
         }

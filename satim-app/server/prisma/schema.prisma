@@ -65,6 +65,7 @@ model response {
   questions  question[]
   userId     Int
   user       users   @relation(fields: [userId], references: [id])
+  completed  Boolean @default(false)
   @@index([userId])
   @@index([surveyId])
 }

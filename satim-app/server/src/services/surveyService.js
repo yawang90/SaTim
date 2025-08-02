@@ -66,7 +66,7 @@ export const findOrCreateResponse = async({userId, surveyId}) => {
     });
 
     if (existingResponse) {
-        return appendNewQuestionIfNeeded(existingResponse, surveyId, existingResponse.id);
+        return appendNewQuestionIfNeeded(existingResponse, surveyId);
     }
 
     const newResponse = await prisma.response.create({
@@ -80,7 +80,7 @@ export const findOrCreateResponse = async({userId, surveyId}) => {
             questions: true,
         },
     });
-    return appendNewQuestionIfNeeded(newResponse, surveyId, newResponse.id);
+    return appendNewQuestionIfNeeded(newResponse, surveyId);
 }
 
 export const getResponses = async({surveyId}) => {
@@ -264,21 +264,24 @@ async function getRandomQuestion(surveyId, responseId) {
     return question;
 }
 
-async function appendNewQuestionIfNeeded(response, surveyId, responseId) {
+async function appendNewQuestionIfNeeded(response, surveyId) {
     const questions = response.questions;
     const lastQuestion = questions.at(-1);
 
     if (questions.length === 0 || lastQuestion?.answer) {
-        const newQuestion = await getQuestionKoppen(surveyId, responseId)
+        const newQuestion = await getQuestionKoppen(surveyId, response)
+        if (newQuestion == null) {
+            response.completed = true;
+            return response;
+        }
         questions.push(newQuestion);
     }
 
     return response;
 }
 
-async function getQuestionKoppen(surveyId, responseId) {
+async function getQuestionKoppen(surveyId, response) {
     const competences = await getSurveyData(surveyId);
-    const response = await getResponse(responseId, surveyId);
     const yesAnswers = [];
     const noAnswers = [];
     response.questions.forEach((question) => {
@@ -289,15 +292,19 @@ async function getQuestionKoppen(surveyId, responseId) {
         }
     });
     const result = await runKoppenPythonScript(competences[0], yesAnswers, noAnswers);
-    const competencesFrom = result[0];
-    const competencesTo = result[1];
-    const question = await prisma.question.create({
-        data: {
-            response: {connect: {id: responseId}},
-            answer: null,
-            competencesFrom: Array.isArray(competencesFrom) ? competencesFrom : [competencesFrom],
-            competencesTo: Array.isArray(competencesTo) ? competencesTo : [competencesTo]
-        },
-    });
-    return question;
+    if (result === null) {
+        return null;
+    } else {
+        const competencesFrom = result[0];
+        const competencesTo = result[1];
+        const question = await prisma.question.create({
+            data: {
+                response: {connect: {id: response.id}},
+                answer: null,
+                competencesFrom: Array.isArray(competencesFrom) ? competencesFrom : [competencesFrom],
+                competencesTo: Array.isArray(competencesTo) ? competencesTo : [competencesTo]
+            },
+        });
+        return question;
+    }
 }

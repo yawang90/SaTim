@@ -11,7 +11,7 @@ def koppen_query_algorithm(items, P_yes, P_neg):
         item for item in possible_item_combinations
         if not already_known(item, P_yes, P_neg)
     ]
-    return possible_results[0] if len(possible_item_combinations) > 0 else None
+    return possible_results[0] if len(possible_results) > 0 else None
 
 def already_known(item, P_yes, P_neg):
     if item in P_yes or item in P_neg:
