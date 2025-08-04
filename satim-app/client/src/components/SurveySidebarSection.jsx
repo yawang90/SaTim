@@ -31,7 +31,7 @@ export const SurveySidebarSection = ({ t, navigate, surveys }) => {
                             key={survey.id}
                             sx={{ pl: 4 }}
                             onClick={() =>
-                                navigate(`/survey/dashboard/${survey.id}`)}
+                                navigate(`/survey/dashboard/${survey.id}/${survey.projectId}`)}
                             selected={isSurveySelected(survey.id)}
                         >
                             <ListItemText primary={survey.title} />

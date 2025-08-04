@@ -10,7 +10,7 @@ import {SurveySidebarSection} from "../../../components/SurveySidebarSection";
 const CompetencesPage = () => {
     const navigate = useNavigate();
     const {t} = useTranslation();
-    const {projectId, surveyId} = useParams();
+    const {surveyId, projectId} = useParams();
     const sidebarItems = [
         ...dashboardSidebar(t, navigate),
         ...projectHomeSidebar(t, navigate, projectId),

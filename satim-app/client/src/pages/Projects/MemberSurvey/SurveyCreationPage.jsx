@@ -69,7 +69,7 @@ const SurveyCreationPage = () => {
             setIsSaving(true);
             const survey = await createSurvey(projectId, file, title, description);
             setUploadStatus({ type: 'success', message: 'Datei erfolgreich hochgeladen!' });
-            navigate(`/survey/dashboard/${survey.id}`);
+            navigate(`/survey/dashboard/${survey.id}/${projectId}`);
         } catch (error) {
             console.error('Upload failed:', error);
             setUploadStatus({ type: 'error', message: 'Fehler beim Hochladen der Datei.' });

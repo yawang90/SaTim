@@ -24,14 +24,12 @@ import {CustomNode} from "../../../components/Node";
 const ResultsPage = () => {
     const navigate = useNavigate();
     const {t} = useTranslation();
-    const {surveyId} = useParams();
-    const [sidebarItems, setSidebarItems] = useState([]);
+    const {surveyId, projectId} = useParams();
     const [surveys, setSurveys] = useState([]);
     const [survey, setSurvey] = useState([]);
     const [loading, setLoading] = useState(false);
     const [loadingSurveys, setLoadingSurveys] = useState(false);
     const [loadingResponses, setLoadingResponses] = useState(false);
-    const [projectId, setProjectId] = useState(false);
     const [responses, setResponses] = useState([]);
     const [selectedResponse, setSelectedResponse] = useState(null);
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -39,6 +37,12 @@ const ResultsPage = () => {
     const [nodes, setNodes] = useState([]);
     const [edges, setEdges] = useState([]);
     const nodeTypes = {custom: CustomNode};
+    const sidebarItems = [
+        ...dashboardSidebar(t, navigate),
+        ...projectHomeSidebar(t, navigate, projectId),
+        ...settingsSidebar(t, navigate, projectId),
+        ...membersSidebar(t, navigate, projectId),
+    ];
     const handleOpenDialog = async (response) => {
         setLoadingResponses(true);
         const enrichedResponse = await getEnrichedResponse(response.surveyId, response.id);
@@ -126,7 +130,6 @@ const ResultsPage = () => {
         if (surveyId) {
           setLoading(true);
             getSurveyById(surveyId).then(data => {
-                setProjectId(data.projectId);
                 setSurvey(data)
             }).finally(() => setLoading(false));
         }
@@ -139,15 +142,6 @@ const ResultsPage = () => {
                 setSurveys(data);
             }).finally(() => setLoadingSurveys(false));
         }
-    }, [projectId]);
-
-    useEffect(() => {
-        setSidebarItems([
-            ...dashboardSidebar(t, navigate),
-            ...projectHomeSidebar(t, navigate, projectId),
-            ...settingsSidebar(t, navigate, projectId),
-            ...membersSidebar(t, navigate, projectId),
-        ]);
     }, [projectId]);
 
     useEffect(() => {

@@ -55,7 +55,7 @@ const ProjectPage = () => {
         navigate(`/survey/creation/${projectId}`)
     }
     const navigateSurveyDashboard = (surveyId) => {
-        navigate(`/survey/dashboard/${surveyId}`)
+        navigate(`/survey/dashboard/${surveyId}/${projectId}`)
     }
 
     const gridItems = surveys.map((survey) => (

@@ -19,12 +19,11 @@ const APP_URL = import.meta.env.VITE_APP_URL;
 const SurveyDashboardPage = () => {
     const navigate = useNavigate();
     const {t} = useTranslation();
-    const {surveyId} = useParams();
+    const {surveyId, projectId} = useParams();
     const [survey, setSurvey] = useState([]);
     const [surveys, setSurveys] = useState([]);
     const [loading, setLoading] = useState(false);
     const [loadingSurveys, setLoadingSurveys] = useState(false);
-    const [projectId, setProjectId] = useState(false);
     const sidebarItems = [
         ...dashboardSidebar(t, navigate),
         ...projectHomeSidebar(t, navigate, projectId),
@@ -42,13 +41,13 @@ const SurveyDashboardPage = () => {
             title:  t("survey.resultTitle"),
             description: t("survey.resultSubtitle"),
             icon: <BarChartIcon fontSize="medium" />,
-            onClick: () => navigate(`/survey/dashboard/${surveyId}/results`)
+            onClick: () => navigate(`/survey/dashboard/${surveyId}/${projectId}/results`)
         },
         {
             title: t("survey.competencesTitle"),
             description: t("survey.competences"),
             icon: <ListIcon fontSize="medium" />,
-            onClick: () => navigate(`/survey/dashboard/${surveyId}/competences`)
+            onClick: () => navigate(`/survey/dashboard/${surveyId}/${projectId}/competences`)
         },
         {
             title: t("survey.settingsTitle"),
@@ -63,7 +62,6 @@ const SurveyDashboardPage = () => {
             setLoading(true);
             getSurveyById(surveyId).then(data => {
                 setSurvey(data);
-                setProjectId(data.projectId);
             }).catch(() => {
                 enqueueSnackbar(t("survey.error"), { variant: 'error' });
             }).finally(() => setLoading(false));
