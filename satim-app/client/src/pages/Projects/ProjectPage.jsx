@@ -168,7 +168,13 @@ const ProjectPage = () => {
         return () => clearTimeout(delayDebounce);
     }, [searchMember]);
 
-    if (error || !project?.projects) {
+    if (loading || loadingSurveys || loadingMembers || loadingAddMember) {
+        return (
+            <Box sx={{height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center',}}>
+                <CircularProgress/>
+            </Box>
+        );
+    } else if (error || !project?.projects) {
         return (
             <MainLayout><Box sx={{height: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center"}}>
                 <Typography variant="h4" gutterBottom>{t("error.title", "Something went wrong")}</Typography>
@@ -177,14 +183,6 @@ const ProjectPage = () => {
                     {t("error.reload")}
                 </Button>
             </Box></MainLayout>
-        );
-    }
-
-    if (loading || loadingSurveys || loadingMembers || loadingAddMember) {
-        return (
-            <Box sx={{height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center',}}>
-                <CircularProgress/>
-            </Box>
         );
     }
 
