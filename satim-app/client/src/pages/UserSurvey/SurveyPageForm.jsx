@@ -117,6 +117,9 @@ export default function SurveyPageForm({response, currentQuestionIndex, goToNext
         <Box sx={{display: 'flex', flexDirection: 'column', minHeight: '100vh', bgcolor: 'background.default'}}>
             <Box sx={{flex: 1, bgcolor: 'grey.100', px: {xs: 2, md: 6}, py: {xs: 4, md: 8}, overflowY: 'auto',}}>
                 <Box maxWidth="900px" mx="auto">
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+                        <Button variant="contained" endIcon={<ChevronRightIcon/>} onClick={saveAnswer} disabled={!currentChoice}>{t("surveyForm.next")}</Button>
+                    </Box>
                     <Box textAlign="left" mb={6}>
                         <Typography variant="h5" fontWeight="bold" gutterBottom>
                             {t("surveyForm.competenceA")}
@@ -158,7 +161,6 @@ export default function SurveyPageForm({response, currentQuestionIndex, goToNext
                             {questionLayout.title}
                         </Typography>
                     </Box>
-
                     <Box sx={{display: 'flex', justifyContent: 'center'}}>
                         <Grid container spacing={4} mb={6}>
                             <Grid item xs={12} md={6}>
@@ -178,15 +180,6 @@ export default function SurveyPageForm({response, currentQuestionIndex, goToNext
                                 />
                             </Grid>
                         </Grid></Box>
-                    <Box sx={{display: 'flex', alignItems: 'center'}}>
-                        {/*<Button variant="outlined" startIcon={<ChevronLeftIcon/>} onClick={previousQuestion}*/}
-                        {/*        disabled={currentQuestionIndex < response?.questions?.length - 1}>*/}
-                        {/*    {t("surveyForm.back")}*/}
-                        {/*</Button>*/}
-                        <Button variant="contained" endIcon={<ChevronRightIcon/>} onClick={saveAnswer} disabled={!currentChoice}>
-                            {t("surveyForm.next")}
-                        </Button>
-                    </Box>
                 </Box>
             </Box>
         </Box>
