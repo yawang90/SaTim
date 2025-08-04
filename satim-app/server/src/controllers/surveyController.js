@@ -34,7 +34,7 @@ export async function uploadSurveyExcel(req, res) {
 export async function getSurvey(req, res) {
     const {surveyId} = req.query;
     if (!surveyId) {
-        return res.status(400).json({message: 'Missing projectId'});
+        return res.status(400).json({message: 'Missing surveyId'});
     }
     const survey = await findSurvey({surveyId});
     res.json(survey)

@@ -35,7 +35,7 @@ export const storeSurveyExcel = async (filePath, fileBuffer, req) => {
     return survey;
 };
 
-export const findSurvey = async ({surveyId}) => {
+export const findSurvey = async (surveyId) => {
     return prisma.survey.findFirst({
         where: {
             id: surveyId
@@ -146,7 +146,7 @@ async function getSurveyData(surveyId) {
         throw new Error('Failed to fetch Excel file from Supabase');
     }
     const buffer = await excelFile.arrayBuffer();
-    const result = extractRows(buffer, 10);
+    const result = extractRows(buffer);
     const rows = Object.values(result);
     return rows;
 }
