@@ -39,23 +39,22 @@ const SurveyDashboardPage = () => {
     };
     const buttons = [
         {
-            title: 'Umfrage Resultate',
-            description: 'Übersicht der Befragungen',
+            title:  t("survey.resultTitle"),
+            description: t("survey.resultSubtitle"),
             icon: <BarChartIcon fontSize="medium" />,
             onClick: () => navigate(`/survey/dashboard/${surveyId}/results`)
         },
         {
-            title: 'Kompetenzen ',
-            description: 'Ansicht der initialen Kompetenzen',
+            title: t("survey.competencesTitle"),
+            description: t("survey.competences"),
             icon: <ListIcon fontSize="medium" />,
-            onClick: () => alert('Link clicked'),
-     // onClick: () => navigate(`/survey/dashboard/${surveyId}/competences`)
+            onClick: () => navigate(`/survey/dashboard/${surveyId}/competences`)
         },
         {
-            title: 'Einstellungen',
-            description: 'Erhebung anpassen',
+            title: t("survey.settingsTitle"),
+            description:  t("survey.settings"),
             icon: <SettingsIcon fontSize="medium" />,
-            onClick: () => alert('Link clicked'),
+            onClick: () => alert('Einstellungen anzeigen'),
         }
     ];
 
@@ -66,7 +65,7 @@ const SurveyDashboardPage = () => {
                 setSurvey(data);
                 setProjectId(data.projectId);
             }).catch(() => {
-                enqueueSnackbar('Fehler beim Laden der Umfrage', { variant: 'error' });
+                enqueueSnackbar(t("survey.error"), { variant: 'error' });
             }).finally(() => setLoading(false));
         }
     }, [surveyId]);
@@ -107,9 +106,7 @@ const SurveyDashboardPage = () => {
                     <Box sx={{pb: 5}}></Box>
                     <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', px: 2 }}>
                         <Paper elevation={3} sx={{padding: 4, maxWidth: 600, width: '100%', borderRadius: 2, textAlign: 'center',}}>
-                            <Typography variant="h5" gutterBottom>
-                                Teile diesen Link für deine Erhebung
-                            </Typography>
+                            <Typography variant="h5" gutterBottom>{t("survey.link")}</Typography>
                             <Box sx={{mt: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid #ccc', borderRadius: 1, px: 2, py: 1, backgroundColor: '#fafafa', wordBreak: 'break-all',}}>
                                 <Typography
                                     variant="body2"
@@ -122,9 +119,7 @@ const SurveyDashboardPage = () => {
                                     </IconButton>
                                 </Tooltip>
                             </Box>
-                            <Typography variant="body2" sx={{mt: 2, color: 'text.secondary'}}>
-                                Teile den Link um Ergebnisse zu deiner Erhebung zu erhalten.
-                            </Typography>
+                            <Typography variant="body2" sx={{mt: 2, color: 'text.secondary'}}>{t("survey.link2")}</Typography>
                         </Paper>
                     </Box>
                     <Box sx={{pb: 5}}></Box>

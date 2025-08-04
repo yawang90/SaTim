@@ -50,7 +50,16 @@
     "registerTitle": "Anmeldung erforderlich",
     "questions": "Beantwortete Fragen",
     "question": "Frage ",
-    "current": "Bitte beantworten"
+    "current": "Bitte beantworten",
+    "error": "Fehler beim Laden der Umfrage",
+    "link": "Teile diesen Link für deine Erhebung",
+    "link2": "Kopiere und teile den Link um jemanden zu der Erhebung einzuladen.",
+    "resultTitle": "Umfrage Resultate",
+    "resultSubtitle": "Übersicht der Befragungen",
+    "competencesTitle": "Kompetenzen",
+    "competences": "Ansicht der initialen Kompetenzen",
+    "settingsTitle": "Einstellungen",
+    "settings": "Erhebung anpassen"
   },
   "surveyForm": {
     "title": "Kompetenz Vergleich",
