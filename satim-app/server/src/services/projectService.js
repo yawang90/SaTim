@@ -85,7 +85,7 @@ export const findAllMembersForProject = async ({ projectId }) => {
     });
 };
 
-export const addMemberToProject = async ({projectId, userId}) => {
+export const addUserToProject = async ({projectId, userId}) => {
     const existingAccess = await prisma.project_access.findUnique({
         where: {
             project_id_user_id: {
@@ -110,3 +110,30 @@ export const addMemberToProject = async ({projectId, userId}) => {
         }
     });
 }
+
+export const removeUserFromProject = async ({ projectId, userId }) => {
+    const existingAccess = await prisma.project_access.findUnique({
+        where: {
+            project_id_user_id: {
+                project_id: Number(projectId),
+                user_id: userId
+            }
+        }
+    });
+
+    if (!existingAccess) {
+        return null;
+    }
+
+    return prisma.project_access.delete({
+        where: {
+            project_id_user_id: {
+                project_id: Number(projectId),
+                user_id: userId
+            }
+        },
+        include: {
+            users: true
+        }
+    });
+};

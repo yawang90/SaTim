@@ -1,10 +1,10 @@
 import express from 'express';
 import {
-    addProjectMembers,
+    addProjectMember,
     createProject,
     getAllProjects,
     getProject, getProjectMembers,
-    removeProject, sendInviteEmail,
+    removeProject, removeProjectMember, sendInviteEmail,
     updateProject
 } from "../controllers/projectController.js";
 
@@ -16,7 +16,8 @@ router.get('/get', getProject)
 router.get('/members', getProjectMembers);
 router.put('/update', updateProject);
 router.delete('/delete', removeProject);
-router.post('/addMembers', addProjectMembers);
+router.post('/addMember', addProjectMember);
+router.post('/removeMember', removeProjectMember);
 router.get('/invite', sendInviteEmail);
 
 export default router;

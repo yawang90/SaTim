@@ -78,7 +78,7 @@ export const addProjectMember = async ({ member, projectId }) => {
     if (!projectId) throw new Error("Missing projectId");
     if (!member) throw new Error("Missing member");
 
-    const response = await fetch(`${API_URL}/api/projects/addMembers?projectId=${projectId}`, {
+    const response = await fetch(`${API_URL}/api/projects/addMember?projectId=${projectId}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -96,6 +96,28 @@ export const addProjectMember = async ({ member, projectId }) => {
 
     return data;
 };
+
+export const removeProjectMember = async (memberId, projectId) => {
+    if (!projectId) throw new Error("Missing projectId");
+    if (!memberId) throw new Error("Missing memberId");
+    const response = await fetch(`${API_URL}/api/projects/removeMember?projectId=${projectId}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            userId: memberId ?? null
+        })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || "Failed to remove project member");
+    }
+
+    return data;
+}
 
 export const sendInviteEmail = async ({email, projectId}) => {
     if (!email) throw new Error("Missing email");

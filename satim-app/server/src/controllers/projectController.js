@@ -1,11 +1,12 @@
 import {
-    saveNewProject,
+    addUserToProject,
+    deleteProject,
+    editProject,
+    findAllMembersForProject,
     findAllProjects,
     findProject,
-    editProject,
-    deleteProject,
-    findAllMembersForProject,
-    addMemberToProject
+    removeUserFromProject,
+    saveNewProject
 } from '../services/projectService.js';
 import {projectValidationSchema} from '../validation/projectValidation.js';
 import {stringifyBigInts} from "./helper.js";
@@ -33,7 +34,7 @@ export const getAllProjects = async (req, res) => {
     if (!userId) {
         return res.status(400).json({message: 'Missing userId'});
     }
-    const projects = await findAllProjects({ userId });
+    const projects = await findAllProjects({userId});
     res.json(stringifyBigInts(projects))
 }
 
@@ -42,15 +43,15 @@ export const getProject = async (req, res) => {
     if (!projectId) {
         return res.status(400).json({message: 'Missing projectId'});
     }
-    const projects = await findProject({ projectId });
+    const projects = await findProject({projectId});
     res.json(stringifyBigInts(projects))
 }
 
 export const updateProject = async (req, res) => {
-    const { projectId, name, description, userId } = req.body;
+    const {projectId, name, description, userId} = req.body;
 
     if (!projectId) {
-        return res.status(400).json({ message: 'Missing projectId' });
+        return res.status(400).json({message: 'Missing projectId'});
     }
 
     try {
@@ -58,35 +59,35 @@ export const updateProject = async (req, res) => {
         res.status(200).json(stringifyBigInts(updatedProject));
     } catch (err) {
         console.error('Error updating project:', err);
-        res.status(500).json({ message: 'Could not update project' });
+        res.status(500).json({message: 'Could not update project'});
     }
 };
 
 export const removeProject = async (req, res) => {
-    const { projectId } = req.params;
+    const {projectId} = req.params;
 
     if (!projectId) {
-        return res.status(400).json({ message: 'Missing projectId' });
+        return res.status(400).json({message: 'Missing projectId'});
     }
 
     try {
-        await deleteProject({ projectId });
-        res.status(200).json({ message: 'Project deleted successfully' });
+        await deleteProject({projectId});
+        res.status(200).json({message: 'Project deleted successfully'});
     } catch (err) {
         console.error('Error deleting project:', err);
-        res.status(500).json({ message: 'Could not delete project' });
+        res.status(500).json({message: 'Could not delete project'});
     }
 };
 
 export const getProjectMembers = async (req, res) => {
-    const { projectId } = req.query;
+    const {projectId} = req.query;
 
     if (!projectId) {
-        return res.status(400).json({ message: 'Missing projectId' });
+        return res.status(400).json({message: 'Missing projectId'});
     }
 
     try {
-        const members = await findAllMembersForProject({ projectId });
+        const members = await findAllMembersForProject({projectId});
         const formatted = members.map(member => ({
             id: member.users.id,
             firstName: member.users.first_name,
@@ -98,26 +99,45 @@ export const getProjectMembers = async (req, res) => {
         res.status(200).json(formatted);
     } catch (error) {
         console.error('Error fetching project members:', error);
-        res.status(500).json({ message: 'Could not fetch project members' });
+        res.status(500).json({message: 'Could not fetch project members'});
     }
 };
 
-export const addProjectMembers = async (req, res) => {
-    const { projectId } = req.query;
-    const { userId } = req.body;
+export const addProjectMember = async (req, res) => {
+    const {projectId} = req.query;
+    const {userId} = req.body;
     if (!projectId) {
-        return res.status(400).json({ message: "Missing projectId" });
+        return res.status(400).json({message: "Missing projectId"});
     }
     if (!userId) {
-        return res.status(400).json({ message: "Provide either userId" });
+        return res.status(400).json({message: "Provide either userId"});
     }
     try {
-        const access = await addMemberToProject({ projectId, userId });
+        const access = await addUserToProject({projectId, userId});
         return res.json(access);
 
     } catch (err) {
         console.error("Error adding member:", err);
-        res.status(500).json({ message: "Failed to add project member" });
+        res.status(500).json({message: "Failed to add project member"});
+    }
+};
+
+export const removeProjectMember = async (req, res) => {
+    const {projectId} = req.query;
+    const {userId} = req.body;
+    if (!projectId) {
+        return res.status(400).json({message: "Missing projectId"});
+    }
+    if (!userId) {
+        return res.status(400).json({message: "Missing userId"});
+    }
+    try {
+        const access = await removeUserFromProject({projectId, userId});
+        return res.json(access);
+
+    } catch (err) {
+        console.error("Error adding member:", err);
+        res.status(500).json({message: "Failed to add project member"});
     }
 };
 
@@ -125,16 +145,16 @@ export const sendInviteEmail = async (req, res) => {
     const {projectId} = req.query;
     const {email} = req.query;
     if (!projectId) {
-        return res.status(400).json({ message: "Missing projectId" });
+        return res.status(400).json({message: "Missing projectId"});
     }
     if (!email) {
-        return res.status(400).json({ message: "Provide either email" });
+        return res.status(400).json({message: "Provide either email"});
     }
     try {
-        const access = await addMemberToProject({ projectId, email });
+        const access = await addUserToProject({projectId, email});
         return res.json(access);
 
     } catch (err) {
-        res.status(500).json({ message: "Failed to add project member" });
+        res.status(500).json({message: "Failed to add project member"});
     }
 }

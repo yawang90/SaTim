@@ -5,7 +5,7 @@ import MainLayout from "../../layouts/MainLayout";
 import {useNavigate, useParams} from "react-router-dom";
 import {dashboardSidebar, membersSidebar, projectHomeSidebar, settingsSidebar} from "../../components/SidebarConfig";
 import {useTranslation} from "react-i18next";
-import {getProjectMembers} from "../../services/ProjectService";
+import {getProjectMembers, removeProjectMember} from "../../services/ProjectService";
 import {enqueueSnackbar} from "notistack";
 
 const MemberPage = () => {
@@ -35,6 +35,17 @@ const MemberPage = () => {
         };
         fetchMembers();
     }, [projectId]);
+
+    const handleRemove = async (memberId) => {
+        try {
+            setLoading(true);
+            await removeProjectMember(memberId, projectId);
+        } catch (err) {
+            enqueueSnackbar(t("error.service"), { variant: "warning" });
+        } finally {
+            setLoading(false);
+        }
+    }
 
     return (
         <MainLayout>

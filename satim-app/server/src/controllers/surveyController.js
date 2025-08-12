@@ -36,7 +36,7 @@ export async function getSurvey(req, res) {
     if (!surveyId) {
         return res.status(400).json({message: 'Missing surveyId'});
     }
-    const survey = await findSurvey({surveyId});
+    const survey = await findSurvey(surveyId);
     res.json(survey)
 }
 
