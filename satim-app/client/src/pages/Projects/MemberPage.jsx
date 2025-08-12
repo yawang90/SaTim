@@ -1,5 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {Box, CircularProgress, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button} from '@mui/material';
+import {
+    Box,
+    Button,
+    CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography
+} from '@mui/material';
 import Sidebar from '../../components/Sidebar';
 import MainLayout from "../../layouts/MainLayout";
 import {useNavigate, useParams} from "react-router-dom";
@@ -14,6 +26,8 @@ const MemberPage = () => {
     const [members, setMembers] = useState([]);
     const [loading, setLoading] = useState(true);
     const {projectId} = useParams();
+    const [openDialog, setOpenDialog] = useState(false);
+    const [selectedMemberId, setSelectedMemberId] = useState(null);
 
     const sidebarItems = [
         ...dashboardSidebar(t, navigate),
@@ -22,30 +36,39 @@ const MemberPage = () => {
         ...membersSidebar(t, navigate, projectId),
     ];
 
-    useEffect(() => {
-        const fetchMembers = async () => {
-            try {
-                const data = await getProjectMembers({projectId});
-                setMembers(data);
-            } catch (err) {
-                enqueueSnackbar(t("error.service"), { variant: "warning" });
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchMembers();
-    }, [projectId]);
-
-    const handleRemove = async (memberId) => {
+    const fetchMembers = async () => {
         try {
-            setLoading(true);
-            await removeProjectMember(memberId, projectId);
+            const data = await getProjectMembers({projectId});
+            setMembers(data);
         } catch (err) {
             enqueueSnackbar(t("error.service"), { variant: "warning" });
         } finally {
             setLoading(false);
         }
-    }
+    };
+
+    useEffect(() => {
+        fetchMembers();
+    }, [projectId]);
+
+    const handleRemoveClick = (memberId) => {
+        setSelectedMemberId(memberId);
+        setOpenDialog(true);
+    };
+
+    const confirmRemove = async () => {
+        try {
+            setLoading(true);
+            await removeProjectMember(selectedMemberId, projectId);
+            enqueueSnackbar(t("member.memberRemoved"), { variant: "success" });
+            fetchMembers();
+        } catch (err) {
+            enqueueSnackbar(t("error.service"), { variant: "warning" });
+        } finally {
+            setOpenDialog(false);
+            setLoading(false);
+        }
+    };
 
     return (
         <MainLayout>
@@ -87,11 +110,12 @@ const MemberPage = () => {
                                             <TableCell>{member.email}</TableCell>
                                             <TableCell>{member.role}</TableCell>
                                             <TableCell>
-                                                <Button
-                                                    onClick={() => handleRemove(member.id)}
+                                                {member.role !== 'admin' && (
+                                                    <Button
+                                                    onClick={() => handleRemoveClick(member.id)}
                                                     sx={{textTransform: 'none', fontWeight: 'bold', pl: 0, pr: 0}}>
                                                     {t('remove')}
-                                                </Button>
+                                                </Button>)}
                                             </TableCell>
                                         </TableRow>
                                     ))}
@@ -99,6 +123,20 @@ const MemberPage = () => {
                             </Table>
                         </TableContainer>
                     )}
+                    <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+                        <DialogTitle>{t('confirm')}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                {t('member.confirmRemoveMember')}
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button color="error" onClick={() => setOpenDialog(false)}>{t('cancel')}</Button>
+                            <Button onClick={confirmRemove} autoFocus>
+                                {t('remove')}
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                 </Box>
             </Box>
         </MainLayout>

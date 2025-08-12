@@ -110,7 +110,9 @@
     "inviteEmail": "Mitglied nicht gefunden? Laden Sie zu dem Projekt per Email ein",
     "inviteHelper": "Per Email einladen",
     "enterEmailBelow": "Laden Sie neue Mitglier per Email ein",
-    "sendInvite": "Einladung senden"
+    "sendInvite": "Einladung senden",
+    "confirmRemoveMember": "Wollen Sie den Mitarbeitenden entfernen?",
+    "memberRemoved": "Erfolgreich entfernt"
   },
   "pageNotFound": "Etwas ist schief gegangen, bitte laden sie die Seite neu.",
   "pageReload": "Seite neu laden."
