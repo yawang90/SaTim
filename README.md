@@ -12,22 +12,11 @@
 1. Local development configured at: http://localhost:3000/
 
 ## 1. Architektur
-### Frontend: React
-#### File structure
-1. components
-2. contexts
-3. layouts
-4. locales 
-5. pages 
-6. routes 
-7. services 
-8. styles
-
 #### General
 Frontend uses Vite for building.
 
 ### Backend: Node.js/Express (hosted on Render)
-#### File structure
+#### File structure overview
 1. config
 2. controllers - Handles incoming HTTP requests and sends responses
 3. db - PostgreSQL connection, db setup
@@ -35,9 +24,10 @@ Frontend uses Vite for building.
 5. services - Contains core business logic, reusable functions, DB calls
 6. validation
 #### General
-Backend uses Prisma for db schema access and migration.
+Backend uses Prisma for db schema access and migration. Make changes to db via schema.prisma file and run "ngx prisma migrate dev --name yourtitle" 
 
 ### Relational DB: PostgreSQL (for users, admin, auth)
+Setup of local db needed for working on-site -> see environment file .env 
 
 ### Host: Render
 Secrets are stored on Render directly (JWT pw, DB URL, etc.)
