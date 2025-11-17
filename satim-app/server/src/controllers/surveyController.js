@@ -81,25 +81,21 @@ export const getEnrichedResponsesBySurvey = async (req, res) => {
 }
 
 export const addUniqueTechnicalId = (buffer) => {
-    const workbook = XLSX.read(buffer, {type: 'buffer'});
+    const workbook = XLSX.read(buffer, { type: 'buffer' });
     const sheetName = workbook.SheetNames[0];
     const worksheet = workbook.Sheets[sheetName];
-
-    const json = XLSX.utils.sheet_to_json(worksheet);
-
-    const updated = json.map((row) => ({
-        _tech_id: nanoid(),
-        ...row
-    }));
-
-    const newWorksheet = XLSX.utils.json_to_sheet(updated);
-
+    const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: null });
+    const headers = rows[0];
+    const newHeaders = ['_tech_id', ...headers];
+    const updatedRows = rows.slice(1).map(row => [nanoid(), ...row]);
+    const finalRows = [newHeaders, ...updatedRows];
+    const newWorksheet = XLSX.utils.aoa_to_sheet(finalRows);
     const newWorkbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(newWorkbook, newWorksheet, sheetName);
-
-    const modifiedBuffer = XLSX.write(newWorkbook, {type: 'buffer', bookType: 'xlsx'});
+    const modifiedBuffer = XLSX.write(newWorkbook, { type: 'buffer', bookType: 'xlsx' });
     return modifiedBuffer;
-}
+};
+
 
 export const getCompetences = async (req, res) => {
     const {surveyId} = req.query;

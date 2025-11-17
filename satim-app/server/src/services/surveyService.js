@@ -244,26 +244,6 @@ async function getExcelURLFromSupabase(filePath) {
     return fileUrl;
 }
 
-async function getRandomQuestion(surveyId, responseId) {
-    const competences = await findCompetences({surveyId});
-    const randomIndexA = Math.floor(Math.random() * competences.length);
-    let randomIndexB = Math.floor(Math.random() * competences.length);
-    while (randomIndexB === randomIndexA && competences.length > 1) {
-        randomIndexB = Math.floor(Math.random() * competences.length);
-    }
-    const competencesFrom = competences[randomIndexA].col1;
-    const competencesTo = competences[randomIndexB].col1;
-    const question = await prisma.question.create({
-        data: {
-            response: { connect: { id: responseId } },
-            answer: null,
-            competencesFrom: Array.isArray(competencesFrom) ? competencesFrom : [competencesFrom],
-            competencesTo: Array.isArray(competencesTo) ? competencesTo : [competencesTo]
-        },
-    });
-    return question;
-}
-
 async function appendNewQuestionIfNeeded(response, surveyId) {
     const questions = response.questions;
     const lastQuestion = questions.at(-1);
