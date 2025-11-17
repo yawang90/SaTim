@@ -87,14 +87,14 @@ export const addUniqueTechnicalId = (buffer) => {
     const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: null });
     const headers = rows[0];
     const newHeaders = ['_tech_id', ...headers];
-    const updatedRows = rows.slice(1).map(row => [nanoid(), ...row]);
+    const updatedRows = rows.slice(1).filter(row => row.some(cell => cell !== null && cell !== '')).map(row => [nanoid(), ...row]);
     const finalRows = [newHeaders, ...updatedRows];
     const newWorksheet = XLSX.utils.aoa_to_sheet(finalRows);
     const newWorkbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(newWorkbook, newWorksheet, sheetName);
-    const modifiedBuffer = XLSX.write(newWorkbook, { type: 'buffer', bookType: 'xlsx' });
-    return modifiedBuffer;
+    return XLSX.write(newWorkbook, { type: 'buffer', bookType: 'xlsx' });
 };
+
 
 
 export const getCompetences = async (req, res) => {
