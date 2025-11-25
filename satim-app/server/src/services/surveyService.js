@@ -187,30 +187,46 @@ export const createExcelFromResponse = async ({responseId}) => {
     const sheet = workbook.addWorksheet('Matrix');
     sheet.addRow(['', ...competencesIds]);
 
+    const result = await getQuestionKoppen(response.surveyId, response, true);
     ids.forEach((rowId) => {
         const index = ids.indexOf(rowId);
         const rowValues = [competencesIds[index]];
-
         ids.forEach((colId) => {
             const match = response.questions.find(
                 (q) => q.competencesFrom.includes(rowId) && q.competencesTo.includes(colId)
             );
-
             if (match) {
                 if (match.answer === 'Ja') {
-                    rowValues.push(1);
+                    rowValues.push('11');
                 } else if (match.answer === 'Nein') {
-                    rowValues.push(0);
+                    rowValues.push('00');
                 } else {
-                    rowValues.push(999);
+                    rowValues.push('999');
                 }
             } else {
-                rowValues.push(999);
+                rowValues.push('999');
             }
-
         });
-
         sheet.addRow(rowValues);
+    });
+    const indexMap = new Map();
+    ids.forEach((id, index) => indexMap.set(id, index));
+    result.p_yes.forEach(([a, b]) => {
+        const row = indexMap.get(a) + 2;
+        const col = indexMap.get(b) + 2;
+        const cell = sheet.getCell(row, col);
+        if (cell.value === '999') {
+            cell.value = '1';
+        }
+    });
+
+    result.p_no.forEach(([a, b]) => {
+        const row = indexMap.get(a) + 2;
+        const col = indexMap.get(b) + 2;
+        const cell = sheet.getCell(row, col);
+        if (cell.value === '999') {
+            cell.value = '0';
+        }
     });
 
     const buffer = await workbook.xlsx.writeBuffer();
@@ -249,7 +265,7 @@ async function appendNewQuestionIfNeeded(response, surveyId) {
     const lastQuestion = questions.at(-1);
 
     if (questions.length === 0 || lastQuestion?.answer) {
-        const newQuestion = await getQuestionKoppen(surveyId, response)
+        const newQuestion = await getQuestionKoppen(surveyId, response, false)
         if (newQuestion == null) {
             response.completed = true;
             return response;
@@ -260,7 +276,7 @@ async function appendNewQuestionIfNeeded(response, surveyId) {
     return response;
 }
 
-async function getQuestionKoppen(surveyId, response) {
+async function getQuestionKoppen(surveyId, response, forExport) {
     const competences = await getSurveyData(surveyId);
     const yesAnswers = [];
     const noAnswers = [];
@@ -271,20 +287,24 @@ async function getQuestionKoppen(surveyId, response) {
             noAnswers.push([question.competencesFrom[0], question.competencesTo[0]]);
         }
     });
-    const result = await runKoppenPythonScript(competences[0], yesAnswers, noAnswers);
+    const result = await runKoppenPythonScript(competences[0], yesAnswers, noAnswers, forExport);
     if (result === null) {
         return null;
+    } else if (forExport) {
+        const P_yes = result.P_yes;
+        const P_no = result.P_no;
+        return {p_yes: P_yes, p_no: P_no}
     } else {
         const competencesFrom = result[0];
-        const competencesTo = result[1];
-        const question = await prisma.question.create({
-            data: {
-                response: {connect: {id: response.id}},
-                answer: null,
-                competencesFrom: Array.isArray(competencesFrom) ? competencesFrom : [competencesFrom],
-                competencesTo: Array.isArray(competencesTo) ? competencesTo : [competencesTo]
-            },
-        });
-        return question;
-    }
+            const competencesTo = result[1];
+            const question = await prisma.question.create({
+                data: {
+                    response: {connect: {id: response.id}},
+                    answer: null,
+                    competencesFrom: Array.isArray(competencesFrom) ? competencesFrom : [competencesFrom],
+                    competencesTo: Array.isArray(competencesTo) ? competencesTo : [competencesTo]
+                },
+            });
+            return question;
+        }
 }

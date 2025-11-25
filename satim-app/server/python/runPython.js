@@ -1,14 +1,16 @@
 import { spawn } from "node:child_process";
 
-export const runKoppenPythonScript = async (competenceItems, pyes, pno) => {
+export const runKoppenPythonScript = async (competenceItems, pyes, pno, forExport) => {
     return new Promise((resolve, reject) => {
-        const py = spawn('python3', ['python/koppen.py']);
+        const script = forExport
+            ? 'python/koppen_for_export.py'
+            : 'python/koppen.py';
+        const py = spawn('python3', [script]);
         const input = {
             competenceItems,
             pyes,
             pno
         };
-        console.log(input)
         py.stdin.write(JSON.stringify(input));
         py.stdin.end();
         let output = '';
