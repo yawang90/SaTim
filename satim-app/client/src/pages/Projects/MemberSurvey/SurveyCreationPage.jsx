@@ -38,7 +38,7 @@ const SurveyCreationPage = () => {
         if (!selectedFile) return;
 
         if (!selectedFile.name.match(/\.(xls|xlsx)$/)) {
-            alert('Bitte eine gültige Excel-Datei hochladen (.xls oder .xlsx)');
+            alert(t('survey.invalidFile'));
             return;
         }
 
@@ -52,27 +52,27 @@ const SurveyCreationPage = () => {
             } else {
                 setHeaders([]);
                 setFileRows([]);
-                alert('Die Datei enthält keine Daten.');
+                alert(t('survey.emptyFile'));
             }
         } catch (error) {
             console.error('Fehler beim Verarbeiten der Datei:', error);
-            alert('Fehler beim Verarbeiten der Datei.');
+            alert(t('survey.processingError'));
         }
     };
 
     const handleSave = async () => {
         if (!file) {
-            setUploadStatus({ type: 'error', message: 'Keine Datei ausgewählt.' });
+            setUploadStatus({ type: 'error', message: t('survey.noFileSelected')});
             return;
         }
         try {
             setIsSaving(true);
             const survey = await createSurvey(projectId, file, title, description);
-            setUploadStatus({ type: 'success', message: 'Datei erfolgreich hochgeladen!' });
+            setUploadStatus({ type: 'success', message: t('survey.uploadSuccess')});
             navigate(`/survey/dashboard/${survey.id}/${projectId}`);
         } catch (error) {
             console.error('Upload failed:', error);
-            setUploadStatus({ type: 'error', message: 'Fehler beim Hochladen der Datei.' });
+            setUploadStatus({ type: 'error', message: t('survey.uploadError')});
         } finally {
             setIsSaving(false);
         }
@@ -80,7 +80,7 @@ const SurveyCreationPage = () => {
 
     const handleNextFromInfo = () => {
         if (!title.trim()) {
-            alert('Bitte geben Sie einen Titel für die Umfrage ein.');
+            alert(t('survey.titleMissing'));
             return;
         }
         setActiveStep(1);
@@ -118,8 +118,8 @@ const SurveyCreationPage = () => {
 
                     {activeStep === 0 && (
                         <Box sx={{ maxWidth: 600, mx: 'auto', mt: 4 }}>
-                            <TextField label="Titel der Umfrage" variant="outlined" fullWidth margin="normal" value={title} onChange={(e) => setTitle(e.target.value)} required/>
-                            <TextField label="Beschreibung (optional)" variant="outlined" fullWidth margin="normal" multiline rows={4} value={description} onChange={(e) => setDescription(e.target.value)}/>
+                            <TextField label={t('survey.title')} variant="outlined" fullWidth margin="normal" value={title} onChange={(e) => setTitle(e.target.value)} required/>
+                            <TextField label={t('survey.descriptionOptional')} variant="outlined" fullWidth margin="normal" multiline rows={4} value={description} onChange={(e) => setDescription(e.target.value)}/>
                             <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
                                 <Button variant="contained" onClick={handleNextFromInfo}>
                                     {t('continue')}
@@ -136,7 +136,7 @@ const SurveyCreationPage = () => {
                             <Paper elevation={3} onClick={handleBoxClick} sx={{width: 280, p: 4, m: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', border: '2px dashed #ccc', borderRadius: 2, cursor: 'pointer', textAlign: 'center',}}>
                                 <UploadFileIcon sx={{ fontSize: 50, color: 'primary.main' }} />
                                 <Typography variant="body1" mt={2}>
-                                    Klicken Sie hier, um eine Excel-Datei hochzuladen
+                                    {t('survey.uploadInstruction')}
                                 </Typography>
                                 <input type="file" accept=".xls,.xlsx" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }}/>
                             </Paper>

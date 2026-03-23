@@ -97,23 +97,23 @@ const DashboardPage = () => {
                         required
                         autoFocus
                         margin="dense"
-                        label="Projektname"
+                        label={t("project.name")}
                         fullWidth
                         value={newProjectName}
                         onChange={e => setNewProjectName(e.target.value)}
                         inputProps={{maxLength: 40}}
-                        helperText={`${newProjectName.length}/40 Zeichen`}
+                        helperText={t("project.nameCharCount", { count: newProjectName.length, max: 40 })}
                     />
                     <TextField
                         margin="dense"
-                        label="Beschreibung"
+                        label={t("project.description")}
                         fullWidth
                         multiline
                         rows={4}
                         value={newProjectDescription}
                         onChange={e => setNewProjectDescription(e.target.value)}
                         inputProps={{maxLength: 255}}
-                        helperText={`${newProjectDescription.length}/255 Zeichen`}
+                        helperText={t("project.descriptionCharCount", { count: newProjectDescription.length, max: 255 })}
                     />
                 </DialogContent>
                 <DialogActions>

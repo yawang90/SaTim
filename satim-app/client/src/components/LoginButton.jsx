@@ -55,9 +55,9 @@ const LoginButton = ({width='400', redirectTo = "/dashboard"}) => {
                 <Box sx={modalStyle}>
                     <Typography variant="h6" mb={2}> {t("login.description")}</Typography>
                     <Box component="form" sx={{display: 'flex', flexDirection: 'column', gap: 2}}>
-                        <TextField name="email" label="Email" variant="outlined" value={loginFormData.email}
+                        <TextField name="email" label={t("login.email")} variant="outlined" value={loginFormData.email}
                                    onChange={handleInputChange} fullWidth/>
-                        <TextField name="password" label="Passwort" type="password" variant="outlined"
+                        <TextField name="password" label="Passwort" type={t("login.password")} variant="outlined"
                                    value={loginFormData.password} onChange={handleInputChange} fullWidth/>
                         <LoadingButton loading={loading} variant="contained" color="primary"
                                        onClick={handleSubmit}>{t("login.description")}</LoadingButton>

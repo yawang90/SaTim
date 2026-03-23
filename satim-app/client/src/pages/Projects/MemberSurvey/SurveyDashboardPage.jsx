@@ -34,7 +34,7 @@ const SurveyDashboardPage = () => {
     const generatedLink = APP_URL + '/survey/form/' + surveyId;
     const handleCopy = () => {
         navigator.clipboard.writeText(generatedLink);
-        enqueueSnackbar('Link copied to clipboard!', {variant: 'success'});
+        enqueueSnackbar(t('survey.copyTooltip'), {variant: 'success'});
     };
     const buttons = [
         {
@@ -53,7 +53,7 @@ const SurveyDashboardPage = () => {
             title: t("survey.settingsTitle"),
             description:  t("survey.settings"),
             icon: <SettingsIcon fontSize="medium" />,
-            onClick: () => alert('Einstellungen anzeigen'),
+            onClick: () => alert(t('survey.showSettings')),
         }
     ];
 

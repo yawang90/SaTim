@@ -28,6 +28,8 @@
     "delete": "Projekt löschen",
     "noMembers": "Keine Mitglieder gefunden",
     "addMembers": "Hinzufügen",
+    "nameCharCount": "{{count}}/{{max}} Zeichen",
+    "descriptionCharCount": "{{count}}/{{max}} Zeichen",
     "deleteConfirmation": "Wollen Sie das Projekt wirklich löschen? Dieser Vorgang kann nicht rückgängig gemacht werden und führt zum Löschen aller bereits durchgeführten Erhebungen. Falls Sie mit der Löschung einverstanden sind, geben Sie bitte den Projektnamen als Bestätigung ein:\n"
   },
   "survey": {
@@ -60,7 +62,34 @@
     "competencesTitle": "Kompetenzen",
     "competences": "Ansicht der initialen Kompetenzen",
     "settingsTitle": "Einstellungen",
-    "settings": "Erhebung anpassen"
+    "settings": "Erhebung anpassen",
+    "resultSingle": "Ergebnis",
+    "userId": "User ID",
+    "questionCount": "Anzahl Fragen",
+    "status": "Status",
+    "completed": "Abgeschlossen",
+    "answeredQuestions": "Fragen beantwortet",
+    "competenceA": "Kompetenz A",
+    "competenceB": "Kompetenz B",
+    "answer": "Antwort",
+    "descriptionOptional": "Beschreibung (optional)",
+    "uploadInstruction": "Klicken Sie hier, um eine Excel-Datei hochzuladen",
+    "invalidFile": "Bitte eine gültige Excel-Datei hochladen (.xls oder .xlsx)",
+    "emptyFile": "Die Datei enthält keine Daten.",
+    "processingError": "Fehler beim Verarbeiten der Datei.",
+    "titleMissing": "Bitte geben Sie einen Titel für die Umfrage ein.",
+    "noFileSelected": "Keine Datei ausgewählt.",
+    "uploadSuccess": "Datei erfolgreich hochgeladen!",
+    "uploadError": "Fehler beim Hochladen der Datei.",
+    "continue": "Weiter",
+    "back": "Zurück",
+    "copyTooltip": "In die Zwischenablage kopieren",
+    "showSettings": "Einstellungen anzeigen"
+  },
+  "navigation": {
+    "myProjects": "Meine Projekte",
+    "profile": "Profil",
+    "logout": "Ausloggen"
   },
   "surveyForm": {
     "title": "Kompetenz Vergleich",
@@ -73,7 +102,10 @@
     "back": "Zurück",
     "thanksTitle": "Vielen Dank, die Erhebung ist jetzt abgeschlossen",
     "thanksSubtitle": "",
-    "details": "Details"
+    "details": "Details",
+    "question1": "Assume a student does not have Competence A. Is it then very likely that they also do not have Competence B?",
+    "yes": "Yes",
+    "no": "No"
   },
   "user": {
     "name": "Name",
@@ -83,7 +115,13 @@
   "login": {
     "description": "Anmelden",
     "error": "Fehler beim Login. Email oder Passwort nicht korrekt.",
-    "invalid": "Bitte füllen Sie Email und Passwort ein."
+    "invalid": "Bitte füllen Sie Email und Passwort ein.",
+    "email": "Email",
+    "password": "Passwort"
+  },
+  "competences": {
+    "title": "Übersicht der Kompetenzen",
+    "description": "Beschreibung"
   },
   "registration": {
     "description": "Registrieren",
@@ -92,7 +130,12 @@
     "mismatch": "Die Passwörter stimmen nicht überein. Bitte überprüfen Sie ihre Eingabe.",
     "email": "Bitte geben Sie eine korrekte Email an.",
     "password": "Das Passwort muss mindestens 6 Zeichen lang sein. Bitte überprüfen Sie ihre Eingabe.",
-    "error": "Bitte überprüfen Sie ihre Email und ihr Passwort."
+    "error": "Bitte überprüfen Sie ihre Email und ihr Passwort.",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "emailLabel": "Email",
+    "passwordLabel": "Passwort",
+    "confirmPassword": "Passwort wiederholen"
   },
   "error": {
     "title": "Etwas ist schiefgegangen",

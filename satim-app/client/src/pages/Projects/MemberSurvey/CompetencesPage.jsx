@@ -35,8 +35,9 @@ const CompetencesPage = () => {
                 <Box component="main" sx={{flexGrow: 1, p: 3}}>
                     <Toolbar/>
                     <Box sx={{ px: 4 }}>
-                        <Typography variant="h4" gutterBottom>{"Übersicht der Kompetenzen"}</Typography>
-                        <Typography variant="h6" gutterBottom>{"Beschreibung"}</Typography>
+                        <Typography variant="h4" gutterBottom>{t("competences.title")}</Typography>
+                        <Typography variant="h6" gutterBottom>{t("competences.description")}
+                        </Typography>
                     </Box>
                 </Box>
             </Box>

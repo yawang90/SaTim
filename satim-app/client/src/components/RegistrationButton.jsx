@@ -66,11 +66,11 @@ const RegistrationButton = ({ redirectTo = "/dashboard" }) => {
                 <Box sx={modalStyle} component="form">
                     <Typography variant="h6" mb={2}>{t("registration.description")}</Typography>
                     <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <TextField name="first_name" label="Vorname" variant="outlined" value={registrationFormData.first_name} onChange={handleInputChange} fullWidth />
-                        <TextField name="last_name" label="Nachname" variant="outlined" value={registrationFormData.last_name} onChange={handleInputChange} fullWidth required/>
-                        <TextField name ="email" label="Email" variant="outlined" value={registrationFormData.email} onChange={handleInputChange} fullWidth required />
-                        <TextField name="password" label="Passwort" type="password" variant="outlined" value={registrationFormData.password} onChange={handleInputChange} fullWidth required/>
-                        <TextField name="confirmPassword" label="Passwort wiederholen" type="password" variant="outlined" value={registrationFormData.confirmPassword} onChange={handleInputChange} required fullWidth />
+                        <TextField name="first_name" label={t("registration.firstName")} variant="outlined" value={registrationFormData.first_name} onChange={handleInputChange} fullWidth />
+                        <TextField name="last_name" label={t("registration.lastName")} variant="outlined" value={registrationFormData.last_name} onChange={handleInputChange} fullWidth required/>
+                        <TextField name ="email" label={t("registration.emailLabel")} variant="outlined" value={registrationFormData.email} onChange={handleInputChange} fullWidth required />
+                        <TextField name="password" label={t("registration.passwordLabel")} type="password" variant="outlined" value={registrationFormData.password} onChange={handleInputChange} fullWidth required/>
+                        <TextField name="confirmPassword" label={t("registration.confirmPassword")} type="password" variant="outlined" value={registrationFormData.confirmPassword} onChange={handleInputChange} required fullWidth />
                         <LoadingButton loading={loading} variant="contained" color="primary" onClick={handleSubmit}>{t("registration.create")}</LoadingButton>
                     </Box>
                 </Box>

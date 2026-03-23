@@ -22,9 +22,9 @@ export default function SurveyPageForm({response, currentQuestionIndex, goToNext
     const questionLayout =
         {
             id: 'q1',
-            title: 'Nehmen Sie an, dass ein/eine Schüler:in nicht über Kompetenz A verfügt. Ist es dann sehr wahrscheinlich, dass er/sie auch nicht über Kompetenz B verfügt?',
-            leftOption: {title: 'Ja'},
-            rightOption: {title: 'Nein'},
+            title: t("surveyForm.question1"),
+            leftOption: {title: t("surveyForm.yes")},
+            rightOption: {title: t("surveyForm.no")}
         };
     const [competences, setCompetences] = useState([]);
     const [currentChoice, setCurrentChoice] = useState(null);

@@ -10,12 +10,14 @@ import {Button, MenuItem} from "@mui/material";
 import {useAuth} from "../contexts/AuthContext";
 import Menu from '@mui/material/Menu';
 import {useNavigate} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 const AppBarWithUserIcon = () => {
     const [anchorElement, setAnchorElement] = useState(null);
     const { isLoggedIn, logout } = useAuth();
     const open = Boolean(anchorElement);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const handleMenu = (event) => {
         setAnchorElement(event.currentTarget);
@@ -52,7 +54,7 @@ const AppBarWithUserIcon = () => {
                         onClick={() => {handleNavigate()}}
                         sx={{ my: 2, color: 'white', display: 'block' }}>
                         <Typography variant="h6" sx={{ color: 'inherit', textTransform: 'none' }}>
-                            Meine Projekte
+                            {t("navigation.myProjects")}
                         </Typography>
                     </Button>
                 </Box>
@@ -74,8 +76,8 @@ const AppBarWithUserIcon = () => {
                                     vertical: 'top',
                                     horizontal: 'right',
                                 }}>
-                                <MenuItem onClick={handleProfile}>Profil</MenuItem>
-                                <MenuItem onClick={handleLogout}>Ausloggen</MenuItem>
+                                <MenuItem onClick={handleProfile}>{t("navigation.profile")}</MenuItem>
+                                <MenuItem onClick={handleLogout}>{t("navigation.logout")}</MenuItem>
                             </Menu>
                         </>
                     ) : (

@@ -203,13 +203,12 @@ const ResultsPage = () => {
                                                     justifyContent: 'space-between',
                                                     alignItems: 'center',
                                                     width: '100%',
-                                                }}
-                                            >
+                                                }}>
                                                 <Box sx={{ flex: 1 }}>
-                                                    <Typography variant="h6">Ergebnis</Typography>
-                                                    <Typography variant="body2">User Id: {response?.userId}</Typography>
-                                                    <Typography variant="body2">Anzahl Fragen: {response?.questions?.length}</Typography>
-                                                    <Typography variant="body2">Status: Abgeschlossen</Typography>
+                                                    <Typography variant="h6">{t("survey.resultSingle")}</Typography>
+                                                    <Typography variant="body2">{t("survey.userId")}: {response?.userId}</Typography>
+                                                    <Typography variant="body2">{t("survey.questionCount")}: {response?.questions?.length}</Typography>
+                                                    <Typography variant="body2">{t("survey.status")}:: Abgeschlossen</Typography>
                                                 </Box>
                                                 <Box display="flex" gap={1}>
                                                     <Button variant="outlined" startIcon={<Visibility />} onClick={() => handleOpenDialog(response)}>{t("survey.view")}</Button>
@@ -230,15 +229,15 @@ const ResultsPage = () => {
                 <DialogContent dividers>
                     <IconButton aria-label="close" onClick={() => handleCloseDialog()} sx={{position: 'absolute', right: 8, top: 8, color: (theme) => theme.palette.grey[500],}} size="large"><CloseIcon/></IconButton>
                     <Typography variant="body1" gutterBottom>
-                        Fragen beantwortet: {selectedResponse?.length}
+                        {t("survey.answeredQuestions")}: {selectedResponse?.length}
                     </Typography>
                     {selectedResponse?.map((quest, i) => (
                         <Box key={i} mb={2}>
-                            <Typography variant="subtitle2">Frage {i + 1}:</Typography>
-                            <Typography variant="body2">Kompetenz A: {quest.competencesFrom}</Typography>
-                            <Typography variant="body2">Kompetenz B: {quest.competencesTo}</Typography>
+                            <Typography variant="subtitle2">{t("survey.question")}{i + 1}:</Typography>
+                            <Typography variant="body2"> {t("survey.competenceA")}: {quest.competencesFrom}</Typography>
+                            <Typography variant="body2"> {t("survey.competenceB")}: {quest.competencesTo}</Typography>
                             <Typography variant="body2" color="text.secondary">
-                                Antwort: {quest.answer}
+                                {t("survey.answer")}: {quest.answer}
                             </Typography>
                         </Box>
                     ))}
