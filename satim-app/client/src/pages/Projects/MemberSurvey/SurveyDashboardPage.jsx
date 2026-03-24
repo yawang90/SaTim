@@ -11,7 +11,6 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ListIcon from '@mui/icons-material/List';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import {SurveySidebarSection} from "../../../components/SurveySidebarSection";
-import SettingsIcon from '@mui/icons-material/Settings';
 import {getAllSurveysByProject, getSurveyById} from "../../../services/SurveyService";
 
 const APP_URL = import.meta.env.VITE_APP_URL;
@@ -49,12 +48,12 @@ const SurveyDashboardPage = () => {
             icon: <ListIcon fontSize="medium" />,
             onClick: () => navigate(`/survey/dashboard/${surveyId}/${projectId}/competences`)
         },
-        {
+/*        {
             title: t("survey.settingsTitle"),
             description:  t("survey.settings"),
             icon: <SettingsIcon fontSize="medium" />,
             onClick: () => alert(t('survey.showSettings')),
-        }
+        }*/
     ];
 
     useEffect(() => {

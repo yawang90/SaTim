@@ -60,7 +60,7 @@ model survey {
 
 model response {
   id         String   @id @default(uuid())
-  survey     survey   @relation(fields: [surveyId], references: [id])
+  survey     survey   @relation(fields: [surveyId], references: [id], onDelete: Cascade)
   surveyId   String
   createdAt  DateTime @default(now())
   questions  question[]
@@ -73,7 +73,7 @@ model response {
 
 model question {
   id         String   @id @default(uuid())
-  response   response @relation(fields: [responseId], references: [id])
+  response   response @relation(fields: [responseId], references: [id], onDelete: Cascade)
   responseId String
   answer     choice?
   competencesFrom String[]

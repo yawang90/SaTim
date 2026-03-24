@@ -77,6 +77,7 @@ const SettingsPage = () => {
         try {
             await deleteProject({projectId});
             showSnackbar(t('deleteSuccess'), 'success');
+            navigate('/dashboard');
         } catch (error) {
             showSnackbar(t('deleteFailure'), 'warning');
             console.error("Failed to update project:", error);

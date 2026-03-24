@@ -11,6 +11,8 @@ import {useAuth} from "../contexts/AuthContext";
 import Menu from '@mui/material/Menu';
 import {useNavigate} from "react-router-dom";
 import {useTranslation} from "react-i18next";
+import LanguageIcon from '@mui/icons-material/Language';
+import i18n from "i18next";
 
 const AppBarWithUserIcon = () => {
     const [anchorElement, setAnchorElement] = useState(null);
@@ -18,6 +20,8 @@ const AppBarWithUserIcon = () => {
     const open = Boolean(anchorElement);
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const [langAnchor, setLangAnchor] = useState(null);
+    const langOpen = Boolean(langAnchor);
 
     const handleMenu = (event) => {
         setAnchorElement(event.currentTarget);
@@ -42,6 +46,18 @@ const AppBarWithUserIcon = () => {
         navigate('/dashboard')
     }
 
+    const handleLangMenu = (event) => {
+        setLangAnchor(event.currentTarget);
+    };
+
+    const handleLangClose = () => {
+        setLangAnchor(null);
+    };
+
+    const changeLanguage = (lang) => {
+        i18n.changeLanguage(lang);
+        handleLangClose();
+    };
     return (
         <AppBar position="fixed" color="primary" elevation={2} sx={{ minHeight: 78}}>
             <Toolbar sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
@@ -59,6 +75,13 @@ const AppBarWithUserIcon = () => {
                     </Button>
                 </Box>
                 <Box>
+                    <IconButton color="inherit" onClick={handleLangMenu}>
+                        <LanguageIcon />
+                    </IconButton>
+                    <Menu anchorEl={langAnchor} open={langOpen} onClose={handleLangClose} anchorOrigin={{vertical: 'bottom', horizontal: 'right',}} transformOrigin={{vertical: 'top', horizontal: 'right',}}>
+                        <MenuItem onClick={() => changeLanguage('de')}>Deutsch</MenuItem>
+                        <MenuItem onClick={() => changeLanguage('en')}>English</MenuItem>
+                    </Menu>
                     {isLoggedIn ? (
                         <>
                             <IconButton color="inherit" onClick={handleMenu}>
