@@ -91,3 +91,16 @@ export const getResponseExcel = async (responseId) => {
     const blob = await response.blob();
     return blob;
 }
+
+export const getCompetencesExcel = async (surveyId) => {
+    const response = await fetch(
+        `${API_URL}/api/surveys/competences/excel/get?surveyId=${surveyId}`
+    );
+
+    if (!response.ok) {
+        throw new Error('Failed to get competence excel');
+    }
+
+    const blob = await response.blob();
+    return blob;
+};

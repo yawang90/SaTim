@@ -1,7 +1,7 @@
 import express from "express";
 import multer from 'multer';
 import {
-    getAllSurveys,
+    getAllSurveys, getCompetenceExcel,
     getCompetences, getEnrichedResponsesBySurvey,
     getOrCreateResponse, getResponseExcel, getResponsesBySurvey,
     getSurvey, saveAnswerToResponse,
@@ -20,5 +20,6 @@ router.get('/response/get', getResponsesBySurvey)
 router.get('/response/enriched/get', getEnrichedResponsesBySurvey)
 router.post('/response/saveAnswer', saveAnswerToResponse)
 router.get('/response/excel/get', getResponseExcel)
+router.get('/competences/excel/get', getCompetenceExcel)
 
 export default router;

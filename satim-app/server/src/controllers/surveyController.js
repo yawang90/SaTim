@@ -3,7 +3,11 @@ import {
     findAllSurveys,
     findCompetences,
     findOrCreateResponse,
-    findSurvey, getEnrichedResponses, getResponses, saveAnswer,
+    findSurvey,
+    getEnrichedResponses,
+    getExcelCompetencesFromSurvey,
+    getResponses,
+    saveAnswer,
     storeSurveyExcel
 } from "../services/surveyService.js";
 import {nanoid} from 'nanoid';
@@ -130,3 +134,24 @@ export const getResponseExcel = async (req, res) => {
     res.setHeader('Content-Disposition', 'attachment; filename="qmatrix.xlsx"');
     res.send(response);
 }
+
+export const getCompetenceExcel = async (req, res) => {
+    try {
+        const { surveyId } = req.query;
+        if (!surveyId) {
+            return res.status(400).json({ message: "Missing surveyId" });
+        }
+
+        const { buffer, fileName } = await getExcelCompetencesFromSurvey(surveyId);
+
+        res.setHeader(
+            "Content-Type",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        );
+        res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
+        res.send(buffer);
+    } catch (err) {
+        console.error("Error fetching survey Excel:", err);
+        res.status(500).json({ message: err.message || "Internal server error" });
+    }
+};

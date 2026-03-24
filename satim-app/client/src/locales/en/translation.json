@@ -121,7 +121,8 @@
   },
   "competences": {
     "title": "Competence Overview",
-    "description": "Description"
+    "description": "Description",
+    "downloadExcel": "Download initial competences"
   },
   "registration": {
     "description": "Register",

@@ -308,3 +308,17 @@ async function getQuestionKoppen(surveyId, response, forExport) {
             return question;
         }
 }
+
+export const getExcelCompetencesFromSurvey = async (surveyId) => {
+    const survey = await findSurvey(surveyId);
+    if (!survey || !survey.excelFileUrl) {
+        throw new Error("Survey Excel not found");
+    }
+    const fileUrl = await getExcelURLFromSupabase(survey.excelFileUrl);
+    const excelFile = await fetch(fileUrl);
+    if (!excelFile.ok) {
+        throw new Error('Failed to fetch Excel file from Supabase');
+    }
+    const buffer = await excelFile.arrayBuffer();
+    return { buffer: Buffer.from(buffer), fileName: `${survey.title || "survey"}.xlsx` };
+};
