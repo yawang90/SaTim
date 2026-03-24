@@ -11,7 +11,8 @@ const Sidebar = ({ items, surveySection }) => {
     };
 
     return (
-        <Drawer variant="permanent" sx={{width: drawerWidth, flexShrink: 0, [`& .MuiDrawer-paper`]: {width: drawerWidth, boxSizing: 'border-box', top: '79px',},}}>
+        <Drawer variant="permanent" sx={{width: drawerWidth, flexShrink: 0, [`& .MuiDrawer-paper`]: {width: drawerWidth, boxSizing: 'border-box', top: '79px', height: 'calc(100vh - 79px)',
+                overflowY: 'auto'},}}>
             {firstItem && (
                 <List>
                     <ListItemButton onClick={firstItem.onClick} selected={isSelected(firstItem)}>
