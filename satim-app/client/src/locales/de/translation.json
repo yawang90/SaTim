@@ -106,8 +106,8 @@
     "thanksSubtitle": "",
     "details": "Details",
     "question1": "Nehmen Sie an, dass ein/eine Schüler:in nicht über <a>{{compA}}</a> verfügt. Ist es dann sehr wahrscheinlich, dass er/sie auch nicht über <b>{{compB}}</b> verfügt?",
-    "yes": "Yes",
-    "no": "No"
+    "yes": "Ja",
+    "no": "Nein"
   },
   "user": {
     "name": "Name",
