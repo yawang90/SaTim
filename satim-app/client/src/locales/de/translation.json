@@ -84,7 +84,9 @@
     "continue": "Weiter",
     "back": "Zurück",
     "copyTooltip": "In die Zwischenablage kopieren",
-    "showSettings": "Einstellungen anzeigen"
+    "showSettings": "Einstellungen anzeigen",
+    "yes": "Ja",
+    "no": "Nein"
   },
   "navigation": {
     "myProjects": "Meine Projekte",
@@ -103,7 +105,7 @@
     "thanksTitle": "Vielen Dank, die Erhebung ist jetzt abgeschlossen",
     "thanksSubtitle": "",
     "details": "Details",
-    "question1": "Assume a student does not have Competence A. Is it then very likely that they also do not have Competence B?",
+    "question1": "Nehmen Sie an, dass ein/eine Schüler:in nicht über <a>{{compA}}</a> verfügt. Ist es dann sehr wahrscheinlich, dass er/sie auch nicht über <b>{{compB}}</b> verfügt?",
     "yes": "Yes",
     "no": "No"
   },

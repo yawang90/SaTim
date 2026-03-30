@@ -21,6 +21,15 @@ export default function SurveyPageSidebar({ goToQuestion, currentQuestionIndex, 
         goToQuestion(index);
     };
 
+    const normalizeAnswer = (answer) => {
+        if (!answer) return null;
+        const map = {
+            ja: "yes",
+            nein: "no"
+        };
+        return map[answer.toLowerCase()] || answer;
+    };
+
     return (
         <Paper elevation={1} sx={{width: 320, borderRight: 1, borderColor: 'divider', bgcolor: 'background.paper', px: 3, py: 3, display: 'flex', flexDirection: 'column',}}>
             <Box mb={3}>
@@ -54,8 +63,7 @@ export default function SurveyPageSidebar({ goToQuestion, currentQuestionIndex, 
                                         {t("survey.question") + actualIndex}
                                     </Typography>
                                     <Box component="span" mt={0.5} px={1} py={0.25} borderRadius={1} fontSize="0.75rem" fontWeight={600} sx={{userSelect: 'none', bgcolor: question.answer ? 'primary.light' : 'grey.300', color: question.answer ? 'primary.dark' : 'grey.800',}}>
-                                        {question.answer || t("survey.current")}
-                                    </Box>
+                                        {question.answer ? t(`survey.${normalizeAnswer(question.answer)}`) : t("survey.current")}                                    </Box>
                                 </Box>
                             </Button>
                         );

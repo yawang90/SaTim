@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ComparisonCard from '../../components/ComparisonCard';
-import {useTranslation} from "react-i18next";
+import {Trans, useTranslation} from "react-i18next";
 import {getCompetences, saveAnswerToResponse} from "../../services/SurveyService";
 import {useParams} from "react-router-dom";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -31,6 +31,8 @@ export default function SurveyPageForm({response, currentQuestionIndex, goToNext
     const [competenceFrom, setCompetenceFrom] = useState(null);
     const [competenceTo, setCompetenceTo] = useState(null);
     const [loading, setLoading] = useState(false);
+    const competenceAColor = '#1976d2';
+    const competenceBColor = '#9c27b0';
 
     const handleAnswer = (choice) => {
         setCurrentChoice(choice);
@@ -119,8 +121,8 @@ export default function SurveyPageForm({response, currentQuestionIndex, goToNext
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
                         <Button variant="contained" endIcon={<ChevronRightIcon/>} onClick={saveAnswer} disabled={!currentChoice}>{t("surveyForm.next")}</Button>
                     </Box>
-                    <Box textAlign="left" mb={6}>
-                        <Typography variant="h5" fontWeight="bold" gutterBottom>
+                    <Box textAlign="left" mb={6} sx={{borderLeft: 6, borderColor: competenceAColor, bgcolor: 'background.paper', p: 2, borderRadius: 2}}>
+                         <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ color: competenceAColor }}>
                             {t("surveyForm.competenceA")}
                         </Typography>
                         <Typography variant="subtitle1">
@@ -137,8 +139,8 @@ export default function SurveyPageForm({response, currentQuestionIndex, goToNext
                             </AccordionDetails>
                         </Accordion>
                     </Box>
-                    <Box textAlign="left" mb={6}>
-                        <Typography variant="h5" fontWeight="bold" gutterBottom>
+                    <Box textAlign="left" mb={6} sx={{borderLeft: 6, borderColor: competenceBColor, bgcolor: 'background.paper', p: 2, borderRadius: 2}}>
+                        <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ color: competenceBColor }}>
                             {t("surveyForm.competenceB")}
                         </Typography>
                         <Typography variant="subtitle1">
@@ -157,8 +159,15 @@ export default function SurveyPageForm({response, currentQuestionIndex, goToNext
                     </Box>
                     <Box textAlign="center" mb={6}>
                         <Typography variant="h5" fontWeight="bold" gutterBottom>
-                            {questionLayout.title}
-                        </Typography>
+                                <Trans i18nKey="surveyForm.question1"
+                                    values={{
+                                        compA: `${t("surveyForm.competenceA")}`,
+                                        compB: `${t("surveyForm.competenceB")}`}}
+                                    components={{
+                                        a: (<Box component="span" sx={{ color: competenceAColor, fontWeight: 700 }}/>),
+                                        b: (<Box component="span" sx={{ color: competenceBColor, fontWeight: 700 }}/>)
+                                }}/>
+                            </Typography>
                     </Box>
                     <Box sx={{display: 'flex', justifyContent: 'center'}}>
                         <Grid container spacing={4} mb={6}>

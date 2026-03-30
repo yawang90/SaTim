@@ -84,7 +84,9 @@
     "continue": "Continue",
     "back": "Back",
     "copyTooltip": "Copy to clipboard",
-    "showSettings": "Show Settings"
+    "showSettings": "Show Settings",
+    "yes": "Yes",
+    "no": "No"
   },
   "navigation": {
     "myProjects": "My Projects",
@@ -103,7 +105,7 @@
     "thanksTitle": "Thank you, the survey is now completed",
     "thanksSubtitle": "",
     "details": "Details",
-    "question1": "Assume a student does not have Competence A. Is it then very likely that they also do not have Competence B?",
+    "question1": "Assume a student does not have <a>{{compA}}</a>. Is it then very likely that they also do not have <b>{{compB}}</b>?",
     "yes": "Yes",
     "no": "No"
   },
